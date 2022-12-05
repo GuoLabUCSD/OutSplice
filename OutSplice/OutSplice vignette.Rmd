@@ -17,6 +17,17 @@ OutSplice is a package that compares alternative splicing events between tumor a
 3. Determination of a junctional outlier as a skipping, insertion, or deletion event
 4. Calculation of splicing burden
 
+1.3 The OutSplice package is available at https://bioconductor.org and can be installed via BiocManager::install:
+
+```{r}
+# if (!require("BiocManager"))
+#     install.packages("BiocManager")
+# BiocManager::install("OutSplice")
+```
+A package only needs to be installed once. Load the package into an R session with
+```{r}
+# library(OutSplice)
+```
 
 2.1 Inputs
 Sample data for OutSplice can be downloaded from The Cancer Genome Atlas (TCGA).
@@ -73,7 +84,7 @@ Offsets, which the user can specify, sets a minimum value relative to the normal
 
 6.1 Outputs
 
-Outputs an RData file with the following variables:
+Outputs an RData file with the following Variables:
   -ASE.type: junction events labelled by type (skipping, insertion, or deletion)
   -FisherAnalyses: matrix of junction events containing the number of outliers in the tumor group (outRank), event ranking based on the number of outliers and tumor under/over expression (var), the Fisher P-Value for under-expressed events (FisherP1), and the Fisher P-Value for over-expressed events (FisherP2)
   -geneAnnot: object containing gene names corresponding to each junction region
