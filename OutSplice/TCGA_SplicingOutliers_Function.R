@@ -366,7 +366,7 @@ OutSplice<-function(junction, RSEM, rawcounts, sample_labels, output_file_prefix
 
   ## Calculate Splicing Burden
   source(file=paste0(dir,"SpliceBurdenfunction.R"))
-  splice_burden <- CalcBurden(junc.Outliers, ASE.type, FisherAnalyses, p_value)
+  splice_burden <- CalcBurden(junc.Outliers, FisherAnalyses, p_value)
 
   ## save output file
   save(junc.RPM, RSEM, junc.RPM.norm, pvalues, pheno, FisherAnalyses, geneAnnot, ASE.type, NORM.RPM, NORM.RSEM, NORM.RSEM.norm, junc.Outliers, splice_burden, file=paste0(dir, output_file_prefix,"_", date, ".RDa"))
@@ -378,7 +378,7 @@ OutSplice<-function(junction, RSEM, rawcounts, sample_labels, output_file_prefix
 ## analyze TCGA junctions from TCGA based sequencing data
 ## TCGA Firehose pipeline
 
-OutSplice_TCGA<-function(junction, RSEM, rawcounts, output_file_prefix, dir, filterSex=T, genome = 'Homo.sapiens', annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg38.knownGene', offsets_value = 0.00001, correction_setting='fdr', p_value=0.05){
+OutSplice_TCGA<-function(junction, RSEM, rawcounts, output_file_prefix, dir, filterSex=T, genome = 'Homo.sapiens', annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg19.knownGene', offsets_value = 0.00001, correction_setting='fdr', p_value=0.05){
 
   date<-Sys.Date()
 
@@ -728,11 +728,11 @@ OutSplice_TCGA<-function(junction, RSEM, rawcounts, output_file_prefix, dir, fil
 
   ## Calculate Splicing Burden
   source(file=paste0(dir,"SpliceBurdenfunction.R"))
-  splice_burden <- CalcBurden(junc.Outliers, ASE.type, FisherAnalyses, p_value)
+  splice_burden <- CalcBurden(junc.Outliers, FisherAnalyses, p_value)
 
   #Plot Junction Graph
   #source(file=paste0(dir, 'PlotJunctionFunction.R'))
-  #PlotJunctionData(junc.RPM, junc.RPM.norm, pheno, NORM.RSEM.norm, geneAnnot)
+  #PlotJunctionData(junc.RPM, junc.RPM.norm, pheno, NORM.RSEM.norm, RSEM, geneAnnot)
 
   ## save output file
   save(junc.RPM, RSEM, junc.RPM.norm, pvalues, pheno, FisherAnalyses, geneAnnot, ASE.type, NORM.RPM, NORM.RSEM, NORM.RSEM.norm, junc.Outliers, splice_burden, file=paste0(dir, output_file_prefix,"_", date, ".RDa"))
