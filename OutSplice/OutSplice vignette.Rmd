@@ -59,7 +59,7 @@ The OutSplice_TCGA function has 5 required inputs and 7 Optional Inputs and shou
   -filtersex: ignores sex chromosomes when generating results. True by default [OPTIONAL]
   -genome: the bioconductor package containing the genome object to use. Uses the human genome by default (in Section 4.1) [OPTIONAL]
   -annotation: the bioconductor package containing the annotations to use. Uses the human genome by default (in Section 4.1) [OPTIONAL]
-  -TXdb: the bioconductor package containing the transcript annotations to use. Uses the hg38 genome by default (in Section 4.1) [OPTIONAL]
+  -TxDb: the bioconductor package containing the transcript annotations to use. Uses the hg38 genome by default (in Section 4.1) [OPTIONAL]
   -offsets_value: the normalized junction expression threshold. Uses 0.00001 by default. (in Section 5.1) [OPTIONAL]
   -correction_setting: the correction value to be used for p-value adjustment during Fisher analyses. Uses 'fdr' by default. [OPTIONAL]
   -p_value: the signficance threshold to use during Fisher analyses. Uses 0.05 by default. [OPTIONAL]
@@ -79,7 +79,7 @@ The dotheogsa function from the Bioconductor package OGSA is sourced to remove a
 The dotheogsa function is again employed to determine splicing events as outliers, which are defined as any normalized junctions that are two standard deviations above or below the median of the normal distribution. A Fisher exact test is used to determine which junctions are significantly over or under expressed in tumors compared to the normal samples.
 
 4.1 Genomic references
-The Bioconductor GenomicRanges packages are used to assign each junction to a known gene. The user has the option in the main function to input which genome and its associated Bioconductor packages to use as the reference. Ex) For mouse genomes aligned to mm39 the user should install and specify "Mus.musculus" for the genome argument, "org.Mm.eg.db" for the annotation argument, and "TxDb.Mmusculus.UCSC.mm39.refGene" for the TXdb argument.
+The Bioconductor GenomicRanges packages are used to assign each junction to a known gene. The user has the option in the main function to input which genome and its associated Bioconductor packages to use as the reference. Ex) For mouse genomes aligned to mm39 the user should install and specify "Mus.musculus" for the genome argument, "org.Mm.eg.db" for the annotation argument, and "TxDb.Mmusculus.UCSC.mm39.refGene" for the TxDb argument.
 
 Using this genomic assignment, the dotheogsa function determines insertion, skipping, or deletion events based on the following criteria:
 insertion: junction that starts outside a known exon
