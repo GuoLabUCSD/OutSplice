@@ -41,21 +41,23 @@ A package only needs to be installed once. Load the package into an R session wi
 2.1 Inputs
 Sample data for OutSplice can be downloaded from The Cancer Genome Atlas (TCGA).
 
-The OutSplice function has 6 required inputs and 7 Optional Inputs:
+The OutSplice function has 6 required inputs and 7 Optional Inputs.
 
-The OutSplice_TCGA function has 5 required inputs and 7 Optional Inputs and should only be used if the data is in TCGA format:
+The OutSplice_TCGA function has 5 required inputs and 7 Optional Inputs and should only be used if the data is in TCGA format.
+
+Junction, RSEM, rawcounts, and sample_labels files should be placed in the same directory as OutSplice.
 
 ```{r}
 #OutSplice(junction, RSEM, rawcounts, sample_labels, out_file_prefix, dir, filterSex=T, genome='Homo.sapiens', annotation='org.Hs.eg.db', TxDb='TxDb.Hspaiens.UCSC/hg38.knownGene', offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
 #OutSplice_TCGA(junction, RSEM, rawcounts, output_file_prefix, dir, filterSex=T, genome = 'Homo.sapiens', annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg38.knownGene', offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
 ```
 
-  -junction: filepath to a matrix of junction raw read counts
-  -RSEM: filepath to a matrix of normalized gene expression data.
-  -rawcounts: filepath to the reads per million counts (RPM) for each gene. Can be either per gene, or a summed total.
+  -junction: filename of a matrix of junction raw read counts
+  -RSEM: filename of a matrix of normalized gene expression data.
+  -rawcounts: filename of the reads per million counts (RPM) for each gene. Can be either per gene, or a summed total.
   -sample_labels: filepath to a matrix of phenotypes (in Section 2.2)
   -out_file_prefix: user defined string for what the prefix of the output file should be named
-  -dir: string containing the output directory for the results
+  -dir: string containing the path to the OutSplice directory
   -filtersex: ignores sex chromosomes when generating results. True by default [OPTIONAL]
   -genome: the bioconductor package containing the genome object to use. Uses the human genome by default (in Section 4.1) [OPTIONAL]
   -annotation: the bioconductor package containing the annotations to use. Uses the human genome by default (in Section 4.1) [OPTIONAL]
