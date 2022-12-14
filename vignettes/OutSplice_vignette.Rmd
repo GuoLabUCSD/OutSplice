@@ -1,0 +1,113 @@
+---
+title: "OutSplice Vignette"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+1.1 Introduction
+OutSplice is a package that compares alternative splicing events between tumor and normal samples. This package is specifically designed for analyzing the gene and junction information from RNA sequencing data provided by the user, or from the TCGA. This package generates a matrix of splicing outliers, which are junctions that are either significantly over or underexpressed compared to a control sample. OutSplice further designates observed outliers as skipping, insertion, or deletion events. Overall, OutSplice is novel in that it determines differential splicing burdens between two phenotypes and characterizes the nature of splicing outliers.
+
+1.2 The main functions of OutSplice achieve the following for either user provided data, using the OutSplice function, or data provided from the TCGA, using the OutSplice_TCGA function:
+1. Junction normalization
+2. Outlier analysis
+3. Determination of a junctional outlier as a skipping, insertion, or deletion event
+4. Calculation of splicing burden
+
+1.3 Minimum Required Packages
+OutSplice will import the below packages so please ensure they are installed before using the software:
+1. Homo.sapiens
+2. org.Hs.eg.db
+3. TxDb.Hsapiens.UCSC.hg38.knownGene
+4. dplyr
+5. GenomicRanges
+6. limma
+7. Repitools
+
+1.4 The OutSplice package is available at https://bioconductor.org and can be installed via BiocManager::install:
+
+```{r}
+# if (!require("BiocManager"))
+#     install.packages("BiocManager")
+# BiocManager::install("OutSplice")
+```
+A package only needs to be installed once. Load the package into an R session with
+```{r}
+# library(OutSplice)
+```
+
+2.1 Inputs
+Sample data for OutSplice can be downloaded from The Cancer Genome Atlas (TCGA).
+
+The OutSplice function has 6 required inputs and 7 Optional Inputs.
+
+The OutSplice_TCGA function has 5 required inputs and 7 Optional Inputs and should only be used if the data is in TCGA format.
+
+
+```{r}
+#OutSplice(junction, RSEM, rawcounts, sample_labels, out_file_prefix, dir, filterSex=T, genome='Homo.sapiens', annotation='org.Hs.eg.db', TxDb='TxDb.Hspaiens.UCSC/hg38.knownGene', offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
+#OutSplice_TCGA(junction, RSEM, rawcounts, output_file_prefix, dir, filterSex=T, genome = 'Homo.sapiens', annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg38.knownGene', offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
+```
+
+  -junction: filepath to a matrix of junction raw read counts
+  -RSEM: filepath to a matrix of normalized gene expression data.
+  -rawcounts: filepath to the raw read counts for each gene. Can be either per gene, or a summed total.
+  -sample_labels: filepath to a matrix of phenotypes (in Section 2.2)
+  -out_file_prefix: user defined string for what the prefix of the output file should be named
+  -dir: string containing the desired output path.
+  -filtersex: ignores sex chromosomes when generating results. True by default [OPTIONAL]
+  -genome: the bioconductor package containing the genome object to use. Uses the human genome by default (in Section 4.1) [OPTIONAL]
+  -annotation: the bioconductor package containing the annotations to use. Uses the human genome by default (in Section 4.1) [OPTIONAL]
+  -TxDb: the bioconductor package containing the transcript annotations to use. Uses the hg38 genome by default (in Section 4.1) [OPTIONAL]
+  -offsets_value: the normalized junction expression threshold. Uses 0.00001 by default. (in Section 5.1) [OPTIONAL]
+  -correction_setting: the correction value to be used for p-value adjustment during Fisher analyses. Uses 'fdr' by default. [OPTIONAL]
+  -p_value: the significance threshold to use during Fisher analyses. Uses 0.05 by default. [OPTIONAL]
+
+This algorithm is compatible with any organism provided the genome object, genome wide annotation, and transcript annotations exist as packages on Bioconductor.
+
+2.2 Phenotype matrix 
+If using the OutSplice function, users must provide a phenotype matrix, designating which samples in the junction file belong to the tumor group (labelled as "T") and the normal group (labelled as "F"). Please ensure the matrix file contains a header row with the first column designating the sample names, and the second column designating the phenotype. If using TCGA data, the two phenotypes are "tumor" and "normal." OutSplice_TCGA can automatically infer the phenotype of TCGA data using the sample names. Only if the phenotype matrix has more than 10 control samples, the program proceeds. 
+
+2.3 Junction normalization
+The program automatically normalizes the junction counts by dividing the junction counts by the total raw counts and then dividing each count by 10^6 to generate RPM junction data.
+
+3.1 OGSA initial filtering
+The dotheogsa function from the Bioconductor package OGSA is sourced to remove all junctions with no difference between tumor and normal samples.
+
+3.2 OGSA outlier analysis
+The dotheogsa function is again employed to determine splicing events as outliers, which are defined as any normalized junctions that are two standard deviations above or below the median of the normal distribution. A Fisher exact test is used to determine which junctions are significantly over or under expressed in tumors compared to the normal samples.
+
+4.1 Genomic references
+The Bioconductor GenomicRanges packages are used to assign each junction to a known gene. The user has the option in the main function to input which genome and its associated Bioconductor packages to use as the reference. Ex) For mouse genomes aligned to mm39 the user should install and specify "Mus.musculus" for the genome argument, "org.Mm.eg.db" for the annotation argument, and "TxDb.Mmusculus.UCSC.mm39.refGene" for the TxDb argument.
+
+Using this genomic assignment, the dotheogsa function determines insertion, skipping, or deletion events based on the following criteria:
+insertion: junction that starts outside a known exon
+skipping: junction that skips over a known exon
+deletion: junction that is inside a known exon but not as its start or end
+
+4.2 Junction expression normalization
+Junction expression is normalized based on its corresponding gene expression from the RSEM input. This is achieved by dividing the junction RPM data by the normalized RSEM counts from a junction's corresponding gene.
+
+If junction was matched to more than one gene, then the junction does not get normalized.
+
+5.1 Filter by expression via offsets
+Offsets, which the user can specify, sets a minimum value relative to the normal samples in order to call a junction an outlier. In this example example, an outlier must have expression greater than 0.00001 RPM in order to be called an outlier. Any outliers with expressions below this value are too low to be relevant for the analysis in this example.
+
+6.1 Outputs
+
+Outputs an RData file with the following data:
+  -ASE.type: junction events labeled by type (skipping, insertion, or deletion)
+  -FisherAnalyses: matrix of junction events containing the number of outliers in the tumor group (outRank), event ranking based on the number of outliers and tumor under/over expression (var), the Fisher P-Value for under-expressed events (FisherP1), and the Fisher P-Value for over-expressed events (FisherP2)
+  -geneAnnot: object containing gene names corresponding to each junction region
+  -junc.Outliers: list containing the logical matrices TumorOverExpression and TumorUnderExpression. "True" indicates an overexpressed event in TumorOverExpression, or an underexpressed event in TumorUnderExpression.
+  -junc.RPM: junction counts in reads per million following a division of the junction counts input by the total rawcounts for each sample
+  -junc.RPM.norm: junction counts normalized by each event's RSEM value
+  -RSEM: RSEM values for each junction event
+  -splice_buren: matrix containing the number of Fisher-P significant overexpressed, underexpressed, and total number of outliers per sample
+  -NORM.RSEM.norm: Median of Junction Data Normalized by RSEM for Normal Samples Only (Used for Junction Plotting Only)
+  -pheno: Phenotypes of Samples (Tumor or Normal)
+  -pvalues: Junction Fisher P-values
+  
