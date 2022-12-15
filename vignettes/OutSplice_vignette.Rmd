@@ -19,13 +19,13 @@ OutSplice is a package that compares alternative splicing events between tumor a
 
 1.3 Minimum Required Packages
 OutSplice will import the below packages so please ensure they are installed before using the software:
-1. Homo.sapiens
-2. org.Hs.eg.db
-3. TxDb.Hsapiens.UCSC.hg38.knownGene
-4. dplyr
-5. GenomicRanges
-6. limma
-7. Repitools
+1. dplyr
+2. GenomicRanges
+3. Homo.sapiens
+4. limma
+5. org.Hs.eg.db
+6. Repitools
+7. TxDb.Hsapiens.UCSC.hg38.knownGene
 
 1.4 The OutSplice package is available at https://bioconductor.org and can be installed via BiocManager::install:
 
@@ -38,6 +38,13 @@ A package only needs to be installed once. Load the package into an R session wi
 ```{r}
 # library(OutSplice)
 ```
+
+1.5 Installation from Source
+For manual installation:
+1. Download the tarball from GitHub - (wget https://github.com/GuoLabUCSD/OutSplice/tarball/master -O OutSplice.tar.gz)
+2. Execute one of the below
+  -From Command Line (R CMD INSTALL OutSplice.tar.gz)
+  -From R (install.packages('OutSplice.tar.gz', repos = NULL, type = 'source'))
 
 2.1 Inputs
 Sample data for OutSplice can be downloaded from The Cancer Genome Atlas (TCGA).
@@ -106,8 +113,15 @@ Outputs an RData file with the following data:
   -junc.RPM: junction counts in reads per million following a division of the junction counts input by the total rawcounts for each sample
   -junc.RPM.norm: junction counts normalized by each event's RSEM value
   -RSEM: RSEM values for each junction event
-  -splice_buren: matrix containing the number of Fisher-P significant overexpressed, underexpressed, and total number of outliers per sample
+  -splice_burden: matrix containing the number of Fisher-P significant overexpressed, underexpressed, and total number of outliers per sample
   -NORM.RSEM.norm: Median of Junction Data Normalized by RSEM for Normal Samples Only (Used for Junction Plotting Only)
   -pheno: Phenotypes of Samples (Tumor or Normal)
   -pvalues: Junction Fisher P-values
+  
+Tab-separated text files are also produced for the following data:
+  -ASE.type: event_types.txt
+  -FisherAnalyses: FisherAnalyses.txt
+  -geneAnnot: gene_annotations.txt
+  -junc.Outliers: TumorOverExpression.txt, TumorUnderExpression.txt
+  -splice_burden: splice_burden.txt
   
