@@ -22,6 +22,7 @@ OutSplice_TCGA<-function(junction, RSEM, rawcounts, output_file_prefix, dir, fil
   library(annotation, character.only = TRUE)
   library('GenomicRanges')
   library('limma')
+  library('Repitools')
   library(TxDb, character.only = TRUE)
   colnames(rawcounts)<-substr(colnames(rawcounts), 1,15)
   colnames(rawcounts)<-gsub('\\.', "-", colnames(rawcounts))
