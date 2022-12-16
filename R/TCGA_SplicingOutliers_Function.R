@@ -97,7 +97,6 @@ OutSplice_TCGA<-function(junction, RSEM, rawcounts, output_file_prefix, dir, fil
 
   rm(logFC)
   gc()
-
   ###### NEW FILTER: See if tumors have any outliers ###########################
   ##PHENO should have 'Normal' or 'Tumor' calls where Tumor ==1, Normal ==0, and names of each sample associated
   PHENO<-pheno=='Tumor'
@@ -115,7 +114,6 @@ OutSplice_TCGA<-function(junction, RSEM, rawcounts, output_file_prefix, dir, fil
   if (filterSex) {
     junc.RPM <- junc.RPM[grep('chr[XY]',row.names(junc.RPM),value=T,invert=T),]
   }
-
   ##############################################################
   print("get the genomic information for all the junctions")
 
