@@ -1,15 +1,12 @@
-#References
-#M. F. Ochs, J. E. Farrar, M. Considine, Y. Wei, S. Meshinchi, and R. J. Arceci. Outlier analysis and top scoring pair for integrated data analysis and biomarker discovery. IEEE/ACM Trans Comput Biol Bioinform, 11: 520-32, 2014. PMCID: PMC4156935
-
 ## analyze junctions from RNA based sequencing data
 
-OutSplice<-function(junction, RSEM, rawcounts, sample_labels, output_file_prefix, dir, filterSex=T, genome = 'Homo.sapiens', annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg38.knownGene', offsets_value = 0.00001, correction_setting = 'fdr', p_value=0.05){
+OutSplice<-function(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=T, genome = 'Homo.sapiens', annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg38.knownGene', offsets_value = 0.00001, correction_setting = 'fdr', p_value=0.05){
 
   date<-Sys.Date()
   ## this is non-log transformed data and includes pheno (RAW, in RPM)
   print('Loading data')
   all.junc<-read.table(file=junction, sep='\t', header=T, stringsAsFactors = F)
-  all.RSEM<-read.table(file=RSEM, header=T, row.names=1, sep="\t")
+  all.gene_expr<-read.table(file=gene_expr, header=T, row.names=1, sep="\t")
   rawcounts<-read.table(file=rawcounts, sep='\t', header=T, row.names=1, stringsAsFactors = F)
   samps.labels <- read.table(file=sample_labels, sep = '\t', row.names=1, header=T, stringsAsFactors = F)
 
@@ -17,12 +14,12 @@ OutSplice<-function(junction, RSEM, rawcounts, sample_labels, output_file_prefix
   #source(file=paste0(dir,"OGSAfunctionwFisher.R"))
 
   ## Load needed libraries
-  library(genome, character.only = TRUE)
-  library(annotation, character.only = TRUE)
-  library('GenomicRanges')
-  library('limma')
-  library('Repitools')
-  library(TxDb, character.only = TRUE)
+  suppressPackageStartupMessages(library(genome, character.only = TRUE))
+  suppressPackageStartupMessages(library(annotation, character.only = TRUE))
+  suppressPackageStartupMessages(library('GenomicRanges'))
+  suppressPackageStartupMessages(library('limma'))
+  suppressPackageStartupMessages(library('Repitools'))
+  suppressPackageStartupMessages(library(TxDb, character.only = TRUE))
   colnames(rawcounts)<-gsub('\\.', "-", colnames(rawcounts))
 
   all.samples<-colnames(all.junc)
@@ -41,8 +38,8 @@ OutSplice<-function(junction, RSEM, rawcounts, sample_labels, output_file_prefix
   all.junc<-all.junc[,-1]
 
 
-  expression.samples<-gsub('\\.', '-', colnames(all.RSEM))
-  colnames(all.RSEM)<-expression.samples
+  expression.samples<-gsub('\\.', '-', colnames(all.gene_expr))
+  colnames(all.gene_expr)<-expression.samples
 
   #Order Columns by Name
   samps.labels_df <- as.data.frame((t(samps.labels)))
@@ -50,7 +47,7 @@ OutSplice<-function(junction, RSEM, rawcounts, sample_labels, output_file_prefix
 
   all.junc <- all.junc[ , order(colnames(all.junc))]
 
-  all.RSEM <- all.RSEM[ , order(colnames(all.RSEM))]
+  all.gene_expr <- all.gene_expr[ , order(colnames(all.gene_expr))]
 
   rawcounts <- rawcounts[ , order(colnames(rawcounts))]
 
@@ -59,7 +56,7 @@ OutSplice<-function(junction, RSEM, rawcounts, sample_labels, output_file_prefix
   samps.labels <- samps.labels[ , order(colnames(samps.labels))]
 
   #infer phenotype from sample names
-  all.samples<-intersect(colnames(all.junc), colnames(all.RSEM))
+  all.samples<-intersect(colnames(all.junc), colnames(all.gene_expr))
   all.samples<-intersect(all.samples, colnames(rawcounts))
   all.samples<-intersect(all.samples, colnames(samps.labels_df))
 
@@ -77,14 +74,14 @@ OutSplice<-function(junction, RSEM, rawcounts, sample_labels, output_file_prefix
   #subset only primary tumor 01 or normal 11
   all.samples<-names(pheno)
   all.junc<-all.junc[,all.samples]
-  all.RSEM<-all.RSEM[,all.samples]
+  all.gene_expr<-all.gene_expr[,all.samples]
   rawcounts<-rawcounts[,all.samples]
   pheno<-pheno[all.samples]
 
   ##change from char to numeric
-  n<-sapply(all.RSEM, as.numeric)
-  rownames(n)<-rownames(all.RSEM)
-  all.RSEM<-n
+  n<-sapply(all.gene_expr, as.numeric)
+  rownames(n)<-rownames(all.gene_expr)
+  all.gene_expr<-n
   n<-sapply(all.junc, as.numeric)
   rownames(n)<-rownames(all.junc)
   all.junc<-n
@@ -232,24 +229,24 @@ OutSplice<-function(junction, RSEM, rawcounts, sample_labels, output_file_prefix
 
 
   ##################################################################
-  print("remove all that map to 'NA' no gene name, and assign gene expression from RSEM")
+  print("remove all that map to 'NA' no gene name, and assign gene expression from gene_expr")
   junc.RPM<-junc.RPM[!is.na(geneAnnot$SYMBOL),]
   geneAnnot<-geneAnnot[row.names(junc.RPM),]
 
   ## remove row names for unknown genes containing "?" unknown genes
 
-  all.RSEM <- all.RSEM[!grepl('\\?', row.names(all.RSEM)),]
+  all.gene_expr <- all.gene_expr[!grepl('\\?', row.names(all.gene_expr)),]
 
   ## get gene IDs
-  RSEMEntrezID<-row.names(all.RSEM)
+  gene_exprEntrezID<-row.names(all.gene_expr)
 
-  print("align with RSEM data")
+  print("align with gene_expr data")
   # ## get gene names
 
 
-  ## collect RSEM values
+  ## collect gene_expr values
   # initialize matrix of values for each junction
-  junctionGeneRSEM <- matrix(0, nrow=length(geneAnnot), ncol=ncol(all.RSEM), dimnames=list(names(geneAnnot), colnames(all.RSEM)))
+  junctionGenegene_expr <- matrix(0, nrow=length(geneAnnot), ncol=ncol(all.gene_expr), dimnames=list(names(geneAnnot), colnames(all.gene_expr)))
 
   geneAnnot$ENTREZID -> genes2Junc_ENTREZ
   names(genes2Junc_ENTREZ)<-names(geneAnnot)
@@ -259,25 +256,25 @@ OutSplice<-function(junction, RSEM, rawcounts, sample_labels, output_file_prefix
   genes2Junc_ENTREZ<-sapply(strsplit(genes2Junc_ENTREZ, ";"), function(x){x[1]})
 
   ## fill in the matrix
-  no.RSEM<-vector(length=length(genes2Junc_ENTREZ))
+  no.gene_expr<-vector(length=length(genes2Junc_ENTREZ))
   for (g in 1:length(genes2Junc_ENTREZ)){
-    if (!isTRUE(intersect(RSEMEntrezID, genes2Junc_ENTREZ[g])>0)){
-      ## for gene where there is no RSEM data, skip it
-      no.RSEM[g]<-T
+    if (!isTRUE(intersect(gene_exprEntrezID, genes2Junc_ENTREZ[g])>0)){
+      ## for gene where there is no gene_expr data, skip it
+      no.gene_expr[g]<-T
       next
     }
-    junctionGeneRSEM[names(genes2Junc_ENTREZ)[g],]<-all.RSEM[which(RSEMEntrezID==genes2Junc_ENTREZ[g]),]
+    junctionGenegene_expr[names(genes2Junc_ENTREZ)[g],]<-all.gene_expr[which(gene_exprEntrezID==genes2Junc_ENTREZ[g]),]
 
   }
 
   ################################################################
-  ## Remove genes without RSEM data, not in true genes
-  junctionGeneRSEM[!no.RSEM,]->junctionGeneRSEM
-  junc.RPM<-junc.RPM[row.names(junctionGeneRSEM),]
+  ## Remove genes without gene_expr data, not in true genes
+  junctionGenegene_expr[!no.gene_expr,]->junctionGenegene_expr
+  junc.RPM<-junc.RPM[row.names(junctionGenegene_expr),]
 
 
   print("subset removing any genes without normalization")
-  junc.RPM2<-junc.RPM[!(apply(junctionGeneRSEM, 1,sum))==0,]
+  junc.RPM2<-junc.RPM[!(apply(junctionGenegene_expr, 1,sum))==0,]
   dim(junc.RPM2)
   # ## filters junctions
   junc.RPM.original<-junc.RPM
@@ -285,15 +282,15 @@ OutSplice<-function(junction, RSEM, rawcounts, sample_labels, output_file_prefix
 
 
 
-  print("Perform normalization using RSEM values")
+  print("Perform normalization using gene_expr values")
 
-  ## Turn all the zeros in junctionGeneRSEM into 1.
+  ## Turn all the zeros in junctionGenegene_expr into 1.
   ## replace ALL zeros with 1.  Then when you divide it does not do anything.
-  junctionGeneRSEM<-junctionGeneRSEM[row.names(junc.RPM2),]
-  junctionGeneRSEM2<-junctionGeneRSEM
-  junctionGeneRSEM2[junctionGeneRSEM==0]<-1
+  junctionGenegene_expr<-junctionGenegene_expr[row.names(junc.RPM2),]
+  junctionGenegene_expr2<-junctionGenegene_expr
+  junctionGenegene_expr2[junctionGenegene_expr==0]<-1
   junc.RPM.norm<-junc.RPM2
-  junc.RPM.norm<-junc.RPM2/junctionGeneRSEM2
+  junc.RPM.norm<-junc.RPM2/junctionGenegene_expr2
 
   ### perform outlier analysis with OGSA
   ############### Use OGSA for outlier ranking #################
@@ -341,10 +338,10 @@ OutSplice<-function(junction, RSEM, rawcounts, sample_labels, output_file_prefix
   junc.Outliers<-dotheogsa(Sample.data=junc.RPM.norm, PHENO=PHENO, offsets=offsets_value, Fisher=T, correction=correction_setting, outliers=T, dir = dir)
 
   ## Calculate median normalized value (of normals)
-  ## for RSEM
-  #NORM.RSEM<-junctionGeneRSEM[,pheno == 'Normal']
+  ## for gene_expr
+  #NORM.gene_expr<-junctionGenegene_expr[,pheno == 'Normal']
   ## get median of normal expression
-  #NORM.RSEM<-apply(NORM.RSEM, 1, median)
+  #NORM.gene_expr<-apply(NORM.gene_expr, 1, median)
 
   ## get junction expression in normal samples only
   #NORM.RPM<-junc.RPM[,pheno == 'Normal']
@@ -352,11 +349,11 @@ OutSplice<-function(junction, RSEM, rawcounts, sample_labels, output_file_prefix
   #NORM.RPM<-apply(NORM.RPM, 1, median)
 
   ## median of normal expression within the normalized data
-  NORM.RSEM.norm<-apply(junc.RPM.norm[,pheno == 'Normal'],1,median)
+  NORM.gene_expr.norm<-apply(junc.RPM.norm[,pheno == 'Normal'],1,median)
 
   ## aggregate the data
   junc.RPM<-junc.RPM[junctions,]
-  RSEM<-junctionGeneRSEM[junctions,]
+  gene_expr<-junctionGenegene_expr[junctions,]
   junc.RPM.norm<-junc.RPM.norm[junctions,]
   geneAnnot<-geneAnnot[junctions]
   ASE.type<-cbind(geneAnnot$skipping, geneAnnot$insertions, geneAnnot$deletions)
@@ -368,7 +365,7 @@ OutSplice<-function(junction, RSEM, rawcounts, sample_labels, output_file_prefix
   splice_burden <- CalcBurden(junc.Outliers, FisherAnalyses, p_value)
 
   ## save output file
-  save(junc.RPM, RSEM, junc.RPM.norm, pvalues, pheno, FisherAnalyses, geneAnnot, ASE.type, NORM.RSEM.norm, junc.Outliers, splice_burden, file=paste0(dir, output_file_prefix,"_", date, ".RDa"))
+  save(junc.RPM, gene_expr, junc.RPM.norm, pvalues, pheno, FisherAnalyses, geneAnnot, ASE.type, NORM.gene_expr.norm, junc.Outliers, splice_burden, file=paste0(dir, output_file_prefix,"_", date, ".RDa"))
 
   #Write Files
   write.table(ASE.type, file=paste0(dir, 'event_types.txt'), sep = '\t', quote=FALSE, col.names=NA)

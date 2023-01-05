@@ -1,30 +1,7 @@
-# Arguments:
-
-# **data_file** - filepath to an R Data file containing output from the SplicingOutliers or TCGA_SplicingOutliers Functions.
-#
-# **NUMBER** - number of junctions to plot.  This can be top number of junctions (over or under expressed), or can be specific junctions in a list.  Default is 1.
-#
-# **junctions**- you can input the specific junction you want to graph (or vector of junctions), default is NULL
-#
-# **tail** - you can specify if you want top over or under expressed with tail='RIGHT' for junctions overexpressed in tumors, or tail='LEFT' for junctions underexpressed in tumors.  Default is NULL
-#
-# **p_value** - p-value threshold to use when plotting the top over or under-expressed junctions with "tail". Default = 0.05
-#
-# **GENE** - do you want to pick junctions based on a gene?  TRUE means you will pick all the junctions mapping to a certain gene.  FALSE means you do not pick based on the gene.
-#
-# **SYMBOL** - SYMBOL of gene you want to graph
-#
-# **makepdf** - do you want the graphs to be saved into a pdf?  Default is no (FALSE).
-#
-# **pdffile** - if you want to save to a pdf, you need to write the file path
-#
-# **tumcol** - color for tumors on graph. Default is red.
-#
-# **normcol** - color for normals on graph. Default is blue.
-
+#Plot Junction Expression Data
 PlotJunctionData<-function(data_file, NUMBER=1, junctions=NULL, tail=NULL, p_value = 0.05, GENE=F, SYMBOL=NULL, makepdf=F, pdffile = NULL, tumcol='red', normcol='blue') {
   #library('NCBI2R')
-  library('gplots')
+  suppressPackageStartupMessages(library('gplots'))
   suppressPackageStartupMessages(load(data_file))
   ## if you want to make a pdf, this will be specified.  Stop/error if not specified
   if (makepdf==T) {
@@ -89,16 +66,16 @@ PlotJunctionData<-function(data_file, NUMBER=1, junctions=NULL, tail=NULL, p_val
                   geneAnnot[j,]$skipping, geneAnnot[j,]$deletions,
                   geneAnnot[j,]$insertions),cex.main=0.7)
 
-    ## this plot is for normalized junction expression - with RSEM.
-    barplot(log2(junc.RPM.norm[j,samples]+1)-log2(NORM.RSEM.norm[j]+1),
+    ## this plot is for normalized junction expression - with gene_expr.
+    barplot(log2(junc.RPM.norm[j,samples]+1)-log2(NORM.gene_expr.norm[j]+1),
             las=2, cex.names=0.3,
             col=ifelse(phenotypes[samples,'pheno']=='Tumor',tumcol,normcol))
-    title('Junction expression \nNormalized by RSEM (log)', cex.main=0.7)
+    title('Junction expression \nNormalized by gene_expr (log)', cex.main=0.7)
 
-    ## this barplot is for RSEM of gene expression
-    barplot(log2(RSEM[j,samples]+1),las=2, cex.names=0.3,
+    ## this barplot is for gene_expr of gene expression
+    barplot(log2(gene_expr[j,samples]+1),las=2, cex.names=0.3,
             col=ifelse(phenotypes[samples,'pheno']=='Tumor',tumcol,normcol))
-    title(sprintf('%s \nRSEM gene expression',geneAnnot[j,]$SYMBOL), cex.main=0.7)
+    title(sprintf('%s \ngene_expr gene expression',geneAnnot[j,]$SYMBOL), cex.main=0.7)
 
     plot.new()
 
