@@ -301,7 +301,7 @@ write.table(final_rsem, file = 'TCGA_HNSC_genes_normalized.txt', sep = '\t', quo
 
 #11. Manually add a row header named "Hybridization REF" to the first column
 
-#12. Create rawcounts file that contains the total number rawcounts by summing the rawcounts for each gene in each sample in the HNSC_raw_counts_unc.txt file.
+#12. Create rawcounts file that contains the total number rawcounts by summing the rawcounts for each gene in each sample in the full_HNSC_raw_counts_unc.txt file.
 final_rawcounts <- as.data.frame(colSums(rawcounts))
 final_rawcounts <- t(final_rawcounts)
 rownames(final_rawcounts) <- 'total'
@@ -347,4 +347,4 @@ write.table(all.RSEM, file = 'HNSC_genes_normalized.txt', sep = '\t', quote = FA
 
 #16. Same as above, manually add Hybridization REF as a header to the first columns in both the junctions and genes normalized files.
 
-#17. The file HNSC_pheno_table.txt file was created by taking the 50 Tumor and 44 Normal Samples listed above and labeling them as T for Tumors and F for Normals. Tumor and Normals were identified based on the TCGA labelling code at the end of the sample names: "01" for Tumor, and "11" for Normal. for
+#17. The file HNSC_pheno_table.txt file was created by taking the 50 Tumor and 44 Normal Samples listed in the rawcounts vector above and labeling them as T for Tumors and F for Normals. Tumor and Normals were identified based on the TCGA labelling code at the end of the sample names: "01" for Tumor, and "11" for Normal.
