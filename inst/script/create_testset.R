@@ -9,7 +9,7 @@
 # The directories are: "illuminahiseq_rnaseqv2-junction_quantification," "illuminahiseq_rnaseqv2-RSEM_genes_normalized," "mRNAseq_Preprocess"
 # From these directories extract the following: "HNSC.rnaseqv2__illuminahiseq_rnaseqv2__unc_edu__Level_3__junction_quantification__data.data.txt", "HNSC.rnaseqv2__illuminahiseq_rnaseqv2__unc_edu__Level_3__RSEM_genes_normalized__data.data.txt" ,"HNSC.uncv2.mRNAseq_RSEM_all.txt"
 
-#2. For ease, rename the files: "HNSC_junctions.txt", "HNSC_genes_normalized.txt", "HNSC_raw_counts_unc.txt"
+#2. For ease, rename the files: "full_HNSC_junctions.txt", "full_HNSC_genes_normalized.txt", "full_HNSC_raw_counts_unc.txt"
 
 #3. Set the working directory to the directory containing the files and read in the data
 juncs_file<-read.table(file="full_HNSC_junctions.txt", sep='\t', header=T, stringsAsFactors = F)
