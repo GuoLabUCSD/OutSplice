@@ -87,7 +87,6 @@ all.RSEM <- RSEM_file %>% dplyr::select("TCGA-BA-5152-01A-02R-1873-07",	"TCGA-BA
                                 "TCGA-HD-A6HZ-11A-11R-A31N-07",	"TCGA-HD-A6I0-11A-11R-A31N-07",	"TCGA-IQ-7632-01A-11R-2081-07",	"TCGA-P3-A5QF-01A-11R-A28V-07",	"TCGA-P3-A6T8-01A-11R-A34R-07",
                                 "TCGA-TN-A7HJ-01A-12R-A34R-07",	"TCGA-UF-A719-01A-12R-A34R-07",	"TCGA-UF-A71D-01A-12R-A34R-07",	"TCGA-WA-A7GZ-11A-11R-A34R-07")
 rsem_with_all_genes <- all.RSEM
-rsem_original_samples_names <- colnames(rsem_with_all_genes)
 
 #6. To further trim the file, pre-filter the junctions to only include biologically relevant junctions. To do this we will source the OGSA scripts from OutSplice. Please edit the below code if your working directory is not the inst/script folder in the OutSplice pakcage.
 setwd('../../R')
@@ -293,6 +292,10 @@ rownames(final_rsem) <- final_rsem$Hybridization_REF
 final_rsem <- final_rsem[, -c(97)]
 final_rsem <- final_rsem[, -c(1:2)]
 final_rsem <- final_rsem[order(row.names(final_rsem)), ]
+
+my_rsem_header <- rep(c('normalized_count'), each = 94)
+final_rsem <- rbind(my_rsem_header, final_rsem)
+rownames(final_rsem)[rownames(final_rsem) == '1'] <- "gene_id"
 
 write.table(final_rsem, file = 'TCGA_HNSC_genes_normalized.txt', sep = '\t', quote = FALSE, col.names = NA)
 
