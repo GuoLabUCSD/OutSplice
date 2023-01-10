@@ -41,12 +41,14 @@ junction <- system.file("extdata", "TCGA_HNSC_junctions.txt", package="OutSplice
 gene_expr <- system.file("extdata", "TCGA_HNSC_genes_normalized.txt", package="OutSplice")
 rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package="OutSplice")
 output_file_prefix = "TCGA_OutSplice_Example"
-dir <- paste0(getwd(), '/')
-print(paste0("Output is located at: ", dir))
+dir = paste0(tempdir(), '/')
 
 #Run the OutSplice FUnction for TCGA data
 
 OutSplice_TCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex=T, genome = 'Homo.sapiens', annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg19.knownGene', offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
+
+print(paste0("Output is located at: ", dir))
+
 }
 \references{
 

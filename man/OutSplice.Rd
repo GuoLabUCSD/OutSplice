@@ -51,16 +51,16 @@ OutSplice(junction, RSEM, rawcounts, sample_labels, output_file_prefix, dir, fil
 #Get Path to Example Files and establish variables
 
 junction <- system.file("extdata", "HNSC_junctions.txt", package="OutSplice")
-RSEM <- system.file("extdata", "HNSC_genes_normalized.txt", package="OutSplice")
+gene_expr <- system.file("extdata", "HNSC_genes_normalized.txt", package="OutSplice")
 rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package="OutSplice")
 sample_labels <- system.file("extdata", "HNSC_pheno_table.txt", package="OutSplice")
-output_file_prefix <- "OutSplice_Example"
+output_file_prefix = "OutSplice_Example"
 TxDb_hg19 <- "TxDb.Hsapiens.UCSC.hg19.knownGene"
-dir <- paste0(getwd(), '/')
+dir = paste0(tempdir(), '/')
 
 #Run the OutSplice Function
 
-OutSplice(junction, RSEM, rawcounts, sample_labels, output_file_prefix, dir, filterSex=T, genome='Homo.sapiens', annotation='org.Hs.eg.db', TxDb=TxDb_hg19, offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
+OutSplice(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=T, genome='Homo.sapiens', annotation='org.Hs.eg.db', TxDb=TxDb_hg19, offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
 
 print(paste0("Output is located at: ", dir))
 

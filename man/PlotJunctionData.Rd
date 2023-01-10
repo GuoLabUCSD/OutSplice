@@ -27,14 +27,14 @@ PlotJunctionData(data_file, NUMBER=1, junctions=NULL, tail=NULL, p_value = 0.05,
 }
 \examples{
 data_file <- system.file("extdata", "OutSplice_Vignette_Output", "OutSplice_Example_2023-01-06.RDA", package = "OutSplice")
-print(data_file)
 ecm1_junc <- "chr1:150483674-150483933"
-dir <- paste0(getwd(), '/')
 pdf <- 'ecm1_expression.pdf'
-pdf_output_dir <- paste0(dir, pdf)
-print(paste0("Output is located at: ", dir))
+pdf_output <- paste0(tempdir(), '/', pdf)
 
-PlotJunctionData(data_file, NUMBER=1, junctions=ecm1_junc, tail=NULL, p_value = 0.05, GENE=F, SYMBOL=NULL, makepdf=T, pdffile = pdf_output_dir, tumcol='red', normcol='blue')
+PlotJunctionData(data_file, NUMBER=1, junctions=ecm1_junc, tail=NULL, p_value = 0.05, GENE=F, SYMBOL=NULL, makepdf=T, pdffile = pdf_output, tumcol='red', normcol='blue')
+
+print(paste0("Output is located at: ", pdf_output))
+
 }
 \references{
 
