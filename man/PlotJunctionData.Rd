@@ -26,7 +26,7 @@ PlotJunctionData(data_file, NUMBER=1, junctions=NULL, tail=NULL, p_value = 0.05,
   \item{normcol}{A character string defining the color of the normal samples in the plots. Default is blue.}
 }
 \examples{
-data_file <- system.file("extdata", "OutSplice_Example_2023-01-06.RDA", package = "OutSplice")
+data_file <- system.file("extdata", "OutSplice_Example_2023-01-06.RDa", package = "OutSplice")
 ecm1_junc <- "chr1:150483674-150483933"
 pdf <- 'ecm1_expression.pdf'
 pdf_output <- paste0(tempdir(), '/', pdf)
