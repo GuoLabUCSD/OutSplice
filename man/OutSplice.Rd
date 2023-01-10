@@ -6,7 +6,7 @@
   Analyze differential splicing events between tumor and normal samples
 }
 \usage{
-OutSplice(junction, RSEM, rawcounts, sample_labels, output_file_prefix, dir, filterSex=T, genome = 'Homo.sapiens', annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg38.knownGene', offsets_value = 0.00001, correction_setting = 'fdr', p_value=0.05)
+OutSplice(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=T, genome = 'Homo.sapiens', annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg38.knownGene', offsets_value = 0.00001, correction_setting = 'fdr', p_value=0.05)
 }
 \arguments{
   \item{junction}{A character string giving the path to a tab separated text file with raw juntion counts.
@@ -14,7 +14,7 @@ OutSplice(junction, RSEM, rawcounts, sample_labels, output_file_prefix, dir, fil
     (Ex: chr1: 1-100). Each proceeding column is a sample with the raw
     count information for each corresponding junction. The header row contains
     the name of the junction column, and the names of the samples.}
-  \item{RSEM}{A character string giving the path to a tab separated file with normalized gene
+  \item{gene_expr}{A character string giving the path to a tab separated file with normalized gene
     expression data. The first column are the entrez ids for each gene,
     and each proceeding column should be a sample with the normalized expression values for each gene.
     The file header row contains the name of the entrez id column, and the names of the samples.}

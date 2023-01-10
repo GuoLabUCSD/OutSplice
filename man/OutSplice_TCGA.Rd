@@ -11,7 +11,7 @@ OutSplice_TCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSe
 }
 \arguments{
   \item{junction}{A character string giving the path to a tab separated text file with raw juntion counts.}
-  \item{RSEM}{A character string giving the path to a tab separated file with normalized gene
+  \item{gene_expr}{A character string giving the path to a tab separated file with normalized gene
     expression data.}
   \item{rawcounts}{A character string giving the path to a tab separated text file with the reads
     per million counts for each sample.}
