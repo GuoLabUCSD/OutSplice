@@ -164,7 +164,7 @@ In the below example we can plot the expression levels for a "skipping" junction
 event on the ECM1 gene based on our example data from the TCGA.
 
 ```{r, results="hide", warning=FALSE, messages=FALSE}
-data_file <- system.file("extdata", "OutSplice_Vignette_Output", "OutSplice_Example_2023-01-06.RDA", package = "OutSplice")
+data_file <- system.file("extdata", "OutSplice_Example_2023-01-06.RDA", package = "OutSplice")
 ecm1_junc <- "chr1:150483674-150483933"
 pdf <- 'ecm1_expression.pdf'
 pdf_output <- paste0(tempdir(), '/', pdf)
