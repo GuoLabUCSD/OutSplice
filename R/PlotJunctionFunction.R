@@ -1,5 +1,5 @@
 #Plot Junction Expression Data
-PlotJunctionData<-function(data_file, NUMBER=1, junctions=NULL, tail=NULL, p_value = 0.05, GENE=F, SYMBOL=NULL, makepdf=F, pdffile = NULL, tumcol='red', normcol='blue') {
+PlotJunctionData<-function(data_file, NUMBER=1, junctions=NULL, tail=NULL, p_value = 0.05, GENE=FALSE, SYMBOL=NULL, makepdf=FALSE, pdffile = NULL, tumcol='red', normcol='blue') {
   #library('NCBI2R')
   suppressPackageStartupMessages(library('gplots'))
   suppressPackageStartupMessages(load(data_file))

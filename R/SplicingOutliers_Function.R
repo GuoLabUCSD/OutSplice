@@ -1,6 +1,6 @@
 ## analyze junctions from RNA based sequencing data
 
-OutSplice<-function(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=T, genome = 'Homo.sapiens', annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg38.knownGene', offsets_value = 0.00001, correction_setting = 'fdr', p_value=0.05){
+OutSplice<-function(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=TRUE, genome = 'Homo.sapiens', annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg38.knownGene', offsets_value = 0.00001, correction_setting = 'fdr', p_value=0.05){
 
   date<-Sys.Date()
   ## this is non-log transformed data and includes pheno (RAW, in RPM)

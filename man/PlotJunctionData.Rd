@@ -6,7 +6,7 @@
   Create Bar and Waterfall plots of raw junction expression, overall gene expression, and junction expression normalized by gene expression.
 }
 \usage{
-PlotJunctionData(data_file, NUMBER=1, junctions=NULL, tail=NULL, p_value = 0.05, GENE=F, SYMBOL=NULL, makepdf=F, pdffile = NULL, tumcol='red', normcol='blue')
+PlotJunctionData(data_file, NUMBER=1, junctions=NULL, tail=NULL, p_value = 0.05, GENE=FALSE, SYMBOL=NULL, makepdf=FALSE, pdffile = NULL, tumcol='red', normcol='blue')
 }
 \arguments{
   \item{data_file}{An R data file containing OutSplice Output.}
@@ -31,7 +31,7 @@ ecm1_junc <- "chr1:150483674-150483933"
 pdf <- 'ecm1_expression.pdf'
 pdf_output <- paste0(tempdir(), '/', pdf)
 
-PlotJunctionData(data_file, NUMBER=1, junctions=ecm1_junc, tail=NULL, p_value = 0.05, GENE=F, SYMBOL=NULL, makepdf=T, pdffile = pdf_output, tumcol='red', normcol='blue')
+PlotJunctionData(data_file, NUMBER=1, junctions=ecm1_junc, tail=NULL, p_value = 0.05, GENE=FALSE, SYMBOL=NULL, makepdf=TRUE, pdffile = pdf_output, tumcol='red', normcol='blue')
 
 print(paste0("Output is located at: ", pdf_output))
 

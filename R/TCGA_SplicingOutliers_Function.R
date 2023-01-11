@@ -1,7 +1,7 @@
 ## analyze TCGA junctions from TCGA based sequencing data
 ## TCGA Firehose pipeline
 
-OutSplice_TCGA<-function(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex=T, genome = 'Homo.sapiens', annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg19.knownGene', offsets_value = 0.00001, correction_setting='fdr', p_value=0.05){
+OutSplice_TCGA<-function(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex=TRUE, genome = 'Homo.sapiens', annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg19.knownGene', offsets_value = 0.00001, correction_setting='fdr', p_value=0.05){
 
   date<-Sys.Date()
 

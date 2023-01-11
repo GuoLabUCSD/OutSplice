@@ -99,7 +99,7 @@ TxDb_hg19 <- "TxDb.Hsapiens.UCSC.hg19.knownGene"
 dir = paste0(tempdir(), '/')
 print(paste0("Output is located at: ", dir))
   
-OutSplice(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=T, genome='Homo.sapiens', annotation='org.Hs.eg.db', TxDb=TxDb_hg19, offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
+OutSplice(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=TRUE, genome='Homo.sapiens', annotation='org.Hs.eg.db', TxDb=TxDb_hg19, offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
 ```
 
 ```{r, results="hide", warning=FALSE, messages = FALSE}
@@ -110,7 +110,7 @@ output_file_prefix = "TCGA_OutSplice_Example"
 dir = paste0(tempdir(), '/')
 print(paste0("Output is located at: ", dir))
     
-OutSplice_TCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex=T, genome = 'Homo.sapiens', annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg19.knownGene', offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
+OutSplice_TCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex=TRUE, genome = 'Homo.sapiens', annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg19.knownGene', offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
 ```
   
   -junction: filepath to a matrix of junction raw read counts
@@ -170,7 +170,7 @@ pdf <- 'ecm1_expression.pdf'
 pdf_output <- paste0(tempdir(), '/', pdf)
 print(paste0("Output is located at: ", pdf_output))
   
-PlotJunctionData(data_file, NUMBER=1, junctions=ecm1_junc, tail=NULL, p_value = 0.05, GENE=F, SYMBOL=NULL, makepdf=T, pdffile = pdf_output, tumcol='red', normcol='blue')
+PlotJunctionData(data_file, NUMBER=1, junctions=ecm1_junc, tail=NULL, p_value = 0.05, GENE=FALSE, SYMBOL=NULL, makepdf=TRUE, pdffile = pdf_output, tumcol='red', normcol='blue')
 ```
 
   -data_file: filepath to an R Data file containing output from the SplicingOutliers or TCGA_SplicingOutliers Functions.

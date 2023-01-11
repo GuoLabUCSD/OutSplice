@@ -7,7 +7,7 @@
   Examples of TCGA file formats can be viewed here (https://gdac.broadinstitute.org/)
 }
 \usage{
-OutSplice_TCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex=T, genome = 'Homo.sapiens', annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg19.knownGene', offsets_value = 0.00001, correction_setting='fdr', p_value=0.05)
+OutSplice_TCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex=TRUE, genome = 'Homo.sapiens', annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg19.knownGene', offsets_value = 0.00001, correction_setting='fdr', p_value=0.05)
 }
 \arguments{
   \item{junction}{A character string giving the path to a tab separated text file with raw juntion counts.}
@@ -45,7 +45,7 @@ dir = paste0(tempdir(), '/')
 
 #Run the OutSplice FUnction for TCGA data
 
-OutSplice_TCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex=T, genome = 'Homo.sapiens', annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg19.knownGene', offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
+OutSplice_TCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex=TRUE, genome = 'Homo.sapiens', annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg19.knownGene', offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
 
 print(paste0("Output is located at: ", dir))
 
