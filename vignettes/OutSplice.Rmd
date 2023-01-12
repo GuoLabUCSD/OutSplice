@@ -38,17 +38,16 @@ provided data or data provided from the TCGA.
 
 ### 1.2 Minimum required packages
 
-OutSplice will import the below packages so please ensure they are installed 
+OutSplice will import the below packages and their dependencies so please ensure they are installed 
 before using the software:
 
-1. dplyr
-2. GenomicRanges
-3. Homo.sapiens
-4. limma
-5. org.Hs.eg.db
-6. Repitools
-7. TxDb.Hsapiens.UCSC.hg19.knownGene
-8. TxDb.Hsapiens.UCSC.hg38.knownGene
+1. GenomicRanges
+2. Homo.sapiens
+3. limma
+4. org.Hs.eg.db
+5. Repitools
+6. TxDb.Hsapiens.UCSC.hg19.knownGene
+7. TxDb.Hsapiens.UCSC.hg38.knownGene
 
 ### 1.3 Installation from Bioconductor
 The OutSplice package is available at https://bioconductor.org and can be 
@@ -223,10 +222,11 @@ expressed in tumors compared to the normal samples.
 
 The Bioconductor GenomicRanges packages are used to assign each junction to a 
 known gene. The user has the option in the main function to input which genome 
-and its associated Bioconductor packages to use as the reference. 
+and its associated Bioconductor packages to use as the reference. These Bioconductor
+packages must first be loaded using library() before executing the function.
 
-Ex) For mouse genomes aligned to mm39 the user should install and specify "Mus.musculus" for 
-the genome argument, "org.Mm.eg.db" for the annotation argument, and 
+Ex) For mouse genomes aligned to mm39 the user should install, load, and specify
+"Mus.musculus" for the genome argument, "org.Mm.eg.db" for the annotation argument, and 
 "TxDb.Mmusculus.UCSC.mm39.refGene" for the TxDb argument.
 
 Using this genomic assignment, the dotheogsa function determines insertion, skipping, or deletion events based on the following criteria:

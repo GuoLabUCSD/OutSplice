@@ -1,3 +1,18 @@
 export(OutSplice)
 export(OutSplice_TCGA)
 export(PlotJunctionData)
+
+#Import other packages
+import(GenomicRanges)
+import(GenomicFeatures)
+import(Homo.sapiens)
+import(IRanges)
+import(org.Hs.eg.db)
+importFrom(Repitools, annoGR2DF)
+import(TxDb.Hsapiens.UCSC.hg19.knownGene)
+import(TxDb.Hsapiens.UCSC.hg38.knownGene)
+import(stats4)
+import(BiocGenerics)
+import(S4Vectors)
+import(GenomeInfoDb)
+import(AnnotationDbi)

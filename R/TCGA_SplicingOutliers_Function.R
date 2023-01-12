@@ -11,16 +11,6 @@ OutSplice_TCGA<-function(junction, gene_expr, rawcounts, output_file_prefix, dir
   all.gene_expr<-read.table(file=gene_expr, header=T, row.names=1, sep="\t")
   rawcounts<-read.table(file=rawcounts, sep='\t', header=T, row.names=1, stringsAsFactors = F)
 
-  ##load info
-  #source(file=paste0(dir,"OGSAfunctionwFisher.R"))
-
-  ## Load needed libraries
-  suppressPackageStartupMessages(library(genome, character.only = TRUE))
-  suppressPackageStartupMessages(library(annotation, character.only = TRUE))
-  suppressPackageStartupMessages(library('GenomicRanges'))
-  suppressPackageStartupMessages(library('limma'))
-  suppressPackageStartupMessages(library('Repitools'))
-  suppressPackageStartupMessages(library(TxDb, character.only = TRUE))
   colnames(rawcounts)<-substr(colnames(rawcounts), 1,15)
   colnames(rawcounts)<-gsub('\\.', "-", colnames(rawcounts))
 

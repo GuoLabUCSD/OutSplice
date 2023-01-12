@@ -2,8 +2,6 @@
 
 CalcBurden <- function(junc.Outliers, FisherAnalyses, p_value) {
 
-  suppressPackageStartupMessages(library(dplyr))
-
   #Calculate Splicing Burden for Significant Events Over-Expressed in Tumors
   Over_Expressed_Junctions_Outlier_Calls <- as.data.frame(junc.Outliers$TumorOverExpression)
   row.names(Over_Expressed_Junctions_Outlier_Calls) <- sub('\\.', ':', rownames(Over_Expressed_Junctions_Outlier_Calls))
@@ -41,8 +39,6 @@ CalcBurden <- function(junc.Outliers, FisherAnalyses, p_value) {
   rownames(total_results) <- total_results[, 1]
   convert_total <- subset(total_results, select = c(-OutlierNumberOver, -OutlierNumberUnder, -Row.names))
   total_burden <- as.data.frame(convert_total)
-
-  detach("package:dplyr")
 
   return(splice_burden <- cbind(all_oe_results_df, all_ue_results_df, total_burden))
 }

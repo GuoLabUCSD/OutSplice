@@ -13,18 +13,6 @@ dotheogsa<-function(Sample.data, PHENO, offsets=0.001, Fisher=F, correction=NA, 
 # names(PHENO)<-row.names(pheno)
   ##PHENO should have 'Normal' or 'Tumor' calls where Tumor ==1, Normal ==0, and names of each sample associated
 {
-# libraries on which OGSA depends
-library('limma')
-
-# data required by the package
-# source code
-#source(paste0(dir, 'OGSA/copaStat.R'))
-#source(paste0(dir, 'OGSA/outCount.R'))
-#source(paste0(dir, 'OGSA/outRank.R'))
-#source(paste0(dir, 'OGSA/outCallRank.R'))
-#source(paste0(dir, 'OGSA/outCallTib.R'))
-#source(paste0(dir, 'OGSA/copaInt.R'))
-#print('yes!')
 
 ## Define tumors and normals
 ## take fus.RPM (final filtered list) and pheno

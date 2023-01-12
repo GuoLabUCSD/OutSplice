@@ -2,11 +2,15 @@ Package: OutSplice
 Type: Package
 Title: Comparison of Splicing Events between Tumor and Normal Samples
 Version: 0.99.0
-Author:  Joseph Bendik, Sandhya Kalavacherla,
-    Michael Considine, Bahman Afsari, 
-    Michael F. Ochs, Joseph Califano, Daria A. Gaykalova, Elana Fertig, 
-    Theresa Guo
-Maintainer: Theresa Guo <twguo@health.ucsd.edu>
+Authors@R:  c(person("Joseph", "Bendik", role = "aut"),
+    person("Sandhya", "Kalavacherla", role = "aut"),
+    person("Michael", "Considine", role = "aut"), 
+    person("Bahman", "Afsari", role = "aut"),
+    person("Michael F.", "Ochs", role = "aut"), 
+    person("Joseph", "Califano", role = "aut"), 
+    person("Daria A.", "Gaykalova", role = "aut"), 
+    person("Elana", "Fertig", role = "aut"), 
+    person("Theresa", "Guo", email = "twguo@health.ucsd.edu", role = c("cre", "aut")))
 Description: An easy to use tool that can compare splicing events in
     tumor and normal tissue samples using either a user generated matrix, or
     data from The Cancer Genome Atlas (TCGA). This package generates a matrix of 
@@ -17,10 +21,13 @@ Description: An easy to use tool that can compare splicing events in
 Encoding: UTF-8
 License: GPL-2
 Depends: R(>= 4.2)
-Imports: dplyr (>= 1.0.10), GenomicRanges(>= 1.49.0), Homo.sapiens(>= 1.3.1),
-    org.Hs.eg.db(>= 3.16.0), Repitools (>= 1.44.0), 
-    TxDb.Hsapiens.UCSC.hg19.knownGene(>= 3.2.2),
-    TxDb.Hsapiens.UCSC.hg38.knownGene(>= 3.16.0), limma(>= 3.54.0)
+Imports: AnnotationDbi (>= 1.60.0), BiocGenerics (>= 0.44.0), 
+    GenomeInfoDb (>= 1.34.3), GenomicRanges (>= 1.49.0), 
+    GenomicFeatures (>= 1.50.2), gplots (>= 3.1.3), Homo.sapiens (>= 1.3.1), 
+    IRanges (>= 2.32.0), org.Hs.eg.db (>= 3.16.0), Repitools (>= 1.44.0), 
+    TxDb.Hsapiens.UCSC.hg19.knownGene (>= 3.2.2),
+    TxDb.Hsapiens.UCSC.hg38.knownGene (>= 3.16.0), limma (>= 3.54.0), 
+    S4Vectors (>= 0.36.0), stats4 (>= 4.2.1)
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
 biocViews: AlternativeSplicing, GeneExpression, RNASeq

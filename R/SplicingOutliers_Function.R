@@ -10,16 +10,6 @@ OutSplice<-function(junction, gene_expr, rawcounts, sample_labels, output_file_p
   rawcounts<-read.table(file=rawcounts, sep='\t', header=T, row.names=1, stringsAsFactors = F)
   samps.labels <- read.table(file=sample_labels, sep = '\t', row.names=1, header=T, stringsAsFactors = F)
 
-  ##load info
-  #source(file=paste0(dir,"OGSAfunctionwFisher.R"))
-
-  ## Load needed libraries
-  suppressPackageStartupMessages(library(genome, character.only = TRUE))
-  suppressPackageStartupMessages(library(annotation, character.only = TRUE))
-  suppressPackageStartupMessages(library('GenomicRanges'))
-  suppressPackageStartupMessages(library('limma'))
-  suppressPackageStartupMessages(library('Repitools'))
-  suppressPackageStartupMessages(library(TxDb, character.only = TRUE))
   colnames(rawcounts)<-gsub('\\.', "-", colnames(rawcounts))
 
   all.samples<-colnames(all.junc)
