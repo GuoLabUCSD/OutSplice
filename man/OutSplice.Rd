@@ -6,7 +6,7 @@
   Analyze differential splicing events between tumor and normal samples
 }
 \usage{
-OutSplice(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=TRUE, genome = 'Homo.sapiens', annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg38.knownGene', offsets_value = 0.00001, correction_setting = 'fdr', p_value=0.05)
+OutSplice(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=TRUE, annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg38.knownGene', offsets_value = 0.00001, correction_setting = 'fdr', p_value=0.05)
 }
 \arguments{
   \item{junction}{A character string giving the path to a tab separated text file with raw juntion counts.
@@ -34,8 +34,6 @@ OutSplice(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir
     like to save output to.}
   \item{filterSex}{A boolean representing whether or not to include junctions
     found on the sex chromosomes.}
-  \item{genome}{A character string giving the name of the Bioconductor library
-    the user would like to use containing the genome object.}
   \item{annotation}{A connection or a character string giving the name of the
     Bioconductor library the user would like to use containing the genome wide annotation.}
   \item{TxDb}{A character string giving the name of the Bioconductor library the
@@ -60,7 +58,7 @@ dir = paste0(tempdir(), '/')
 
 #Run the OutSplice Function
 
-OutSplice(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=TRUE, genome='Homo.sapiens', annotation='org.Hs.eg.db', TxDb=TxDb_hg19, offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
+OutSplice(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=TRUE, annotation='org.Hs.eg.db', TxDb=TxDb_hg19, offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
 
 print(paste0("Output is located at: ", dir))
 

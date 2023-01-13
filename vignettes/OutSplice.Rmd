@@ -79,8 +79,8 @@ For manual installation:
 
 Full Sample data for OutSplice can be downloaded from The Cancer Genome Atlas (TCGA).
 
-The OutSplice function has 6 required inputs and 7 optional Inputs.
-The OutSplice_TCGA function has 5 required inputs and 7 optional Inputs and 
+The OutSplice function has 6 required inputs and 6 optional Inputs.
+The OutSplice_TCGA function has 5 required inputs and 6 optional Inputs and 
 should only be used if the data is in TCGA format.
 
 In the below examples we run OutSplice and OutSplice_TCGA on a subset of Head 
@@ -97,7 +97,7 @@ TxDb_hg19 <- "TxDb.Hsapiens.UCSC.hg19.knownGene"
 dir = paste0(tempdir(), '/')
 print(paste0("Output is located at: ", dir))
   
-OutSplice(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=TRUE, genome='Homo.sapiens', annotation='org.Hs.eg.db', TxDb=TxDb_hg19, offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
+OutSplice(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=TRUE, annotation='org.Hs.eg.db', TxDb=TxDb_hg19, offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
 ```
 
 ```{r, results="hide", warning=FALSE, messages = FALSE}
@@ -108,7 +108,7 @@ output_file_prefix = "TCGA_OutSplice_Example"
 dir = paste0(tempdir(), '/')
 print(paste0("Output is located at: ", dir))
     
-OutSplice_TCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex=TRUE, genome = 'Homo.sapiens', annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg19.knownGene', offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
+OutSplice_TCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex=TRUE, annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg19.knownGene', offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
 ```
   
   -junction: filepath to a matrix of junction raw read counts
@@ -124,8 +124,6 @@ OutSplice_TCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSe
   -dir: string containing the desired output path. Ex) "~/my_outsplice_output/"
   
   -filtersex: ignores sex chromosomes when generating results. True by default [OPTIONAL]
-  
-  -genome: the bioconductor package containing the genome object to use. Uses the human genome by default (in Section 3.4) [OPTIONAL]
   
   -annotation: the bioconductor package containing the annotations to use. Uses the human genome by default (in Section 3.4) [OPTIONAL]
   
@@ -144,7 +142,7 @@ genome wide annotation, and transcript annotations exist as packages on Biocondu
 
 If using the OutSplice function, users must provide a phenotype matrix, 
 designating which samples in the junction file belong to the tumor group 
-(labeled as "T") and the normal group (labelled as "F"). Please ensure the 
+(labeled as "T") and the normal group (labeled as "F"). Please ensure the 
 matrix file contains a header row with the first column designating the sample 
 names, and the second column designating the phenotype. If using TCGA data, 
 the two phenotypes are "tumor" and "normal." OutSplice_TCGA can automatically 
@@ -221,12 +219,13 @@ expressed in tumors compared to the normal samples.
 
 The Bioconductor GenomicRanges packages are used to assign each junction to a 
 known gene. The user has the option in the main function to input which genome 
-and its associated Bioconductor packages to use as the reference. These Bioconductor
-packages must first be loaded using library() before executing the function.
+and its associated Bioconductor packages to use as the reference. These Bioconductor 
+packages should include the genome object, annotations, and transcript annotations.
 
-Ex) For mouse genomes aligned to mm39 the user should install, load, and specify
-"Mus.musculus" for the genome argument, "org.Mm.eg.db" for the annotation argument, and 
-"TxDb.Mmusculus.UCSC.mm39.refGene" for the TxDb argument.
+Ex) For mouse genomes aligned to mm39, install and load: 
+"Mus.musculus" (genome object), "org.Mm.eg.db" (annotations), and "TxDb.Mmusculus.UCSC.mm39.refGene" 
+(transcript annotations) using the library() function. Then, when using the OutSplice functions, specify "org.Mm.eg.db" 
+for the annotation argument, and "TxDb.Mmusculus.UCSC.mm39.refGene" for the TxDb argument.
 
 Using this genomic assignment, the dotheogsa function determines insertion, skipping, or deletion events based on the following criteria:
 
