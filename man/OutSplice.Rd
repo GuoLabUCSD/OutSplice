@@ -3,7 +3,7 @@
 \alias{OutSplice}
 \title{Alternative Splicing Analysis}
 \description{
-  Analyze differential splicing events between tumor and normal samples
+  Analyzes differential splicing events between tumor and normal samples.
 }
 \usage{
 OutSplice(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=TRUE, annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg38.knownGene', offsets_value = 0.00001, correction_setting = 'fdr', p_value=0.05)
@@ -62,6 +62,12 @@ OutSplice(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir
 
 print(paste0("Output is located at: ", dir))
 
+}
+\value{
+Matrix of junction events containing the number of outliers
+in the tumor group (outRank), event ranking based on the number of outliers
+and tumor under/over expression (var), the Fisher P-Value for under-expressed
+events (FisherP1), and the Fisher P-Value for over-expressed events (FisherP2)
 }
 \references{
 

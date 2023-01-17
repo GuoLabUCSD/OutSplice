@@ -36,6 +36,9 @@ PlotJunctionData(data_file, NUMBER=1, junctions=ecm1_junc, tail=NULL, p_value = 
 print(paste0("Output is located at: ", pdf_output))
 
 }
+\value{
+NULL. Displays or saves a pdf containing waterfall plots of junction expression.
+}
 \references{
 
 Cancer Genome Atlas Network. Comprehensive genomic characterization of head and neck squamous cell carcinomas. Nature. 2015 Jan 29;517(7536):576-82. doi: 10.1038/nature14129. PMID: 25631445; PMCID: PMC4311405.

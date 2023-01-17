@@ -5,10 +5,10 @@ OutSplice<-function(junction, gene_expr, rawcounts, sample_labels, output_file_p
   date<-Sys.Date()
   ## this is non-log transformed data and includes pheno (RAW, in RPM)
   print('Loading data')
-  all.junc<-read.table(file=junction, sep='\t', header=T, stringsAsFactors = F)
-  all.gene_expr<-read.table(file=gene_expr, header=T, row.names=1, sep="\t")
-  rawcounts<-read.table(file=rawcounts, sep='\t', header=T, row.names=1, stringsAsFactors = F)
-  samps.labels <- read.table(file=sample_labels, sep = '\t', row.names=1, header=T, stringsAsFactors = F)
+  all.junc<-read.table(file=junction, sep='\t', header=TRUE, stringsAsFactors = FALSE)
+  all.gene_expr<-read.table(file=gene_expr, header=TRUE, row.names=1, sep="\t")
+  rawcounts<-read.table(file=rawcounts, sep='\t', header=TRUE, row.names=1, stringsAsFactors = FALSE)
+  samps.labels <- read.table(file=sample_labels, sep = '\t', row.names=1, header=TRUE, stringsAsFactors = FALSE)
 
   colnames(rawcounts)<-gsub('\\.', "-", colnames(rawcounts))
 
@@ -112,7 +112,7 @@ OutSplice<-function(junction, gene_expr, rawcounts, sample_labels, output_file_p
   #  ### Filter all genes on the X and Y chromosomes
   #
   if (filterSex) {
-    junc.RPM <- junc.RPM[grep('chr[XY]',row.names(junc.RPM),value=T,invert=T),]
+    junc.RPM <- junc.RPM[grep('chr[XY]',row.names(junc.RPM),value=TRUE,invert=TRUE),]
   }
 
   # ##############################################################
@@ -171,7 +171,7 @@ OutSplice<-function(junction, gene_expr, rawcounts, sample_labels, output_file_p
                               strand=strand(geneAnnot)),en,
                       type='within')
   exoCount <- table(factor(queryHits(exo))) > 0
-  geneAnnot$skipping <- F
+  geneAnnot$skipping <- FALSE
   geneAnnot$skipping[as.numeric(names(exoCount))] <- exoCount
 
   # insertion events start or end outside of known exons
@@ -200,7 +200,7 @@ OutSplice<-function(junction, gene_expr, rawcounts, sample_labels, output_file_p
     (!overlapsAny(geneAnnot.end,en.start) & overlapsAny(geneAnnot.end,en)) |
     (!overlapsAny(geneAnnot.start,en.end) & overlapsAny(geneAnnot.start,en))
 
-  filterToEvents<-T
+  filterToEvents<-TRUE
 
   print("deletions")
   sum(geneAnnot$deletions)
@@ -241,7 +241,7 @@ OutSplice<-function(junction, gene_expr, rawcounts, sample_labels, output_file_p
   geneAnnot$ENTREZID -> genes2Junc_ENTREZ
   names(genes2Junc_ENTREZ)<-names(geneAnnot)
   print("shows how many junctions aligned to a single gene")
-  length(grep(genes2Junc_ENTREZ,pattern=';',invert=T,value=T))
+  length(grep(genes2Junc_ENTREZ,pattern=';',invert=TRUE,value=TRUE))
   ## this selects just the first gene that each junction aligns to
   genes2Junc_ENTREZ<-sapply(strsplit(genes2Junc_ENTREZ, ";"), function(x){x[1]})
 
@@ -250,7 +250,7 @@ OutSplice<-function(junction, gene_expr, rawcounts, sample_labels, output_file_p
   for (g in 1:length(genes2Junc_ENTREZ)){
     if (!isTRUE(intersect(gene_exprEntrezID, genes2Junc_ENTREZ[g])>0)){
       ## for gene where there is no gene_expr data, skip it
-      no.gene_expr[g]<-T
+      no.gene_expr[g]<-TRUE
       next
     }
     junctionGenegene_expr[names(genes2Junc_ENTREZ)[g],]<-all.gene_expr[which(gene_exprEntrezID==genes2Junc_ENTREZ[g]),]
@@ -292,7 +292,7 @@ OutSplice<-function(junction, gene_expr, rawcounts, sample_labels, output_file_p
 
   print("run the ogsa function")
 
-  FisherAnalyses=dotheogsa(Sample.data=junc.RPM.norm, PHENO=PHENO, offsets=offsets_value, Fisher=T, correction=correction_setting, dir = dir)
+  FisherAnalyses=dotheogsa(Sample.data=junc.RPM.norm, PHENO=PHENO, offsets=offsets_value, Fisher=TRUE, correction=correction_setting, dir = dir)
   ## use default offset=0.001 for normalized data
   # create lists of top genes
   topgenelist10.ogsa=FisherAnalyses[,'var1']
@@ -325,7 +325,7 @@ OutSplice<-function(junction, gene_expr, rawcounts, sample_labels, output_file_p
   pvalues<-c(toplist90, toplist10)
 
   ### get outier calls##
-  junc.Outliers<-dotheogsa(Sample.data=junc.RPM.norm, PHENO=PHENO, offsets=offsets_value, Fisher=T, correction=correction_setting, outliers=T, dir = dir)
+  junc.Outliers<-dotheogsa(Sample.data=junc.RPM.norm, PHENO=PHENO, offsets=offsets_value, Fisher=TRUE, correction=correction_setting, outliers=TRUE, dir = dir)
 
   ## Calculate median normalized value (of normals)
   ## for gene_expr

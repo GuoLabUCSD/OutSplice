@@ -2,14 +2,14 @@
 PlotJunctionData<-function(data_file, NUMBER=1, junctions=NULL, tail=NULL, p_value = 0.05, GENE=FALSE, SYMBOL=NULL, makepdf=FALSE, pdffile = NULL, tumcol='red', normcol='blue') {
   suppressPackageStartupMessages(load(data_file))
   ## if you want to make a pdf, this will be specified.  Stop/error if not specified
-  if (makepdf==T) {
+  if (makepdf==TRUE) {
     if (is.null(pdffile)) stop('Need to specify PDF file path name. pdffile=...')
     pdf(pdffile)
   }
   ## Define which junctions are going to be graphed
   ## if you do not define which specific junctions you want to graph
   if (is.null(junctions)){
-    if (GENE==F) {
+    if (GENE==FALSE) {
       if (is.null(tail)){
         junctions<-row.names(junc.RPM)[1:NUMBER]
         #print(paste('Junction #',NUMBER, 'graphed.'))
@@ -40,7 +40,7 @@ PlotJunctionData<-function(data_file, NUMBER=1, junctions=NULL, tail=NULL, p_val
         junctions<-row.names(toplist10)[1:NUMBER]
         print(paste('Top', NUMBER, 'underexpressed junctions graphed.'))
       }
-    } else if (GENE==T){
+    } else if (GENE==TRUE){
       if (is.null(SYMBOL)) stop('Need to specify gene of interest by gene symbol. SYMBOL=\'...\'')
       junctions<-names(geneAnnot)[grep(SYMBOL, geneAnnot$SYMBOL)]
       print(paste(length(junctions), 'junction(s) for gene', SYMBOL, 'found.'))
@@ -83,5 +83,5 @@ PlotJunctionData<-function(data_file, NUMBER=1, junctions=NULL, tail=NULL, p_val
 
 
 
-  if (makepdf==T) dev.off()
+  if (makepdf==TRUE) dev.off()
 }

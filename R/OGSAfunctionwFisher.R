@@ -6,7 +6,7 @@
 # Otherwise corection==name of correction method, i.e. "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"
 # if getting outlier calls for output, outliers=T
 
-dotheogsa<-function(Sample.data, PHENO, offsets=0.001, Fisher=F, correction=NA, outliers=F, dir=NA)
+dotheogsa<-function(Sample.data, PHENO, offsets=0.001, Fisher=FALSE, correction=NA, outliers=FALSE, dir=NA)
   ## default value for offsets is 0.001
 #   PHENO<-pheno$classes=='Tumor'
 # PHENO<-as.numeric(PHENO)
@@ -19,7 +19,7 @@ dotheogsa<-function(Sample.data, PHENO, offsets=0.001, Fisher=F, correction=NA, 
 
 ### run outlier analysis for true distribution of tumors and normals
 
-if (Fisher==T){
+if (Fisher==TRUE){
 ## Initialize a matrix so program will call outliers in normals
 Sample.data.normals<-Sample.data[,PHENO==0]
 no.of.normals<-length(PHENO[PHENO==0])
@@ -45,16 +45,16 @@ SampleTotals<-apply(Sample.data.tumor, 1, median) ## median of tumor expression
 
 ## smallest to largest, copa10 (underexpression in tumors)
 ## now do the outlier ranking with tail='left' for if tumor is less than normal
-outRankExprs1 <- outCallRank(dataExprs,names=c('Expr'),tail='left',corr=T,offsets=offsets)$Expr
+outRankExprs1 <- outCallRank(dataExprs,names=c('Expr'),tail='left',corr=TRUE,offsets=offsets)$Expr
 ### get number of outliers in the tumor group
 outRankTumor1 <- apply(outRankExprs1,1,sum)
-SampleTotals1<-order(SampleTotals, decreasing=T)
+SampleTotals1<-order(SampleTotals, decreasing=TRUE)
 ## ranks first by # of outliers, then by smaller level of tumor expression
-var1<-order(outRankTumor1, SampleTotals1, decreasing=T)
+var1<-order(outRankTumor1, SampleTotals1, decreasing=TRUE)
 
-if (Fisher==T){
+if (Fisher==TRUE){
 ## Calculate outliers in normal tissue
-outRankExprs1.normals<-outCallRank(dataExprs2,names=c('Expr'),tail='left',corr=T,offsets=offsets)$Expr
+outRankExprs1.normals<-outCallRank(dataExprs2,names=c('Expr'),tail='left',corr=TRUE,offsets=offsets)$Expr
 outRankNormal1 <- apply(outRankExprs1.normals,1,sum)
 
 ## Perform Fisher's exact test
@@ -70,14 +70,14 @@ for (i in 1:nrow(Sample.data)){
 }
 
 ###### largest to smallest, copa90 (overexpression in tumors)#####################
-outRankExprs2 <- outCallRank(dataExprs,names=c('Expr'),tail='right',corr=T,offsets=offsets)$Expr
+outRankExprs2 <- outCallRank(dataExprs,names=c('Expr'),tail='right',corr=TRUE,offsets=offsets)$Expr
 outRankTumor2 <- apply(outRankExprs2,1,sum)
-var2<-order(outRankTumor2, SampleTotals, decreasing = T)
+var2<-order(outRankTumor2, SampleTotals, decreasing = TRUE)
 
 
-if (Fisher==T) {
+if (Fisher==TRUE) {
 ## Calculate outliers in normal tissue
-outRankExprs2.normals<-outCallRank(dataExprs2,names=c('Expr'),tail='right',corr=T,offsets=offsets)$Expr
+outRankExprs2.normals<-outCallRank(dataExprs2,names=c('Expr'),tail='right',corr=TRUE,offsets=offsets)$Expr
 outRankNormal2 <- apply(outRankExprs2.normals,1,sum)
 
 ## Perform Fisher's exact test
@@ -92,9 +92,9 @@ for (i in 1:nrow(Sample.data)){
 }
 
 ##output data for the function!
-if (outliers==F){
+if (outliers==FALSE){
 
-if (Fisher==T){
+if (Fisher==TRUE){
   ## add FDR correction
   if (!is.na(correction)){
   FisherP1<-p.adjust(FisherP1, method = correction)

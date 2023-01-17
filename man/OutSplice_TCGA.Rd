@@ -48,6 +48,12 @@ OutSplice_TCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSe
 print(paste0("Output is located at: ", dir))
 
 }
+\value{
+Matrix of junction events containing the number of outliers
+in the tumor group (outRank), event ranking based on the number of outliers
+and tumor under/over expression (var), the Fisher P-Value for under-expressed
+events (FisherP1), and the Fisher P-Value for over-expressed events (FisherP2)
+}
 \references{
 
 Cancer Genome Atlas Network. Comprehensive genomic characterization of head and neck squamous cell carcinomas. Nature. 2015 Jan 29;517(7536):576-82. doi: 10.1038/nature14129. PMID: 25631445; PMCID: PMC4311405.
