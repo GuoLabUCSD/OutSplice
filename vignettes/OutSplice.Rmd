@@ -227,7 +227,9 @@ Ex) For mouse genomes aligned to mm39, install and load:
 (transcript annotations) using the library() function. Then, when using the OutSplice functions, specify "org.Mm.eg.db" 
 for the annotation argument, and "TxDb.Mmusculus.UCSC.mm39.refGene" for the TxDb argument.
 
-This process will also working for other genomes as well.
+This process will also work for any genome provided the correct annotation 
+package, its corresponding transcript annotation package, and their dependencies 
+from Bioconductor are provided and loaded.
 
 Using this genomic assignment, the dotheogsa function determines insertion, skipping, or deletion events based on the following criteria:
 
