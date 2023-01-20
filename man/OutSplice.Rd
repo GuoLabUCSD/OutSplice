@@ -52,9 +52,9 @@ junction <- system.file("extdata", "HNSC_junctions.txt", package="OutSplice")
 gene_expr <- system.file("extdata", "HNSC_genes_normalized.txt", package="OutSplice")
 rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package="OutSplice")
 sample_labels <- system.file("extdata", "HNSC_pheno_table.txt", package="OutSplice")
-output_file_prefix = "OutSplice_Example"
+output_file_prefix <- "OutSplice_Example"
 TxDb_hg19 <- "TxDb.Hsapiens.UCSC.hg19.knownGene"
-dir = paste0(tempdir(), '/')
+dir <- paste0(tempdir(), '/')
 
 #Run the OutSplice Function
 
@@ -67,7 +67,7 @@ print(paste0("Output is located at: ", dir))
 Matrix of junction events containing the number of outliers
 in the tumor group (outRank), event ranking based on the number of outliers
 and tumor under/over expression (var), the Fisher P-Value for under-expressed
-events (FisherP1), and the Fisher P-Value for over-expressed events (FisherP2)
+events (FisherP1), and the Fisher P-Value for over-expressed events (FisherP2).
 }
 \references{
 

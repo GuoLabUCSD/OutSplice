@@ -42,7 +42,7 @@ PlotJunctionData<-function(data_file, NUMBER=1, junctions=NULL, tail=NULL, p_val
       }
     } else if (GENE==TRUE){
       if (is.null(SYMBOL)) stop('Need to specify gene of interest by gene symbol. SYMBOL=\'...\'')
-      junctions<-names(geneAnnot)[grep(SYMBOL, geneAnnot$SYMBOL)]
+      junctions<-names(geneAnnotations)[grep(SYMBOL, geneAnnotations$SYMBOL)]
       print(paste(length(junctions), 'junction(s) for gene', SYMBOL, 'found.'))
     }
   }
@@ -61,8 +61,8 @@ PlotJunctionData<-function(data_file, NUMBER=1, junctions=NULL, tail=NULL, p_val
     #View(samples)
     barplot(log2(junc.RPM[j,samples]+1), cex.names=0.3, las=2, col = ifelse(phenotypes[samples,'pheno']=='Tumor',tumcol,normcol))
     title(sprintf('Junction Expression (log)\nskip? %s del? %s? ins? %s',
-                  geneAnnot[j,]$skipping, geneAnnot[j,]$deletions,
-                  geneAnnot[j,]$insertions),cex.main=0.7)
+                  geneAnnotations[j,]$skipping, geneAnnotations[j,]$deletions,
+                  geneAnnotations[j,]$insertions),cex.main=0.7)
 
     ## this plot is for normalized junction expression - with gene_expr.
     barplot(log2(junc.RPM.norm[j,samples]+1)-log2(NORM.gene_expr.norm[j]+1),
@@ -73,7 +73,7 @@ PlotJunctionData<-function(data_file, NUMBER=1, junctions=NULL, tail=NULL, p_val
     ## this barplot is for gene_expr of gene expression
     barplot(log2(gene_expr[j,samples]+1),las=2, cex.names=0.3,
             col=ifelse(phenotypes[samples,'pheno']=='Tumor',tumcol,normcol))
-    title(sprintf('%s \ngene_expr gene expression',geneAnnot[j,]$SYMBOL), cex.main=0.7)
+    title(sprintf('%s \ngene_expr gene expression',geneAnnotations[j,]$SYMBOL), cex.main=0.7)
 
     plot.new()
 

@@ -3,7 +3,7 @@
 \alias{PlotJunctionData}
 \title{Create Plots of Junction Expression}
 \description{
-  Create Bar and Waterfall plots of raw junction expression, overall gene expression, and junction expression normalized by gene expression.
+  Create Bar and Waterfall plots of raw junction expression, overall gene expression, and junction expression normalized by gene expression for significant splicing events found by OutSplice.
 }
 \usage{
 PlotJunctionData(data_file, NUMBER=1, junctions=NULL, tail=NULL, p_value = 0.05, GENE=FALSE, SYMBOL=NULL, makepdf=FALSE, pdffile = NULL, tumcol='red', normcol='blue')
@@ -12,7 +12,7 @@ PlotJunctionData(data_file, NUMBER=1, junctions=NULL, tail=NULL, p_value = 0.05,
   \item{data_file}{An R data file containing OutSplice Output.}
   \item{NUMBER}{An integer indicating the number of junctions to plot. This can
     be top number of junctions (over or under expressed), or can be specific junctions in a list. Default is 1.}
-  \item{junctions}{A vector of user specified junctions that should be plotted. Default is NULL.}
+  \item{junctions}{A vector of user specified junctions that should be plotted. Junctions that can be plotted must be significant events under the p-value threshold found by OutSplice. Default is NULL.}
   \item{tail}{A character string indicating either "RIGHT" to plot the top over
     expressed junctions, or "LEFT" to plot the top under expressed junctions. Default is NULL.}
   \item{p_value}{Set the alpha value for the significance threshold.}

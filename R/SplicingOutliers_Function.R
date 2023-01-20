@@ -342,9 +342,10 @@ OutSplice<-function(junction, gene_expr, rawcounts, sample_labels, output_file_p
   NORM.gene_expr.norm<-apply(junc.RPM.norm[,pheno == 'Normal'],1,median)
 
   ## aggregate the data
-  junc.RPM<-junc.RPM[junctions,]
-  gene_expr<-junctionGenegene_expr[junctions,]
-  junc.RPM.norm<-junc.RPM.norm[junctions,]
+  #junc.RPM<-junc.RPM[junctions,]
+  gene_expr<-junctionGenegene_expr
+  junc.RPM.norm<-junc.RPM.norm
+  geneAnnotations <- geneAnnot
   geneAnnot<-geneAnnot[junctions]
   ASE.type<-cbind(geneAnnot$skipping, geneAnnot$insertions, geneAnnot$deletions)
   colnames(ASE.type)<-c("skipping", "insertions", "deletions")
@@ -355,7 +356,7 @@ OutSplice<-function(junction, gene_expr, rawcounts, sample_labels, output_file_p
   splice_burden <- CalcBurden(junc.Outliers, FisherAnalyses, p_value)
 
   ## save output file
-  save(junc.RPM, gene_expr, junc.RPM.norm, pvalues, pheno, FisherAnalyses, geneAnnot, ASE.type, NORM.gene_expr.norm, junc.Outliers, splice_burden, file=paste0(dir, output_file_prefix,"_", date, ".RDa"))
+  save(junc.RPM, gene_expr, junc.RPM.norm, pvalues, pheno, FisherAnalyses, geneAnnotations, ASE.type, NORM.gene_expr.norm, junc.Outliers, splice_burden, file=paste0(dir, output_file_prefix,"_", date, ".RDa"))
 
   #Write Files
   write.table(ASE.type, file=paste0(dir, output_file_prefix, "_", date, "_", 'event_types.txt'), sep = '\t', quote=FALSE, col.names=NA)
@@ -364,7 +365,7 @@ OutSplice<-function(junction, gene_expr, rawcounts, sample_labels, output_file_p
   write.table(as.data.frame(junc.Outliers$TumorUnderExpression), file = paste0(dir, output_file_prefix, "_", date, "_", 'TumorUnderExpression.txt'), sep = '\t', quote=FALSE, col.names=NA)
   write.table(splice_burden, file=paste0(dir, output_file_prefix, "_", date, "_", 'splice_burden.txt'), sep = '\t', quote=FALSE, col.names=NA)
 
-  annotations_df <- annoGR2DF(geneAnnot)
+  annotations_df <- annoGR2DF(geneAnnotations)
   write.table(annotations_df, file = paste0(dir, output_file_prefix, "_", date, "_", 'gene_annotations.txt'), sep = '\t', quote = FALSE, col.names=NA)
 
   return(FisherAnalyses)

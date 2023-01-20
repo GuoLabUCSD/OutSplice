@@ -38,8 +38,8 @@ OutSplice_TCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSe
 junction <- system.file("extdata", "TCGA_HNSC_junctions.txt", package="OutSplice")
 gene_expr <- system.file("extdata", "TCGA_HNSC_genes_normalized.txt", package="OutSplice")
 rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package="OutSplice")
-output_file_prefix = "TCGA_OutSplice_Example"
-dir = paste0(tempdir(), '/')
+output_file_prefix <- "TCGA_OutSplice_Example"
+dir <- paste0(tempdir(), '/')
 
 #Run the OutSplice Function for TCGA data
 
@@ -52,7 +52,7 @@ print(paste0("Output is located at: ", dir))
 Matrix of junction events containing the number of outliers
 in the tumor group (outRank), event ranking based on the number of outliers
 and tumor under/over expression (var), the Fisher P-Value for under-expressed
-events (FisherP1), and the Fisher P-Value for over-expressed events (FisherP2)
+events (FisherP1), and the Fisher P-Value for over-expressed events (FisherP2).
 }
 \references{
 

@@ -92,9 +92,9 @@ junction <- system.file("extdata", "HNSC_junctions.txt", package="OutSplice")
 gene_expr <- system.file("extdata", "HNSC_genes_normalized.txt", package="OutSplice")
 rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package="OutSplice")
 sample_labels <- system.file("extdata", "HNSC_pheno_table.txt", package="OutSplice")
-output_file_prefix = "OutSplice_Example"
+output_file_prefix <- "OutSplice_Example"
 TxDb_hg19 <- "TxDb.Hsapiens.UCSC.hg19.knownGene"
-dir = paste0(tempdir(), '/')
+dir <- paste0(tempdir(), '/')
 print(paste0("Output is located at: ", dir))
   
 OutSplice(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=TRUE, annotation='org.Hs.eg.db', TxDb=TxDb_hg19, offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
@@ -104,8 +104,8 @@ OutSplice(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir
 junction <- system.file("extdata", "TCGA_HNSC_junctions.txt", package="OutSplice")
 gene_expr <- system.file("extdata", "TCGA_HNSC_genes_normalized.txt", package="OutSplice")
 rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package="OutSplice")
-output_file_prefix = "TCGA_OutSplice_Example"
-dir = paste0(tempdir(), '/')
+output_file_prefix <- "TCGA_OutSplice_Example"
+dir <- paste0(tempdir(), '/')
 print(paste0("Output is located at: ", dir))
     
 OutSplice_TCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex=TRUE, annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg19.knownGene', offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
@@ -227,6 +227,8 @@ Ex) For mouse genomes aligned to mm39, install and load:
 (transcript annotations) using the library() function. Then, when using the OutSplice functions, specify "org.Mm.eg.db" 
 for the annotation argument, and "TxDb.Mmusculus.UCSC.mm39.refGene" for the TxDb argument.
 
+This process will also working for other genomes as well.
+
 Using this genomic assignment, the dotheogsa function determines insertion, skipping, or deletion events based on the following criteria:
 
 insertion: junction that starts outside a known exon
@@ -258,9 +260,9 @@ outliers is then calculated as the sum of the over and under-expressed outliers.
 ### 3.8 Junction Plotting
 
 Creates bar and waterfall plots of junction expression in both the tumor and
-normal samples. The data for these plots comes from the raw junction input, the
+normal samples for significant events. The data for these plots comes from the raw junction input, the
 gene expression values to reflect overall gene expression, and the junction
-expression normalized by gene expression. 
+expression normalized by gene expression.
 
 # 4. Outputs
 
@@ -268,14 +270,14 @@ expression normalized by gene expression.
 
 Outputs an RData file with the following data:
 
-  -ASE.type: junction events labeled by type (skipping, insertion, or deletion)
+  -ASE.type: significant junction events labeled by type (skipping, insertion, or deletion)
   
   -FisherAnalyses: matrix of junction events containing the number of outliers 
   in the tumor group (outRank), event ranking based on the number of outliers 
   and tumor under/over expression (var), the Fisher P-Value for under-expressed 
   events (FisherP1), and the Fisher P-Value for over-expressed events (FisherP2)
   
-  -geneAnnot: object containing gene names corresponding to each junction region
+  -geneAnnotations: object containing gene names corresponding to each junction region
   
   -junc.Outliers: list containing the logical matrices TumorOverExpression and 
   TumorUnderExpression. "True" indicates an over-expressed event in 
@@ -304,7 +306,7 @@ Tab-separated text files are also produced for the following data:
   
   -FisherAnalyses: FisherAnalyses.txt
   
-  -geneAnnot: gene_annotations.txt
+  -geneAnnotations: gene_annotations.txt
   
   -junc.Outliers: TumorOverExpression.txt, TumorUnderExpression.txt
   
