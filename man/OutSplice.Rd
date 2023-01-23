@@ -64,10 +64,11 @@ print(paste0("Output is located at: ", dir))
 
 }
 \value{
-Matrix of junction events containing the number of outliers
-in the tumor group (outRank), event ranking based on the number of outliers
-and tumor under/over expression (var), the Fisher P-Value for under-expressed
-events (FisherP1), and the Fisher P-Value for over-expressed events (FisherP2).
+Matrix of junction events containing the number of under/over-expressed
+outliers in the tumor group (outRank1/outRank2), the Fisher p-value for under/over-expressed
+events (FisherP1/FisherP2), and vectors that can be used to order and rank the
+under/over expressed events (var1/var2):
+Ex) FisherAnalyses[FisherAnalyses[,'var2'],]
 }
 \references{
 
