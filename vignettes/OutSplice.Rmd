@@ -262,7 +262,7 @@ outliers is then calculated as the sum of the over and under-expressed outliers.
 ### 3.8 Junction Plotting
 
 Creates bar and waterfall plots of junction expression in both the tumor and
-normal samples for significant events. The data for these plots comes from the raw junction input, the
+normal samples. The data for these plots comes from the raw junction input, the
 gene expression values to reflect overall gene expression, and the junction
 expression normalized by gene expression.
 
