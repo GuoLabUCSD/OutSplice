@@ -339,7 +339,7 @@ OutSplice_TCGA<-function(junction, gene_expr, rawcounts, output_file_prefix, dir
   NORM.gene_expr.norm<-apply(junc.RPM.norm[,pheno == 'Normal'],1,median)
 
   ## aggregate the data
-  junc.RPM<-junc.RPM[junctions,]
+  #junc.RPM<-junc.RPM[junctions,]
   gene_expr<-junctionGenegene_expr
   junc.RPM.norm<-junc.RPM.norm
   geneAnnotations <- geneAnnot

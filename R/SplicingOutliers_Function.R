@@ -352,7 +352,7 @@ OutSplice<-function(junction, gene_expr, rawcounts, sample_labels, output_file_p
   NORM.gene_expr.norm<-apply(junc.RPM.norm[,pheno == 'Normal'],1,median)
 
   ## aggregate the data
-  junc.RPM<-junc.RPM[junctions,]
+  #junc.RPM<-junc.RPM[junctions,]
   gene_expr<-junctionGenegene_expr
   junc.RPM.norm<-junc.RPM.norm
   geneAnnotations <- geneAnnot
