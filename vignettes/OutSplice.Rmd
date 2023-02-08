@@ -75,7 +75,7 @@ library(OutSplice)
 
 For manual installation:
 
-1. Download the tarball from GitHub - (wget https://github.com/GuoLabUCSD/OutSplice/tarball/master -O OutSplice.tar.gz)
+1. Download the tarball from GitHub - (wget https://github.com/GuoLabUCSD/OutSplice/tarball/GenePatternNotebook -O OutSplice.tar.gz)
 2. Execute one of the below
   -From Command Line (R CMD INSTALL OutSplice.tar.gz)
   -From R (install.packages('OutSplice.tar.gz', repos = NULL, type = 'source'))
