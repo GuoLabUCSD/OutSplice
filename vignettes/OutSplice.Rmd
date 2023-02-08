@@ -43,12 +43,17 @@ before using the software:
 
 1. dplyr
 2. GenomicRanges
-3. Homo.sapiens
-4. limma
-5. org.Hs.eg.db
-6. Repitools
-7. TxDb.Hsapiens.UCSC.hg19.knownGene
-8. TxDb.Hsapiens.UCSC.hg38.knownGene
+3. gplots
+4. Homo.sapiens
+5. limma
+6. Mus.musculus
+7. org.Hs.eg.db
+8. org.Mm.eg.db
+9. Repitools
+10. TxDb.Mmusculus.UCSC.mm10.knownGene
+11. TxDb.Mmusculus.UCSC.mm39.refGene
+12. TxDb.Hsapiens.UCSC.hg19.knownGene
+13. TxDb.Hsapiens.UCSC.hg38.knownGene
 
 ### 1.3 Installation from Bioconductor
 The OutSplice package is available at https://bioconductor.org and can be 
@@ -277,7 +282,7 @@ Outputs an RData file with the following data:
   and tumor under/over expression (var), the Fisher P-Value for under-expressed 
   events (FisherP1), and the Fisher P-Value for over-expressed events (FisherP2)
   
-  -geneAnnot: object containing gene names corresponding to each junction region
+  -geneAnnotations: object containing gene names corresponding to each junction region
   
   -junc.Outliers: list containing the logical matrices TumorOverExpression and 
   TumorUnderExpression. "True" indicates an over-expressed event in 
