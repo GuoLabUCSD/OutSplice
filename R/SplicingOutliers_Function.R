@@ -17,7 +17,7 @@ OutSplice<-function(junction, gene_expr, rawcounts, sample_labels, output_file_p
   suppressPackageStartupMessages(library(genome, character.only = TRUE))
   suppressPackageStartupMessages(library(annotation, character.only = TRUE))
   suppressPackageStartupMessages(library('GenomicRanges'))
-  suppressPackageStartupMessages(library('limma'))
+  #suppressPackageStartupMessages(library('limma'))
   suppressPackageStartupMessages(library('Repitools'))
   suppressPackageStartupMessages(library(TxDb, character.only = TRUE))
   colnames(rawcounts)<-gsub('\\.', "-", colnames(rawcounts))
@@ -377,6 +377,5 @@ OutSplice<-function(junction, gene_expr, rawcounts, sample_labels, output_file_p
 
   annotations_df <- annoGR2DF(geneAnnotations)
   write.table(annotations_df, file = paste0(dir, output_file_prefix, "_", date, "_", 'gene_annotations.txt'), sep = '\t', quote = FALSE, col.names=NA)
-
   return(FisherAnalyses)
 }
