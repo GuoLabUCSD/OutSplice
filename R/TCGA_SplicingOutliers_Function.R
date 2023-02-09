@@ -18,7 +18,7 @@ OutSplice_TCGA<-function(junction, gene_expr, rawcounts, output_file_prefix, dir
   suppressPackageStartupMessages(library(genome, character.only = TRUE))
   suppressPackageStartupMessages(library(annotation, character.only = TRUE))
   suppressPackageStartupMessages(library('GenomicRanges'))
-  suppressPackageStartupMessages(library('limma'))
+  #suppressPackageStartupMessages(library('limma'))
   suppressPackageStartupMessages(library('Repitools'))
   suppressPackageStartupMessages(library(TxDb, character.only = TRUE))
   colnames(rawcounts)<-substr(colnames(rawcounts), 1,15)
