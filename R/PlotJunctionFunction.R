@@ -1,7 +1,7 @@
 #Plot Junction Expression Data
 PlotJunctionData<-function(data_file, NUMBER=1, junctions=NULL, tail=NULL, p_value = 0.05, GENE=FALSE, SYMBOL=NULL, makepdf=FALSE, pdffile = NULL, tumcol='red', normcol='blue') {
   #library('NCBI2R')
-  suppressPackageStartupMessages(library('gplots'))
+  #suppressPackageStartupMessages(library('gplots'))
   suppressPackageStartupMessages(load(data_file))
   ## if you want to make a pdf, this will be specified.  Stop/error if not specified
   if (makepdf==T) {
