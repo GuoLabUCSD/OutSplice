@@ -14,7 +14,7 @@ dotheogsa<-function(Sample.data, PHENO, offsets=0.001, Fisher=F, correction=NA, 
   ##PHENO should have 'Normal' or 'Tumor' calls where Tumor ==1, Normal ==0, and names of each sample associated
 {
 # libraries on which OGSA depends
-library('limma')
+#library('limma')
 
 # data required by the package
 # source code
