@@ -1,7 +1,7 @@
 Package: OutSplice
 Type: Package
 Title: Comparison of Splicing Events between Tumor and Normal Samples
-Version: 0.99.0
+Version: 0.99.1
 Authors@R:  c(person("Joseph", "Bendik", role = "aut"),
     person("Sandhya", "Kalavacherla", role = "aut"),
     person("Michael", "Considine", role = "aut"), 

@@ -6,3 +6,9 @@
     \item Submitted to Bioconductor
   }
 }
+
+\section{Changes in version 0.99.1 (2023-02-27)}{
+  \itemize{
+    \item Fixed Bioc-devel mailing list registration and added package to Watched Tags
+  }
+}
