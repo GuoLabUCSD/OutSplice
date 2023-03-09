@@ -6,7 +6,7 @@
 
 #1. First, download the zipped directories from the TGCA: http://firebrowse.org/?cohort=HNSC&download_dialog=true
 # The directories are: "illuminahiseq_rnaseqv2-junction_quantification," "illuminahiseq_rnaseqv2-RSEM_genes_normalized," "mRNAseq_Preprocess"
-# From these directories extract the following: "HNSC.rnaseqv2__illuminahiseq_rnaseqv2__unc_edu__Level_3__junction_quantification__data.data.txt", "HNSC.rnaseqv2__illuminahiseq_rnaseqv2__unc_edu__Level_3__RSEM_genes_normalized__data.data.txt" ,"HNSC.uncv2.mRNAseq_RSEM_all.txt"
+# From these directories extract the following: "HNSC.rnaseqv2__illuminahiseq_rnaseqv2__unc_edu__Level_3__junction_quantification__data.data.txt", "HNSC.rnaseqv2__illuminahiseq_rnaseqv2__unc_edu__Level_3__RSEM_genes_normalized__data.data.txt" ,"HNSC.uncv2.mRNAseq_raw_counts.txt"
 
 #2. For ease, rename the files: "full_HNSC_junctions.txt", "full_HNSC_genes_normalized.txt", "full_HNSC_raw_counts_unc.txt"
 
@@ -92,12 +92,7 @@ setwd('../../R')
 dir = getwd()
 print(dir)
 source(paste0(dir, '/OGSAfunctionwFisher.R'))
-source(paste0(dir, '/copaStat.R'))
-source(paste0(dir, '/outCount.R'))
-source(paste0(dir, '/outRank.R'))
 source(paste0(dir, '/outCallRank.R'))
-source(paste0(dir, '/outCallTib.R'))
-source(paste0(dir, '/copaInt.R'))
 setwd('../inst/script')
 
 colnames(rawcounts)<-substr(colnames(rawcounts), 1,15)
@@ -114,7 +109,7 @@ junction.names<-all.junc[,1]
 #remove duplicates
 all.junc<-all.junc[!duplicated(junction.names),]
 junction.names<-all.junc[,1]
-j<-paste0(sapply(strsplit(junction.names,split=":"), function(x){x[[1]]}), ":", sapply(strsplit(junction.names,split=":"), function(x){x[[2]]}), "-",sapply(strsplit(junction.names,split=":"), function(x){x[[4]]}))
+j<-paste0(vapply(strsplit(junction.names,split=":"), function(x){x[[1]]}), ":", vapply(strsplit(junction.names,split=":"), function(x){x[[2]]}), "-",vapply(strsplit(junction.names,split=":"), function(x){x[[4]]}))
 
 rownames(all.junc)<-j
 colnames(all.junc)<-all.samples
@@ -147,10 +142,10 @@ rawcounts<-rawcounts[,all.samples]
 pheno<-pheno[all.samples]
 
 ##change from char to numeric
-n<-sapply(all.RSEM, as.numeric)
+n<-vapply(all.RSEM, as.numeric)
 rownames(n)<-rownames(all.RSEM)
 all.RSEM<-n
-n<-sapply(all.junc, as.numeric)
+n<-vapply(all.junc, as.numeric)
 rownames(n)<-rownames(all.junc)
 all.junc<-n
 remove(n)
@@ -200,7 +195,7 @@ junction.names<-junctions_with_strand_info[,1]
 #remove duplicates
 junctions_with_strand_info<-junctions_with_strand_info[!duplicated(junction.names),]
 junction.names<-junctions_with_strand_info[,1]
-j<-paste0(sapply(strsplit(junction.names,split=":"), function(x){x[[1]]}), ":", sapply(strsplit(junction.names,split=":"), function(x){x[[2]]}), "-",sapply(strsplit(junction.names,split=":"), function(x){x[[4]]}))
+j<-paste0(vapply(strsplit(junction.names,split=":"), function(x){x[[1]]}), ":", vapply(strsplit(junction.names,split=":"), function(x){x[[2]]}), "-",vapply(strsplit(junction.names,split=":"), function(x){x[[4]]}))
 
 rownames(junctions_with_strand_info)<-j
 colnames(junctions_with_strand_info)<-all.samples
@@ -234,10 +229,10 @@ write.table(final_junctions, file = 'TCGA_HNSC_junctions.txt', sep = '\t', quote
 detach("package:dplyr")
 library('TxDb.Hsapiens.UCSC.hg19.knownGene')
 library('org.Hs.eg.db')
-chr <- sapply(strsplit(row.names(junc.RPM),split=":"), function(x){x[[1]]})
-start <- as.numeric(sapply(strsplit(row.names(junc.RPM),split="[:-]"),
+chr <- vapply(strsplit(row.names(junc.RPM),split=":"), function(x){x[[1]]})
+start <- as.numeric(vapply(strsplit(row.names(junc.RPM),split="[:-]"),
                            function(x){x[[2]]}))
-end <- as.numeric(sapply(strsplit(row.names(junc.RPM),split="[:-]"),
+end <- as.numeric(vapply(strsplit(row.names(junc.RPM),split="[:-]"),
                          function(x){x[[3]]}))
 
 
@@ -275,7 +270,7 @@ geneENTREZID <- tapply(gn$ENTREZID[subjectHits(overlap)],
 geneAnnot$ENTREZID <- NA
 geneAnnot$ENTREZID[as.numeric(names(geneENTREZID))] <- geneENTREZID
 
-entrez_ids_to_keep <- sapply(strsplit(geneAnnot$ENTREZID, ";"), function(x){x[1]})
+entrez_ids_to_keep <- vapply(strsplit(geneAnnot$ENTREZID, ";"), function(x){x[1]})
 entrez_ids_to_keep <- unique(entrez_ids_to_keep)
 entrez_ids_to_keep <- as.data.frame(entrez_ids_to_keep)
 entrez_ids_to_keep <- na.omit(entrez_ids_to_keep)
@@ -284,7 +279,7 @@ rownames(entrez_ids_to_keep) <- entrez_ids_to_keep$entrez_ids_to_keep
 #11. Map Entrez Ids to original RSEM file
 rsem_with_all_genes$Hybridization_REF <- rownames(rsem_with_all_genes)
 rsem_with_all_genes <- rsem_with_all_genes[-1, ]
-rownames(rsem_with_all_genes) <- sapply(strsplit(row.names(rsem_with_all_genes), split ='\\|'), function(x){x[2]})
+rownames(rsem_with_all_genes) <- vapply(strsplit(row.names(rsem_with_all_genes), split ='\\|'), function(x){x[2]})
 
 final_rsem <- merge(entrez_ids_to_keep, rsem_with_all_genes, by = 'row.names')
 rownames(final_rsem) <- final_rsem$Hybridization_REF
@@ -322,7 +317,7 @@ junction.names<-all.junc[,1]
 all.junc<-all.junc[!duplicated(junction.names),]
 
 junction.names<-all.junc[,1]
-j<-paste0(sapply(strsplit(junction.names,split=":"), function(x){x[[1]]}), ":", sapply(strsplit(junction.names,split=":"), function(x){x[[2]]}), "-",sapply(strsplit(junction.names,split=":"), function(x){x[[4]]}))
+j<-paste0(vapply(strsplit(junction.names,split=":"), function(x){x[[1]]}), ":", vapply(strsplit(junction.names,split=":"), function(x){x[[2]]}), "-",vapply(strsplit(junction.names,split=":"), function(x){x[[4]]}))
 
 rownames(all.junc)<-j
 colnames(all.junc)<-all.samples
@@ -340,7 +335,7 @@ expression.samples<-substr(colnames(all.RSEM), 1, 15)
 expression.samples<-gsub('\\.', '-', expression.samples)
 colnames(all.RSEM)<-expression.samples
 
-rownames(all.RSEM) <- sapply(strsplit(row.names(all.RSEM), split ='\\|'), function(x){x[2]})
+rownames(all.RSEM) <- vapply(strsplit(row.names(all.RSEM), split ='\\|'), function(x){x[2]})
 
 write.table(all.RSEM, file = 'HNSC_genes_normalized.txt', sep = '\t', quote = FALSE, col.names = NA)
 

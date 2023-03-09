@@ -1,6 +1,6 @@
-export(OutSplice)
-export(OutSplice_TCGA)
-export(PlotJunctionData)
+export(outsplice)
+export(outspliceTCGA)
+export(plotJunctionData)
 
 #Import other packages
 import(GenomicRanges)

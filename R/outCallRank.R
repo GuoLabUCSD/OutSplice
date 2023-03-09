@@ -25,16 +25,17 @@
 #          type in each case sample
 #
 #  v 1.0 - Michael Ochs, TCNJ, 15 Jan 2014
+#  v 1.1 - Joseph Bendik, UCSD, 07 Mar 2023 changed sapply to vapply, changed 1:... to seq_len(n) or seq_along(x)
 
 
 outCallRank <- function(dataList, thres= 0.05, tail='right', corr=FALSE, offsets=NULL,names=NULL) {
-    
+
     if (is.null(names)) {
         names <- vector(length=length(dataList),mode='character')
-        for (d in 1:length(dataList)) {
+        for (d in seq_along(dataList)) {
             names[d] <- paste('Data',d)
         }
-    
+
     }
     temp <- dataList[[1]]
     temp <- temp[[1]]
@@ -51,35 +52,35 @@ outCallRank <- function(dataList, thres= 0.05, tail='right', corr=FALSE, offsets
     outP <- matrix(nrow=nG, ncol=2)
     outCount <- rep(0,nG)
 
-    for (d in 1:length(dataList)) {
+    for (d in seq_along(dataList)) {
         data <- dataList[[d]]
         phenotype <- data[[2]]
         data <- data[[1]]
         nS <- length(phenotype)
         thisTail <- tail[d]
-        
+
         adjust <- offsets[d]
         nData <- data[,phenotype==0]
         tData <- data[,phenotype==1]
         nT <- dim(tData)[2]
-        
+
         # generate empicical pValues as the
         # number of sum(normals{<,>}tumor)/nN
         empirP <- matrix(nrow=nG, ncol=nT)
         if (thisTail == 'right') {
-            for (i in 1:nG) {
+            for (i in seq_len(nG)) {
                 tumor <- tData[i,]
                 baseline <- nData[i,]
-                result <- sapply(1:length(tumor),function(j)
-                    sum((baseline+adjust)>tumor[j]))
+                result <- vapply(seq_along(tumor),function(j)
+                    sum((baseline+adjust)>tumor[j]), integer(1))
                 empirP[i,] <- result/length(baseline)
             }
         } else if (thisTail == 'left') {
-            for (i in 1:nG) {
+            for (i in seq_len(nG)) {
                 tumor <- tData[i,]
                 baseline <- nData[i,]
-                result <- sapply(1:length(tumor),function(j)
-                    sum((baseline-adjust)<tumor[j]))
+                result <- vapply(seq_along(tumor),function(j)
+                    sum((baseline-adjust)<tumor[j]), integer(1))
                 empirP[i,] <- result/length(baseline)
             }
         }
@@ -90,6 +91,6 @@ outCallRank <- function(dataList, thres= 0.05, tail='right', corr=FALSE, offsets
     }
     names(outList) <- names
 	return(outList)
-}		
-	
+}
+
 

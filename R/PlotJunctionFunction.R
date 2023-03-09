@@ -1,5 +1,5 @@
 #Plot Junction Expression Data
-PlotJunctionData<-function(data_file, NUMBER=1, junctions=NULL, tail=NULL, p_value = 0.05, GENE=FALSE, SYMBOL=NULL, makepdf=FALSE, pdffile = NULL, tumcol='red', normcol='blue') {
+plotJunctionData<-function(data_file, NUMBER=1, junctions=NULL, tail=NULL, p_value = 0.05, GENE=FALSE, SYMBOL=NULL, makepdf=FALSE, pdffile = NULL, tumcol='red', normcol='blue') {
   suppressPackageStartupMessages(load(data_file))
   ## if you want to make a pdf, this will be specified.  Stop/error if not specified
   if (makepdf==TRUE) {
@@ -11,7 +11,7 @@ PlotJunctionData<-function(data_file, NUMBER=1, junctions=NULL, tail=NULL, p_val
   if (is.null(junctions)){
     if (GENE==FALSE) {
       if (is.null(tail)){
-        junctions<-row.names(junc.RPM)[1:NUMBER]
+        junctions<-row.names(junc.RPM)[seq_len(NUMBER)]
         #print(paste('Junction #',NUMBER, 'graphed.'))
       } else if (tail=='RIGHT'){
         topgenelist90.ogsa=FisherAnalyses[,'var2']
@@ -24,7 +24,7 @@ PlotJunctionData<-function(data_file, NUMBER=1, junctions=NULL, tail=NULL, p_val
           print('no over expression outliers')
         }
         toplist90 <- as.data.frame(toplist90)
-        junctions<-row.names(toplist90)[1:NUMBER]
+        junctions<-row.names(toplist90)[seq_len(NUMBER)]
         print(paste('Top', NUMBER, 'overexpressed junctions graphed.'))
       } else if (tail=='LEFT'){
         topgenelist10.ogsa=FisherAnalyses[,'var1']
@@ -37,7 +37,7 @@ PlotJunctionData<-function(data_file, NUMBER=1, junctions=NULL, tail=NULL, p_val
           print('no under expression outliers')
         }
         toplist10 <- as.data.frame(toplist10)
-        junctions<-row.names(toplist10)[1:NUMBER]
+        junctions<-row.names(toplist10)[seq_len(NUMBER)]
         print(paste('Top', NUMBER, 'underexpressed junctions graphed.'))
       }
     } else if (GENE==TRUE){

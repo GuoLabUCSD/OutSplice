@@ -1,7 +1,7 @@
 ## analyze TCGA junctions from TCGA based sequencing data
 ## TCGA Firehose pipeline
 
-OutSplice_TCGA<-function(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex=TRUE, annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg19.knownGene', offsets_value = 0.00001, correction_setting='fdr', p_value=0.05){
+outspliceTCGA<-function(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex=TRUE, annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg19.knownGene', offsets_value = 0.00001, correction_setting='fdr', p_value=0.05){
 
   date<-Sys.Date()
 
@@ -25,7 +25,7 @@ OutSplice_TCGA<-function(junction, gene_expr, rawcounts, output_file_prefix, dir
   #remove duplicates
   all.junc<-all.junc[!duplicated(junction.names),]
   junction.names<-all.junc[,1]
-  j<-paste0(sapply(strsplit(junction.names,split=":"), function(x){x[[1]]}), ":", sapply(strsplit(junction.names,split=":"), function(x){x[[2]]}), "-",sapply(strsplit(junction.names,split=":"), function(x){x[[4]]}))
+  j<-paste0(vapply(strsplit(junction.names,split=":"), function(x){x[[1]]}, character(1)), ":", vapply(strsplit(junction.names,split=":"), function(x){x[[2]]}, character(1)), "-",vapply(strsplit(junction.names,split=":"), function(x){x[[4]]}, character(1)))
 
   rownames(all.junc)<-j
   colnames(all.junc)<-all.samples
@@ -58,10 +58,10 @@ OutSplice_TCGA<-function(junction, gene_expr, rawcounts, output_file_prefix, dir
   pheno<-pheno[all.samples]
 
   ##change from char to numeric
-  n<-sapply(all.gene_expr, as.numeric)
+  n<-vapply(all.gene_expr, as.numeric, numeric(nrow(all.gene_expr)))
   rownames(n)<-rownames(all.gene_expr)
   all.gene_expr<-n
-  n<-sapply(all.junc, as.numeric)
+  n<-vapply(all.junc, as.numeric, numeric(nrow(all.junc)))
   rownames(n)<-rownames(all.junc)
   all.junc<-n
   remove(n)
@@ -105,11 +105,11 @@ OutSplice_TCGA<-function(junction, gene_expr, rawcounts, output_file_prefix, dir
   print("get the genomic information for all the junctions")
 
   # create GenomicRanges object for junctions
-  chr <- sapply(strsplit(row.names(junc.RPM),split=":"), function(x){x[[1]]})
-  start <- as.numeric(sapply(strsplit(row.names(junc.RPM),split="[:-]"),
-                             function(x){x[[2]]}))
-  end <- as.numeric(sapply(strsplit(row.names(junc.RPM),split="[:-]"),
-                           function(x){x[[3]]}))
+  chr <- vapply(strsplit(row.names(junc.RPM),split=":"), function(x){x[[1]]}, character(1))
+  start <- as.numeric(vapply(strsplit(row.names(junc.RPM),split="[:-]"),
+                             function(x){x[[2]]}, character(1)))
+  end <- as.numeric(vapply(strsplit(row.names(junc.RPM),split="[:-]"),
+                           function(x){x[[3]]}, character(1)))
 
 
   geneAnnot <- GRanges(seqnames=Rle(chr),
@@ -214,8 +214,8 @@ OutSplice_TCGA<-function(junction, gene_expr, rawcounts, output_file_prefix, dir
   all.gene_expr <- all.gene_expr[!grepl('\\?', row.names(all.gene_expr)),]
 
   ## get gene names
-  gene_exprgenenames<-sapply(strsplit(row.names(all.gene_expr), split ='\\|'), function(x){x[1]})
-  gene_exprEntrezID<-sapply(strsplit(row.names(all.gene_expr), split ='\\|'), function(x){x[2]})
+  gene_exprgenenames<-vapply(strsplit(row.names(all.gene_expr), split ='\\|'), function(x){x[1]}, character(1))
+  gene_exprEntrezID<-vapply(strsplit(row.names(all.gene_expr), split ='\\|'), function(x){x[2]}, character(1))
 
   print("align with gene_expr data")
   # ## get gene names
@@ -230,11 +230,11 @@ OutSplice_TCGA<-function(junction, gene_expr, rawcounts, output_file_prefix, dir
   print("shows how many junctions aligned to a single gene")
   length(grep(genes2Junc_ENTREZ,pattern=';',invert=TRUE,value=TRUE))
   ## this selects just the first gene that each junction aligns to
-  genes2Junc_ENTREZ<-sapply(strsplit(genes2Junc_ENTREZ, ";"), function(x){x[1]})
+  genes2Junc_ENTREZ<-vapply(strsplit(genes2Junc_ENTREZ, ";"), function(x){x[1]}, character(1))
 
   ## fill in the matrix
   no.gene_expr<-vector(length=length(genes2Junc_ENTREZ))
-  for (g in 1:length(genes2Junc_ENTREZ)){
+  for (g in seq_along(genes2Junc_ENTREZ)){
     if (!isTRUE(intersect(gene_exprEntrezID, genes2Junc_ENTREZ[g])>0)){
       ## for gene where there is no gene_expr data, skip it
       no.gene_expr[g]<-TRUE
@@ -340,7 +340,7 @@ OutSplice_TCGA<-function(junction, gene_expr, rawcounts, output_file_prefix, dir
 
   ## Calculate Splicing Burden
   #source(file=paste0(dir,"SpliceBurdenfunction.R"))
-  splice_burden <- CalcBurden(junc.Outliers, FisherAnalyses, p_value)
+  splice_burden <- calcBurden(junc.Outliers, FisherAnalyses, p_value)
 
   ## save output file
   save(junc.RPM, gene_expr, junc.RPM.norm, pvalues, pheno, FisherAnalyses, geneAnnotations, ASE.type, NORM.gene_expr.norm, junc.Outliers, splice_burden, file=paste0(dir, output_file_prefix,"_", date, ".RDa"))

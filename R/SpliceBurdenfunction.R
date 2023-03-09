@@ -1,6 +1,6 @@
 #Function to Calculate Splicing Burden Based on the Number of Fisher Significant Events in Each Sample
 
-CalcBurden <- function(junc.Outliers, FisherAnalyses, p_value) {
+calcBurden <- function(junc.Outliers, FisherAnalyses, p_value) {
 
   #Calculate Splicing Burden for Significant Events Over-Expressed in Tumors
   Over_Expressed_Junctions_Outlier_Calls <- as.data.frame(junc.Outliers$TumorOverExpression)

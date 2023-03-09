@@ -64,26 +64,17 @@ A package only needs to be installed once. Load the package into an R session wi
 library(OutSplice)
 ```
 
-### 1.4 Installation from source
-
-For manual installation:
-
-1. Download the tarball from GitHub - (wget https://github.com/GuoLabUCSD/OutSplice/tarball/master -O OutSplice.tar.gz)
-2. Execute one of the below
-  -From Command Line (R CMD INSTALL OutSplice.tar.gz)
-  -From R (install.packages('OutSplice.tar.gz', repos = NULL, type = 'source'))
-
 # 2 Inputs
 
-### 2.1 OutSplice/OutSplice_TCGA
+### 2.1 outsplice/outspliceTCGA
 
 Full Sample data for OutSplice can be downloaded from The Cancer Genome Atlas (TCGA).
 
-The OutSplice function has 6 required inputs and 6 optional Inputs.
-The OutSplice_TCGA function has 5 required inputs and 6 optional Inputs and 
+The outsplice function has 6 required inputs and 6 optional Inputs.
+The outspliceTCGA function has 5 required inputs and 6 optional Inputs and 
 should only be used if the data is in TCGA format.
 
-In the below examples we run OutSplice and OutSplice_TCGA on a subset of Head 
+In the below examples we run outsplice and outspliceTCGA on a subset of Head 
 and Neck squamous cell carcinoma data obtained from The Broad Institute TCGA 
 GDAC Firehose database.
 
@@ -97,7 +88,7 @@ TxDb_hg19 <- "TxDb.Hsapiens.UCSC.hg19.knownGene"
 dir <- paste0(tempdir(), '/')
 print(paste0("Output is located at: ", dir))
   
-OutSplice(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=TRUE, annotation='org.Hs.eg.db', TxDb=TxDb_hg19, offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
+outsplice(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=TRUE, annotation='org.Hs.eg.db', TxDb=TxDb_hg19, offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
 ```
 
 ```{r, results="hide", warning=FALSE, messages = FALSE}
@@ -108,7 +99,7 @@ output_file_prefix <- "TCGA_OutSplice_Example"
 dir <- paste0(tempdir(), '/')
 print(paste0("Output is located at: ", dir))
     
-OutSplice_TCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex=TRUE, annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg19.knownGene', offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
+outspliceTCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex=TRUE, annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg19.knownGene', offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
 ```
   
   -junction: filepath to a matrix of junction raw read counts
@@ -127,7 +118,7 @@ OutSplice_TCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSe
   
   -annotation: the bioconductor package containing the annotations to use. Uses the human genome by default (in Section 3.4) [OPTIONAL]
   
-  -TxDb: the bioconductor package containing the transcript annotations to use. OutSplice Uses the hg38 genome by default, and OutSplice_TCGA uses hg19 by default (in Section 3.4) [OPTIONAL]
+  -TxDb: the bioconductor package containing the transcript annotations to use. The outsplice function uses the hg38 genome by default, and outspliceTCGA uses hg19 by default (in Section 3.4) [OPTIONAL]
   
   -offsets_value: the normalized junction expression threshold. Uses 0.00001 by default. (in Section 3.6) [OPTIONAL]
   
@@ -140,21 +131,21 @@ genome wide annotation, and transcript annotations exist as packages on Biocondu
 
 ### 2.1 Phenotype matrix 
 
-If using the OutSplice function, users must provide a phenotype matrix, 
+If using the outsplice function, users must provide a phenotype matrix, 
 designating which samples in the junction file belong to the tumor group 
 (labeled as "T") and the normal group (labeled as "F"). Please ensure the 
 matrix file contains a header row with the first column designating the sample 
 names, and the second column designating the phenotype. If using TCGA data, 
-the two phenotypes are "tumor" and "normal." OutSplice_TCGA can automatically 
+the two phenotypes are "tumor" and "normal." outspliceTCGA can automatically 
 infer the phenotype of TCGA data using the sample names. Only if the phenotype 
 matrix has more than 10 control samples, the program proceeds. 
 
-### 2.2 PlotJunctionData
+### 2.2 plotJunctionData
 
-After running OutSplice or OutSplice_TCGA, the user can create plots of specified
-junctions using the PlotJunctionData function.
+After running outsplice or outspliceTCGA, the user can create plots of specified
+junctions using the plotJunctionData function.
 
-The function PlotJunctionData has 1 required input and 10 optional inputs
+The function plotJunctionData has 1 required input and 10 optional inputs
 
 In the below example we can plot the expression levels for a "skipping" junction
 event on the ECM1 gene based on our example data from the TCGA.
@@ -166,7 +157,7 @@ pdf <- 'ecm1_expression.pdf'
 pdf_output <- paste0(tempdir(), '/', pdf)
 print(paste0("Output is located at: ", pdf_output))
   
-PlotJunctionData(data_file, NUMBER=1, junctions=ecm1_junc, tail=NULL, p_value = 0.05, GENE=FALSE, SYMBOL=NULL, makepdf=TRUE, pdffile = pdf_output, tumcol='red', normcol='blue')
+plotJunctionData(data_file, NUMBER=1, junctions=ecm1_junc, tail=NULL, p_value = 0.05, GENE=FALSE, SYMBOL=NULL, makepdf=TRUE, pdffile = pdf_output, tumcol='red', normcol='blue')
 ```
 
   -data_file: filepath to an R Data file containing output from the SplicingOutliers or TCGA_SplicingOutliers Functions.
@@ -315,7 +306,7 @@ Tab-separated text files are also produced for the following data:
   
   -splice_burden: splice_burden.txt
   
-### 4.2 PlotJunctionData
+### 4.2 plotJunctionData
 
 Outputs junction expression plots of user specified junctions as defined in 
 Section 3.8. Plots can be saved to a user defined pdf file.

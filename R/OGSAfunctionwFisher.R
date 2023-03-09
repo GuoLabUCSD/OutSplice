@@ -22,8 +22,8 @@ dotheogsa<-function(Sample.data, PHENO, offsets=0.001, Fisher=FALSE, correction=
 if (Fisher==TRUE){
 ## Initialize a matrix so program will call outliers in normals
 Sample.data.normals<-Sample.data[,PHENO==0]
-no.of.normals<-length(PHENO[PHENO==0])
-no.of.tumors<-length(PHENO[PHENO==1])
+no.of.normals<-sum(PHENO==0)
+no.of.tumors<-sum(PHENO==1)
 # repeat the normal samples so they will be tested as if they are a set of tumors
 Sample.data.normals<-cbind(Sample.data.normals, Sample.data.normals)
 PHENO.N<-PHENO[PHENO==0]
@@ -60,7 +60,7 @@ outRankNormal1 <- apply(outRankExprs1.normals,1,sum)
 ## Perform Fisher's exact test
 FisherP1<-matrix(NA, nrow=nrow(Sample.data), ncol=1, dimnames=list(c(row.names(Sample.data)), 'FisherP1'))
 
-for (i in 1:nrow(Sample.data)){
+for (i in seq_len(nrow(Sample.data))){
   ## Make contingency tables
   test<-matrix(c(outRankNormal1[i],no.of.normals-outRankNormal1[i], outRankTumor1[i],no.of.tumors-outRankTumor1[i]), nrow=2, ncol=2, dimnames=list(c('outliers','rest'), c('Normal', 'Tumor')))
   ## Get p-value from fisher test.  Will do two sided test
@@ -83,7 +83,7 @@ outRankNormal2 <- apply(outRankExprs2.normals,1,sum)
 ## Perform Fisher's exact test
 FisherP2<-matrix(NA, nrow=nrow(Sample.data), ncol=1, dimnames=list(c(row.names(Sample.data)), 'FisherP2'))
 
-for (i in 1:nrow(Sample.data)){
+for (i in seq_len(nrow(Sample.data))){
   ## Make contingency tables
   test<-matrix(c(outRankNormal2[i],no.of.normals-outRankNormal2[i], outRankTumor2[i],no.of.tumors-outRankTumor2[i]), nrow=2, ncol=2, dimnames=list(c('outliers','rest'), c('Normal', 'Tumor')))
   ## Get p-value from fisher test.  Will do two sided test
