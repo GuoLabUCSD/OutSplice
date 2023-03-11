@@ -1,4 +1,5 @@
 #Plot Junction Expression Data
+#' @export
 plotJunctionData<-function(data_file, NUMBER=1, junctions=NULL, tail=NULL, p_value = 0.05, GENE=FALSE, SYMBOL=NULL, makepdf=FALSE, pdffile = NULL, tumcol='red', normcol='blue') {
   suppressPackageStartupMessages(load(data_file))
   ## if you want to make a pdf, this will be specified.  Stop/error if not specified
