@@ -1,8 +1,20 @@
 ---
 title: "OutSplice"
-author: "Joseph Bendik, Sandhya Kalavacherla, Michael Considine, Bahman Afsari, Michael F. Ochs, Joseph Califano, Daria A. Gaykalova, Elana Fertig, Theresa Guo"
+author: 
+- "Joseph Bendik"
+- "Sandhya Kalavacherla"
+- "Michael Considine"
+- "Bahman Afsari"
+- "Michael F. Ochs"
+- "Joseph Califano"
+- "Daria A. Gaykalova"
+- "Elana Fertig" 
+- "Theresa Guo"
 package: "OutSplice"
-output: html_document
+output: 
+    BiocStyle::html_document:
+      toc: true
+      toc_depth: 2
 vignette: >
   %\VignetteIndexEntry{Find Splicing Outliers in Tumor Samples with OutSplice}
   %\VignetteEncoding{UTF-8}  
@@ -13,21 +25,26 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# 1. Introduction
+# Introduction
 
-OutSplice is a package that compares alternative splicing events between tumor 
-and normal samples. This package is specifically designed for analyzing the gene
-and junction information from RNA sequencing data provided by the user, or from 
-the TCGA. This package generates a matrix of splicing outliers, which are 
-junctions that are either significantly over or under-expressed compared to a 
-control sample. OutSplice further designates observed outliers as skipping, 
-insertion, or deletion events. Overall, OutSplice is novel in that it determines 
-differential splicing burdens between tumors and normal samples and characterizes 
-the nature of splicing outliers.
+`r Biocpkg("OutSplice")` is a package that compares splicing events between tumor and 
+normal samples and classifies them as skipping, insertion, or deletion events. 
+This package is specifically designed to analyze RNA sequencing data provided by the user, or from the TCGA. 
+Packages in Bioconductor such as the `r Biocpkg("psichomics")` package, perform similar 
+analyses on TCGA or user-generated data, however they are not as effective at identifying individual events in specific samples. Because of the heterogeneity of tumors in the context of cancer biology, there needs to exist a method to classify alternative splicing events on a per sample basis in addition to finding 
+significant differences between conditions. Therefore, this package generates a 
+matrix of splicing outliers, which are junctions that are either significantly 
+over or under-expressed compared to the distribution of expression in normal 
+tissue. The `r Biocpkg("FRASER")` package also offers functionality to determine splicing 
+outliers, however, `r Biocpkg("OutSplice")` utilizes a rank sum outlier approach instead of a 
+beta binomial model. This allows for users to eliminate less biologically relevant events by setting a minimum level of change in event expression. Additionally, `r Biocpkg("OutSplice")` has an easy to use work-flow that makes it accessible for researchers of varying experience with bioinformatics tools. With `r Biocpkg("OutSplice")`, the junction normalization, filtering, outlier calling, and statistical analysis are done in one function call, simplifying this process for the user. `r Biocpkg("OutSplice")` is also capable of automatically calculating 
+the splicing burden in each of the users samples and will provide waterfall plots of expression to help visualize individual splicing events. Overall, this package is novel in that it determines differential splicing burdens 
+between tumors and normal samples and characterizes the nature of splicing 
+outliers in a quick and easy fashion.
 
-### 1.1 Functionality
+### Functionality
 
-The main functions of OutSplice achieve the following for either user 
+The main functions of `r Biocpkg("OutSplice")` achieve the following for either user 
 provided data or data provided from the TCGA.
 
 1. Junction normalization
@@ -36,20 +53,23 @@ provided data or data provided from the TCGA.
 4. Calculation of splicing burden
 5. Plotting expression levels
 
-### 1.2 Minimum required packages
+### Minimum required packages
 
-OutSplice will import the below packages and their dependencies so please ensure they are installed 
+`r Biocpkg("OutSplice")` will import the below packages and their dependencies so please ensure they are installed 
 before using the software:
 
-1. GenomicRanges
-2. Homo.sapiens
-3. org.Hs.eg.db
-4. Repitools
-5. TxDb.Hsapiens.UCSC.hg19.knownGene
-6. TxDb.Hsapiens.UCSC.hg38.knownGene
+1. AnnotationDbi
+2. GenomicRanges
+3. GenomicFeatures
+4. IRanges
+5. org.Hs.eg.db
+6. Repitools
+7. TxDb.Hsapiens.UCSC.hg19.knownGene
+8. TxDb.Hsapiens.UCSC.hg38.knownGene
+9. S4Vectors
 
-### 1.3 Installation from Bioconductor
-The OutSplice package is available at https://bioconductor.org and can be 
+### Installation from Bioconductor
+The `r Biocpkg("OutSplice")` package is available at https://bioconductor.org and can be 
 installed via BiocManager::install:
 
 ```{r, echo = FALSE, eval=FALSE}
@@ -60,15 +80,15 @@ BiocManager::install("OutSplice")
 
 A package only needs to be installed once. Load the package into an R session with:
 
-```{r, echo=FALSE}
+```{r, message=FALSE}
 library(OutSplice)
 ```
 
-# 2 Inputs
+# Inputs
 
-### 2.1 outsplice/outspliceTCGA
+### outsplice/outspliceTCGA
 
-Full Sample data for OutSplice can be downloaded from The Cancer Genome Atlas (TCGA).
+Full Sample data for `r Biocpkg("OutSplice")` can be downloaded from The Cancer Genome Atlas (TCGA).
 
 The outsplice function has 6 required inputs and 6 optional Inputs.
 The outspliceTCGA function has 5 required inputs and 6 optional Inputs and 
@@ -129,7 +149,7 @@ outspliceTCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex
 This algorithm is compatible with any organism provided the genome object, 
 genome wide annotation, and transcript annotations exist as packages on Bioconductor.
 
-### 2.1 Phenotype matrix 
+### Phenotype matrix 
 
 If using the outsplice function, users must provide a phenotype matrix, 
 designating which samples in the junction file belong to the tumor group 
@@ -140,7 +160,7 @@ the two phenotypes are "tumor" and "normal." outspliceTCGA can automatically
 infer the phenotype of TCGA data using the sample names. Only if the phenotype 
 matrix has more than 10 control samples, the program proceeds. 
 
-### 2.2 plotJunctionData
+### plotJunctionData
 
 After running outsplice or outspliceTCGA, the user can create plots of specified
 junctions using the plotJunctionData function.
@@ -182,23 +202,23 @@ plotJunctionData(data_file, NUMBER=1, junctions=ecm1_junc, tail=NULL, p_value = 
 
  -normcol: color for normals on graph. Default is blue [OPTIONAL]
 
-# 3. Methodology
+# Methodology
 
 The below sections describe the processes used in the above functions.
 
-### 3.1 Junction RPM normalization
+### Junction RPM normalization
 
 The program automatically normalizes the junction counts by dividing the 
 junction counts by the total raw counts and then dividing each count by 10^6 
 to generate RPM junction data.
 
-### 3.2 OGSA initial filtering
+### OGSA initial filtering
 
 The dotheogsa function from the Bioconductor package OGSA is sourced to remove 
 junctions that may not be biologically relevant due to low expression or that have any difference between tumor and normal. 
 In this package, we set a 0.1 RPM expression threshold for pre-filtering. 
 
-### 3.3 OGSA outlier analysis
+### OGSA outlier analysis
 
 The dotheogsa function is again employed to determine splicing events as 
 outliers, which are defined as any normalized junctions that are two standard 
@@ -206,7 +226,7 @@ deviations above or below the median of the normal distribution. A Fisher exact
 test is used to determine which junctions are significantly over or under 
 expressed in tumors compared to the normal samples.
 
-### 3.4 Genomic references
+### Genomic references
 
 The Bioconductor GenomicRanges packages are used to assign each junction to a 
 known gene. The user has the option in the main function to input which genome 
@@ -215,8 +235,7 @@ packages should include the genome object, annotations, and transcript annotatio
 
 Ex) For mouse genomes aligned to mm39, install and load: 
 "Mus.musculus" (genome object), "org.Mm.eg.db" (annotations), and "TxDb.Mmusculus.UCSC.mm39.refGene" 
-(transcript annotations) using the library() function. Then, when using the OutSplice functions, specify "org.Mm.eg.db" 
-for the annotation argument, and "TxDb.Mmusculus.UCSC.mm39.refGene" for the TxDb argument.
+(transcript annotations) using the library() function. Then, when using the `r Biocpkg("OutSplice")` functions, specify "org.Mm.eg.db" for the annotation argument, and "TxDb.Mmusculus.UCSC.mm39.refGene" for the TxDb argument.
 
 This process will also work for any genome provided the correct annotation 
 package, its corresponding transcript annotation package, and their dependencies 
@@ -228,14 +247,14 @@ insertion: junction that starts outside a known exon
 skipping: junction that skips over a known exon
 deletion: junction that is inside a known exon but not as its start or end
 
-### 3.5 Junction expression normalization
+### Junction expression normalization
 
 Junction expression is normalized based on its corresponding gene expression 
 from the gene_expr input. This is achieved by dividing the junction RPM data by the 
 normalized gene expression counts from a junction's corresponding gene. If a junction is aligned
 to more than one gene, then the first gene will be the one selected for the normalization.
 
-### 3.6 Filter by expression via offsets
+### Filter by expression via offsets
 
 Offsets, which the user can specify, sets a minimum value relative to the normal
 samples in order to call a junction an outlier. The goal is to remove data with 
@@ -244,22 +263,22 @@ outlier junction must have a normalized expression greater than 0.00001 in
 order to be called an outlier. Any outliers with expressions below this value 
 are too low to be relevant for the analysis in this example.
 
-### 3.7 Splice Burden Calculation
+### Splice Burden Calculation
 
 Sums the number of splicing events in each sample that were marked as a TRUE 
 outlier for both over-expressed and under-expressed events. The total number of
 outliers is then calculated as the sum of the over and under-expressed outliers.
 
-### 3.8 Junction Plotting
+### Junction Plotting
 
 Creates bar and waterfall plots of junction expression in both the tumor and
 normal samples. The data for these plots comes from the raw junction input, the
 gene expression values to reflect overall gene expression, and the junction
 expression normalized by gene expression.
 
-# 4. Outputs
+# Outputs
 
-### 4.1 OutSplice/OutSplice_TCGA
+### outSplice/outSpliceTCGA
 
 Outputs an RData file with the following data:
 
@@ -306,12 +325,12 @@ Tab-separated text files are also produced for the following data:
   
   -splice_burden: splice_burden.txt
   
-### 4.2 plotJunctionData
+### plotJunctionData
 
 Outputs junction expression plots of user specified junctions as defined in 
 Section 3.8. Plots can be saved to a user defined pdf file.
   
-# 5. References
+# References
 
 Cancer Genome Atlas Network. Comprehensive genomic characterization of head and neck squamous cell carcinomas. Nature. 2015 Jan 29;517(7536):576-82. doi: 10.1038/nature14129. PMID: 25631445; PMCID: PMC4311405.
 
@@ -325,7 +344,7 @@ M. F. Ochs, J. E. Farrar, M. Considine, Y. Wei, S. Meshinchi, and R. J.
 Arceci. Outlier analysis and top scoring pair for integrated data analysis and 
 biomarker discovery. IEEE/ACM Trans Comput Biol Bioinform, 11: 520-32, 2014. PMCID: PMC4156935
 
-# 6. Session Info
+# Session Info
 
 ```{r}
 sessionInfo()
