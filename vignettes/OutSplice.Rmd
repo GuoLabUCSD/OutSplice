@@ -86,21 +86,21 @@ library(OutSplice)
 
 # Inputs
 
-### outsplice/outspliceTCGA
+### outspliceAnalysis/outspliceTCGA
 
 Full Sample data for `r Biocpkg("OutSplice")` can be downloaded from The Cancer Genome Atlas (TCGA).
 
-The outsplice function has 6 required inputs and 6 optional Inputs.
+The outspliceAnalysis function has 6 required inputs and 6 optional Inputs.
 The outspliceTCGA function has 5 required inputs and 6 optional Inputs and 
 should only be used if the data is in TCGA format.
 
-In the below examples we run outsplice and outspliceTCGA on a subset of Head 
+In the below examples we run outspliceAnalysis and outspliceTCGA on a subset of Head 
 and Neck squamous cell carcinoma data obtained from The Broad Institute TCGA 
 GDAC Firehose database.
 
 ```{r, results="hide", warning=FALSE, messages = FALSE}
-junction <- system.file("extdata", "HNSC_junctions.txt", package="OutSplice")
-gene_expr <- system.file("extdata", "HNSC_genes_normalized.txt", package="OutSplice")
+junction <- system.file("extdata", "HNSC_junctions.txt.gz", package="OutSplice")
+gene_expr <- system.file("extdata", "HNSC_genes_normalized.txt.gz", package="OutSplice")
 rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package="OutSplice")
 sample_labels <- system.file("extdata", "HNSC_pheno_table.txt", package="OutSplice")
 output_file_prefix <- "OutSplice_Example"
@@ -108,12 +108,12 @@ TxDb_hg19 <- "TxDb.Hsapiens.UCSC.hg19.knownGene"
 dir <- paste0(tempdir(), '/')
 print(paste0("Output is located at: ", dir))
   
-outsplice(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=TRUE, annotation='org.Hs.eg.db', TxDb=TxDb_hg19, offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
+outspliceAnalysis(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=TRUE, annotation='org.Hs.eg.db', TxDb=TxDb_hg19, offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
 ```
 
 ```{r, results="hide", warning=FALSE, messages = FALSE}
-junction <- system.file("extdata", "TCGA_HNSC_junctions.txt", package="OutSplice")
-gene_expr <- system.file("extdata", "TCGA_HNSC_genes_normalized.txt", package="OutSplice")
+junction <- system.file("extdata", "TCGA_HNSC_junctions.txt.gz", package="OutSplice")
+gene_expr <- system.file("extdata", "TCGA_HNSC_genes_normalized.txt.gz", package="OutSplice")
 rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package="OutSplice")
 output_file_prefix <- "TCGA_OutSplice_Example"
 dir <- paste0(tempdir(), '/')
@@ -138,7 +138,7 @@ outspliceTCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex
   
   -annotation: the bioconductor package containing the annotations to use. Uses the human genome by default (in Section 3.4) [OPTIONAL]
   
-  -TxDb: the bioconductor package containing the transcript annotations to use. The outsplice function uses the hg38 genome by default, and outspliceTCGA uses hg19 by default (in Section 3.4) [OPTIONAL]
+  -TxDb: the bioconductor package containing the transcript annotations to use. The outspliceAnalysis function uses the hg38 genome by default, and outspliceTCGA uses hg19 by default (in Section 3.4) [OPTIONAL]
   
   -offsets_value: the normalized junction expression threshold. Uses 0.00001 by default. (in Section 3.6) [OPTIONAL]
   
@@ -151,7 +151,7 @@ genome wide annotation, and transcript annotations exist as packages on Biocondu
 
 ### Phenotype matrix 
 
-If using the outsplice function, users must provide a phenotype matrix, 
+If using the outspliceAnalysis function, users must provide a phenotype matrix, 
 designating which samples in the junction file belong to the tumor group 
 (labeled as "T") and the normal group (labeled as "F"). Please ensure the 
 matrix file contains a header row with the first column designating the sample 
@@ -162,7 +162,7 @@ matrix has more than 10 control samples, the program proceeds.
 
 ### plotJunctionData
 
-After running outsplice or outspliceTCGA, the user can create plots of specified
+After running outspliceAnalysis or outspliceTCGA, the user can create plots of specified
 junctions using the plotJunctionData function.
 
 The function plotJunctionData has 1 required input and 10 optional inputs
@@ -278,7 +278,7 @@ expression normalized by gene expression.
 
 # Outputs
 
-### outSplice/outSpliceTCGA
+### outSpliceAnalysis/outSpliceTCGA
 
 Outputs an RData file with the following data:
 

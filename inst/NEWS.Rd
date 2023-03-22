@@ -12,3 +12,9 @@
     \item Fixed Bioc-devel mailing list registration and added package to Watched Tags
   }
 }
+
+\section{Changes in version 0.99.2 (2023-03-22)}{
+  \itemize{
+    \item Numerous changes to address comments made during the review process
+  }
+}

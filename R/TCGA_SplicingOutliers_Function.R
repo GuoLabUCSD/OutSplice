@@ -17,8 +17,8 @@
 #' @param p_value Set the alpha value for the significance threshold.
 #' @return Matrix of junction events containing the number of under/over-expressed outliers in the tumor group (outRank1/outRank2), the Fisher p-value for under/over-expressed events (FisherP1/FisherP2), and vectors that can be used to order and rank the under/over expressed events (var1/var2): Ex) FisherAnalyses[FisherAnalyses[,'var2'],]
 #' @examples
-#' junction <- system.file("extdata", "TCGA_HNSC_junctions.txt", package="OutSplice")
-#' gene_expr <- system.file("extdata", "TCGA_HNSC_genes_normalized.txt", package="OutSplice")
+#' junction <- system.file("extdata", "TCGA_HNSC_junctions.txt.gz", package="OutSplice")
+#' gene_expr <- system.file("extdata", "TCGA_HNSC_genes_normalized.txt.gz", package="OutSplice")
 #' rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package="OutSplice")
 #' output_file_prefix <- "TCGA_OutSplice_Example"
 #' dir <- paste0(tempdir(), '/')

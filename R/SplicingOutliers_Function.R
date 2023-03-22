@@ -17,14 +17,14 @@
 #' @param p_value Set the alpha value for the significance threshold.
 #' @return Matrix of junction events containing the number of under/over-expressed outliers in the tumor group (outRank1/outRank2), the Fisher p-value for under/over-expressed events (FisherP1/FisherP2), and vectors that can be used to order and rank the under/over expressed events (var1/var2): Ex) FisherAnalyses[FisherAnalyses[,'var2'],]
 #' @examples
-#' junction <- system.file("extdata", "HNSC_junctions.txt", package="OutSplice")
-#' gene_expr <- system.file("extdata", "HNSC_genes_normalized.txt", package="OutSplice")
+#' junction <- system.file("extdata", "HNSC_junctions.txt.gz", package="OutSplice")
+#' gene_expr <- system.file("extdata", "HNSC_genes_normalized.txt.gz", package="OutSplice")
 #' rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package="OutSplice")
 #' sample_labels <- system.file("extdata", "HNSC_pheno_table.txt", package="OutSplice")
 #' output_file_prefix <- "OutSplice_Example"
 #' TxDb_hg19 <- "TxDb.Hsapiens.UCSC.hg19.knownGene"
 #' dir <- paste0(tempdir(), '/')
-#' outsplice(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=TRUE, annotation='org.Hs.eg.db', TxDb=TxDb_hg19, offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
+#' outspliceAnalysis(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=TRUE, annotation='org.Hs.eg.db', TxDb=TxDb_hg19, offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
 #' print(paste0("Output is located at: ", dir))
 #' @references
 #' Cancer Genome Atlas Network. Comprehensive genomic characterization of head and neck squamous cell carcinomas. Nature. 2015 Jan 29;517(7536):576-82. doi: 10.1038/nature14129. PMID: 25631445; PMCID: PMC4311405.
@@ -46,7 +46,7 @@
 #' @importFrom S4Vectors Rle subjectHits queryHits
 #' @importFrom AnnotationDbi select
 #' @export
-outsplice<-function(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=TRUE, annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg38.knownGene', offsets_value = 0.00001, correction_setting = 'fdr', p_value=0.05){
+outspliceAnalysis<-function(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=TRUE, annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg38.knownGene', offsets_value = 0.00001, correction_setting = 'fdr', p_value=0.05){
 
   date<-Sys.Date()
   ## this is non-log transformed data and includes pheno (RAW, in RPM)
