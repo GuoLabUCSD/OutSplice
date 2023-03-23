@@ -323,7 +323,7 @@ OutSplice<-function(junction, gene_expr, rawcounts, sample_labels, output_file_p
   }
   ## Overexpression in tumors
   toplist90<-FisherAnalyses[topgenelist90.ogsa,]
-  if (sum(toplist90[,"FisherP2"]<0.05)>0){
+  if (sum(toplist90[,"FisherP2"]<p_value)>0){
     toplist90<-toplist90[toplist90[,"FisherP2"]<p_value,]
     toplist90<-toplist90[,"FisherP2"]
 
