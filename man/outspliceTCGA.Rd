@@ -48,8 +48,8 @@ Matrix of junction events containing the number of under/over-expressed outliers
 Analyze differential splicing events between tumor and normal samples for TCGA formatted datasets. Examples of TCGA file formats can be viewed here (https://gdac.broadinstitute.org/)
 }
 \examples{
-junction <- system.file("extdata", "TCGA_HNSC_junctions.txt", package="OutSplice")
-gene_expr <- system.file("extdata", "TCGA_HNSC_genes_normalized.txt", package="OutSplice")
+junction <- system.file("extdata", "TCGA_HNSC_junctions.txt.gz", package="OutSplice")
+gene_expr <- system.file("extdata", "TCGA_HNSC_genes_normalized.txt.gz", package="OutSplice")
 rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package="OutSplice")
 output_file_prefix <- "TCGA_OutSplice_Example"
 dir <- paste0(tempdir(), '/')

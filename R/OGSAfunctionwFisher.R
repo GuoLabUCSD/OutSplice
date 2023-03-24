@@ -100,12 +100,16 @@ if (Fisher==TRUE){
   FisherP1<-p.adjust(FisherP1, method = correction)
   FisherP2<-p.adjust(FisherP2, method = correction)
   }
-return(RankingData<-cbind(outRankTumor1, var1, FisherP1, outRankTumor2, var2, FisherP2))
-} else   {return(RankingData<-cbind(outRankTumor1, var1, outRankTumor2, var2))
+RankingData<-cbind(outRankTumor1, var1, FisherP1, outRankTumor2, var2, FisherP2)
+return(RankingData)
+} else   {
+  RankingData<-cbind(outRankTumor1, var1, outRankTumor2, var2)
+  return(RankingData)
 }
 
-}else {return(OutlierCalls<-list("TumorUnderExpression" = outRankExprs1, "TumorOverExpression" = outRankExprs2))}
-
-
+}else {
+  OutlierCalls<-list("TumorUnderExpression" = outRankExprs1, "TumorOverExpression" = outRankExprs2)
+  return(OutlierCalls)
+  }
 
 }

@@ -51,8 +51,8 @@ Matrix of junction events containing the number of under/over-expressed outliers
 Analyzes differential splicing events between tumor and normal samples.
 }
 \examples{
-junction <- system.file("extdata", "HNSC_junctions.txt", package="OutSplice")
-gene_expr <- system.file("extdata", "HNSC_genes_normalized.txt", package="OutSplice")
+junction <- system.file("extdata", "HNSC_junctions.txt.gz", package="OutSplice")
+gene_expr <- system.file("extdata", "HNSC_genes_normalized.txt.gz", package="OutSplice")
 rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package="OutSplice")
 sample_labels <- system.file("extdata", "HNSC_pheno_table.txt", package="OutSplice")
 output_file_prefix <- "OutSplice_Example"

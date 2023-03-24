@@ -40,5 +40,7 @@ calcBurden <- function(junc.Outliers, FisherAnalyses, p_value) {
   convert_total <- subset(total_results, select = c(-OutlierNumberOver, -OutlierNumberUnder, -Row.names))
   total_burden <- as.data.frame(convert_total)
 
-  return(splice_burden <- cbind(all_oe_results_df, all_ue_results_df, total_burden))
+  splice_burden <- cbind(all_oe_results_df, all_ue_results_df, total_burden)
+
+  return(splice_burden)
 }

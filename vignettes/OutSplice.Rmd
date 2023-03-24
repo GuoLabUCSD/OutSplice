@@ -128,7 +128,7 @@ outspliceTCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex
   
   -rawcounts: filepath to a matrix of raw read counts for each gene. Can either be per gene, or a summed total for each sample.
   
-  -sample_labels: filepath to a matrix of phenotypes (in Section 2.1)
+  -sample_labels: filepath to a matrix of phenotypes (in Section 2.0.2)
   
   -output_file_prefix: user defined string for what the prefix of the output file should be named
   
@@ -136,13 +136,13 @@ outspliceTCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex
   
   -filtersex: ignores sex chromosomes when generating results. True by default [OPTIONAL]
   
-  -annotation: the bioconductor package containing the annotations to use. Uses the human genome by default (in Section 3.4) [OPTIONAL]
+  -annotation: the bioconductor package containing the annotations to use. Uses the human genome by default (in Section 3.0.4) [OPTIONAL]
   
-  -TxDb: the bioconductor package containing the transcript annotations to use. The outspliceAnalysis function uses the hg38 genome by default, and outspliceTCGA uses hg19 by default (in Section 3.4) [OPTIONAL]
+  -TxDb: the bioconductor package containing the transcript annotations to use. The outspliceAnalysis function uses the hg38 genome by default, and outspliceTCGA uses hg19 by default (in Section 3.0.4). [OPTIONAL]
   
-  -offsets_value: the normalized junction expression threshold. Uses 0.00001 by default. (in Section 3.6) [OPTIONAL]
+  -offsets_value: the normalized junction expression threshold. Uses 0.00001 by default. (in Section 3.0.6) [OPTIONAL]
   
-  -correction_setting: the correction value to be used for p-value adjustment during Fisher analyses. Uses 'fdr' by default. [OPTIONAL]
+  -correction_setting: the correction value to be used for p-value adjustment during Fisher analyses. The available options are: "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", and "none". Uses 'fdr' by default. [OPTIONAL]
   
   -p_value: the significance threshold to use during Fisher analyses. Uses 0.05 by default. [OPTIONAL]
 
@@ -180,7 +180,7 @@ print(paste0("Output is located at: ", pdf_output))
 plotJunctionData(data_file, NUMBER=1, junctions=ecm1_junc, tail=NULL, p_value = 0.05, GENE=FALSE, SYMBOL=NULL, makepdf=TRUE, pdffile = pdf_output, tumcol='red', normcol='blue')
 ```
 
-  -data_file: filepath to an R Data file containing output from the SplicingOutliers or TCGA_SplicingOutliers Functions.
+  -data_file: filepath to an R Data file containing output from the outspliceAnalysis or outspliceTCGA functions.
 
   -NUMBER: number of junctions to plot.  This can be top number of junctions (over or under expressed), or can be specific junctions in a list.  Default is 1 [OPTIONAL]
 
@@ -234,8 +234,9 @@ and its associated Bioconductor packages to use as the reference. These Biocondu
 packages should include the genome object, annotations, and transcript annotations.
 
 Ex) For mouse genomes aligned to mm39, install and load: 
-"Mus.musculus" (genome object), "org.Mm.eg.db" (annotations), and "TxDb.Mmusculus.UCSC.mm39.refGene" 
-(transcript annotations) using the library() function. Then, when using the `r Biocpkg("OutSplice")` functions, specify "org.Mm.eg.db" for the annotation argument, and "TxDb.Mmusculus.UCSC.mm39.refGene" for the TxDb argument.
+`r Biocpkg("Mus.musculus")` (genome object), `r Biocpkg("org.Mm.eg.db")` (annotations), 
+and `r Biocpkg("TxDb.Mmusculus.UCSC.mm39.refGene")` (transcript annotations) using the library() function. Then, when using the `r Biocpkg("OutSplice")` functions, specify `r Biocpkg("org.Mm.eg.db")` for the annotation argument, 
+and `r Biocpkg("TxDb.Mmusculus.UCSC.mm39.refGene")` for the TxDb argument.
 
 This process will also work for any genome provided the correct annotation 
 package, its corresponding transcript annotation package, and their dependencies 
@@ -328,7 +329,7 @@ Tab-separated text files are also produced for the following data:
 ### plotJunctionData
 
 Outputs junction expression plots of user specified junctions as defined in 
-Section 3.8. Plots can be saved to a user defined pdf file.
+Section 3.0.8. Plots can be saved to a user defined pdf file.
   
 # References
 
