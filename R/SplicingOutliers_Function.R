@@ -17,14 +17,14 @@
 #' @param p_value Set the alpha value for the significance threshold.
 #' @return Matrix of junction events containing the number of under/over-expressed outliers in the tumor group (outRank1/outRank2), the Fisher p-value for under/over-expressed events (FisherP1/FisherP2), and vectors that can be used to order and rank the under/over expressed events (var1/var2): Ex) FisherAnalyses[FisherAnalyses[,'var2'],]
 #' @examples
-#' junction <- system.file("extdata", "HNSC_junctions.txt.gz", package="OutSplice")
-#' gene_expr <- system.file("extdata", "HNSC_genes_normalized.txt.gz", package="OutSplice")
-#' rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package="OutSplice")
-#' sample_labels <- system.file("extdata", "HNSC_pheno_table.txt", package="OutSplice")
+#' junction <- system.file("extdata", "HNSC_junctions.txt.gz", package = "OutSplice")
+#' gene_expr <- system.file("extdata", "HNSC_genes_normalized.txt.gz", package = "OutSplice")
+#' rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package = "OutSplice")
+#' sample_labels <- system.file("extdata", "HNSC_pheno_table.txt", package = "OutSplice")
 #' output_file_prefix <- "OutSplice_Example"
 #' TxDb_hg19 <- "TxDb.Hsapiens.UCSC.hg19.knownGene"
-#' dir <- paste0(tempdir(), '/')
-#' outspliceAnalysis(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=TRUE, annotation='org.Hs.eg.db', TxDb=TxDb_hg19, offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
+#' dir <- paste0(tempdir(), "/")
+#' outspliceAnalysis(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex = TRUE, annotation = "org.Hs.eg.db", TxDb = TxDb_hg19, offsets_value = 0.00001, correction_setting = "fdr", p_value = 0.05)
 #' print(paste0("Output is located at: ", dir))
 #' @references
 #' Cancer Genome Atlas Network. Comprehensive genomic characterization of head and neck squamous cell carcinomas. Nature. 2015 Jan 29;517(7536):576-82. doi: 10.1038/nature14129. PMID: 25631445; PMCID: PMC4311405.
@@ -37,105 +37,104 @@
 #'
 #' M. F. Ochs, J. E. Farrar, M. Considine, Y. Wei, S. Meshinchi, and R. J. Arceci. Outlier analysis and top scoring pair for integrated data analysis and biomarker discovery. IEEE/ACM Trans Comput Biol Bioinform, 11: 520-32, 2014. PMCID: PMC4156935
 #' @export
-outspliceAnalysis<-function(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=TRUE, annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg38.knownGene', offsets_value = 0.00001, correction_setting = 'fdr', p_value=0.05){
-
+outspliceAnalysis <- function(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex = TRUE, annotation = "org.Hs.eg.db", TxDb = "TxDb.Hsapiens.UCSC.hg38.knownGene", offsets_value = 0.00001, correction_setting = "fdr", p_value = 0.05) {
   checkOSArgs(junction, gene_expr, rawcounts, output_file_prefix, dir)
   stopifnot("Sample Labels File does not exist. Check path to file." = file.exists(sample_labels))
 
-  date<-Sys.Date()
+  date <- Sys.Date()
   ## this is non-log transformed data and includes pheno (RAW, in RPM)
-  print('Loading data')
-  all.junc<-read.table(file=junction, sep='\t', header=TRUE, stringsAsFactors = FALSE)
-  all.gene_expr<-read.table(file=gene_expr, header=TRUE, row.names=1, sep="\t")
-  rawcounts<-read.table(file=rawcounts, sep='\t', header=TRUE, row.names=1, stringsAsFactors = FALSE)
-  samps.labels <- read.table(file=sample_labels, sep = '\t', row.names=1, header=TRUE, stringsAsFactors = FALSE)
+  print("Loading data")
+  all.junc <- read.table(file = junction, sep = "\t", header = TRUE, stringsAsFactors = FALSE)
+  all.gene_expr <- read.table(file = gene_expr, header = TRUE, row.names = 1, sep = "\t")
+  rawcounts <- read.table(file = rawcounts, sep = "\t", header = TRUE, row.names = 1, stringsAsFactors = FALSE)
+  samps.labels <- read.table(file = sample_labels, sep = "\t", row.names = 1, header = TRUE, stringsAsFactors = FALSE)
 
-  colnames(rawcounts)<-gsub('\\.', "-", colnames(rawcounts))
+  colnames(rawcounts) <- gsub("\\.", "-", colnames(rawcounts))
 
-  all.samples<-colnames(all.junc)
+  all.samples <- colnames(all.junc)
 
-  all.samples<-gsub('\\.', '-', all.samples)
-  junction.names<-all.junc[,1]
-  #remove duplicates
-  all.junc<-all.junc[!duplicated(junction.names),]
-  junction.names<-all.junc[,1]
+  all.samples <- gsub("\\.", "-", all.samples)
+  junction.names <- all.junc[, 1]
+  # remove duplicates
+  all.junc <- all.junc[!duplicated(junction.names), ]
+  junction.names <- all.junc[, 1]
 
-  rownames(all.junc)<-junction.names
-  colnames(all.junc)<-all.samples
+  rownames(all.junc) <- junction.names
+  colnames(all.junc) <- all.samples
 
-  #remove first column
-  all.junc<-all.junc[,-1]
+  # remove first column
+  all.junc <- all.junc[, -1]
 
 
-  expression.samples<-gsub('\\.', '-', colnames(all.gene_expr))
-  colnames(all.gene_expr)<-expression.samples
+  expression.samples <- gsub("\\.", "-", colnames(all.gene_expr))
+  colnames(all.gene_expr) <- expression.samples
 
-  #Order Columns by Name
+  # Order Columns by Name
   samps.labels_df <- as.data.frame((t(samps.labels)))
-  samps.labels_df <- samps.labels_df[ , order(colnames(samps.labels_df))]
+  samps.labels_df <- samps.labels_df[, order(colnames(samps.labels_df))]
 
-  all.junc <- all.junc[ , order(colnames(all.junc))]
+  all.junc <- all.junc[, order(colnames(all.junc))]
 
-  all.gene_expr <- all.gene_expr[ , order(colnames(all.gene_expr))]
+  all.gene_expr <- all.gene_expr[, order(colnames(all.gene_expr))]
 
-  rawcounts <- rawcounts[ , order(colnames(rawcounts))]
+  rawcounts <- rawcounts[, order(colnames(rawcounts))]
 
-  #Get Vector of labels
+  # Get Vector of labels
   samps.labels <- (t(samps.labels))
-  samps.labels <- samps.labels[ , order(colnames(samps.labels))]
+  samps.labels <- samps.labels[, order(colnames(samps.labels))]
 
-  #infer phenotype from sample names
-  all.samples<-intersect(colnames(all.junc), colnames(all.gene_expr))
-  all.samples<-intersect(all.samples, colnames(rawcounts))
-  all.samples<-intersect(all.samples, colnames(samps.labels_df))
+  # infer phenotype from sample names
+  all.samples <- intersect(colnames(all.junc), colnames(all.gene_expr))
+  all.samples <- intersect(all.samples, colnames(rawcounts))
+  all.samples <- intersect(all.samples, colnames(samps.labels_df))
 
   pheno <- samps.labels
-  names(pheno)<-all.samples
+  names(pheno) <- all.samples
   # include only tumor or normal
-  pheno<-pheno[pheno==TRUE|pheno==FALSE]
-  pheno[pheno==TRUE]<-"Tumor"
-  pheno[pheno==FALSE]<-"Normal"
+  pheno <- pheno[pheno == TRUE | pheno == FALSE]
+  pheno[pheno == TRUE] <- "Tumor"
+  pheno[pheno == FALSE] <- "Normal"
   print(table(pheno))
   #
-  if (sum(pheno=="Normal")<10){
-    stop('Too few normal samples')
+  if (sum(pheno == "Normal") < 10) {
+    stop("Too few normal samples")
   }
-  #subset only primary tumor 01 or normal 11
-  all.samples<-names(pheno)
-  all.junc<-all.junc[,all.samples]
-  all.gene_expr<-all.gene_expr[,all.samples]
-  rawcounts<-rawcounts[,all.samples]
-  pheno<-pheno[all.samples]
+  # subset only primary tumor 01 or normal 11
+  all.samples <- names(pheno)
+  all.junc <- all.junc[, all.samples]
+  all.gene_expr <- all.gene_expr[, all.samples]
+  rawcounts <- rawcounts[, all.samples]
+  pheno <- pheno[all.samples]
 
-  ##change from char to numeric
-  n<-vapply(all.gene_expr, as.numeric, numeric(nrow(all.gene_expr)))
-  rownames(n)<-rownames(all.gene_expr)
-  all.gene_expr<-n
-  n<-vapply(all.junc, as.numeric, numeric(nrow(all.junc)))
-  rownames(n)<-rownames(all.junc)
-  all.junc<-n
+  ## change from char to numeric
+  n <- vapply(all.gene_expr, as.numeric, numeric(nrow(all.gene_expr)))
+  rownames(n) <- rownames(all.gene_expr)
+  all.gene_expr <- n
+  n <- vapply(all.junc, as.numeric, numeric(nrow(all.junc)))
+  rownames(n) <- rownames(all.junc)
+  all.junc <- n
   remove(n)
 
-  ##normalize Junctions to get RPM
+  ## normalize Junctions to get RPM
   junc.RPM <- getRPM(rawcounts, all.junc, all.samples)
 
   ###### NEW FILTER: See if tumors have any outliers ###########################
-  ##PHENO should have 'Normal' or 'Tumor' calls where Tumor ==1, Normal ==0, and names of each sample associated
-  PHENO<-pheno=='Tumor'
-  PHENO<-as.numeric(PHENO)
-  names(PHENO)<-names(pheno)
+  ## PHENO should have 'Normal' or 'Tumor' calls where Tumor ==1, Normal ==0, and names of each sample associated
+  PHENO <- pheno == "Tumor"
+  PHENO <- as.numeric(PHENO)
+  names(PHENO) <- names(pheno)
 
   print("run the ogsa function for pre filtering")
   ## get function
 
-  test2<-dotheogsa(Sample.data=junc.RPM, PHENO=PHENO, offsets=0.1, dir = dir)
-  has.outliers<-test2[,"outRankTumor1"]>1|test2[,"outRankTumor2"]>1
-  junc.RPM<-junc.RPM[has.outliers,]
+  test2 <- dotheogsa(Sample.data = junc.RPM, PHENO = PHENO, offsets = 0.1, dir = dir)
+  has.outliers <- test2[, "outRankTumor1"] > 1 | test2[, "outRankTumor2"] > 1
+  junc.RPM <- junc.RPM[has.outliers, ]
   #
   #  ### Filter all genes on the X and Y chromosomes
   #
   if (filterSex) {
-    junc.RPM <- junc.RPM[grep('chr[XY]',row.names(junc.RPM),value=TRUE,invert=TRUE),]
+    junc.RPM <- junc.RPM[grep("chr[XY]", row.names(junc.RPM), value = TRUE, invert = TRUE), ]
   }
 
   # ##############################################################
@@ -147,36 +146,38 @@ outspliceAnalysis<-function(junction, gene_expr, rawcounts, sample_labels, outpu
   print("insertions")
   print("skipping")
 
-  geneAnnot <- geneAnnot[apply(cbind(geneAnnot$deletions, geneAnnot$insertions,
-                                     geneAnnot$skipping),1,any),]
-  junc.RPM <- junc.RPM[names(geneAnnot),]
+  geneAnnot <- geneAnnot[apply(cbind(
+    geneAnnot$deletions, geneAnnot$insertions,
+    geneAnnot$skipping
+  ), 1, any), ]
+  junc.RPM <- junc.RPM[names(geneAnnot), ]
 
   ##################################################################
   print("remove all that map to 'NA' no gene name, and assign gene expression from gene_expr")
-  junc.RPM<-junc.RPM[!is.na(geneAnnot$SYMBOL),]
-  geneAnnot<-geneAnnot[row.names(junc.RPM),]
+  junc.RPM <- junc.RPM[!is.na(geneAnnot$SYMBOL), ]
+  geneAnnot <- geneAnnot[row.names(junc.RPM), ]
 
   ## remove row names for unknown genes containing "?" unknown genes
 
-  all.gene_expr <- all.gene_expr[!grepl('\\?', row.names(all.gene_expr)),]
+  all.gene_expr <- all.gene_expr[!grepl("\\?", row.names(all.gene_expr)), ]
 
   ## get gene IDs
-  gene_exprEntrezID<-row.names(all.gene_expr)
+  gene_exprEntrezID <- row.names(all.gene_expr)
 
   print("align with gene_expr data")
 
   junctionGenegene_expr <- getExpressions(geneAnnot, all.gene_expr, gene_exprEntrezID)
 
-  #remove junctions without gene expression
-  junc.RPM<-junc.RPM[row.names(junctionGenegene_expr),]
+  # remove junctions without gene expression
+  junc.RPM <- junc.RPM[row.names(junctionGenegene_expr), ]
 
 
   print("subset removing any genes without normalization")
-  junc.RPM2<-junc.RPM[!(apply(junctionGenegene_expr, 1,sum))==0,]
+  junc.RPM2 <- junc.RPM[!(apply(junctionGenegene_expr, 1, sum)) == 0, ]
   dim(junc.RPM2)
   # ## filters junctions
-  junc.RPM.original<-junc.RPM
-  junc.RPM<-junc.RPM2
+  junc.RPM.original <- junc.RPM
+  junc.RPM <- junc.RPM2
 
   print("Perform normalization using gene_expr values")
 
@@ -187,54 +188,54 @@ outspliceAnalysis<-function(junction, gene_expr, rawcounts, sample_labels, outpu
 
   print("run the ogsa function")
 
-  FisherAnalyses=dotheogsa(Sample.data=junc.RPM.norm, PHENO=PHENO, offsets=offsets_value, Fisher=TRUE, correction=correction_setting, dir = dir)
+  FisherAnalyses <- dotheogsa(Sample.data = junc.RPM.norm, PHENO = PHENO, offsets = offsets_value, Fisher = TRUE, correction = correction_setting, dir = dir)
   ## use default offset=0.001 for normalized data
   # create lists of top genes
-  topgenelist10.ogsa=FisherAnalyses[,'var1']
+  topgenelist10.ogsa <- FisherAnalyses[, "var1"]
 
-  topgenelist90.ogsa=FisherAnalyses[,'var2']
+  topgenelist90.ogsa <- FisherAnalyses[, "var2"]
 
 
-  ##Use Fisher to subset candidates that have Fisher test p value <0.05, or cutoff can be adjusted
+  ## Use Fisher to subset candidates that have Fisher test p value <0.05, or cutoff can be adjusted
   ## Underexpression in tumors
   toplist10 <- subset_underEx(FisherAnalyses, topgenelist10.ogsa, p_value)
 
   ## Overexpression in tumors
   toplist90 <- subset_overEx(FisherAnalyses, topgenelist90.ogsa, p_value)
 
-  junctions<-c(names(toplist90), names(toplist10))
-  pvalues<-c(toplist90, toplist10)
+  junctions <- c(names(toplist90), names(toplist10))
+  pvalues <- c(toplist90, toplist10)
 
   ### get outier calls##
-  junc.Outliers<-dotheogsa(Sample.data=junc.RPM.norm, PHENO=PHENO, offsets=offsets_value, Fisher=TRUE, correction=correction_setting, outliers=TRUE, dir = dir)
+  junc.Outliers <- dotheogsa(Sample.data = junc.RPM.norm, PHENO = PHENO, offsets = offsets_value, Fisher = TRUE, correction = correction_setting, outliers = TRUE, dir = dir)
 
   ## median of normal expression within the normalized data
-  NORM.gene_expr.norm<-apply(junc.RPM.norm[,pheno == 'Normal'],1,median)
+  NORM.gene_expr.norm <- apply(junc.RPM.norm[, pheno == "Normal"], 1, median)
 
   ## aggregate the data
-  gene_expr<-junctionGenegene_expr
-  junc.RPM.norm<-junc.RPM.norm
+  gene_expr <- junctionGenegene_expr
+  junc.RPM.norm <- junc.RPM.norm
   geneAnnotations <- geneAnnot
-  geneAnnot<-geneAnnot[junctions]
-  ASE.type<-cbind(geneAnnot$skipping, geneAnnot$insertions, geneAnnot$deletions)
-  colnames(ASE.type)<-c("skipping", "insertions", "deletions")
-  row.names(ASE.type)<-junctions
+  geneAnnot <- geneAnnot[junctions]
+  ASE.type <- cbind(geneAnnot$skipping, geneAnnot$insertions, geneAnnot$deletions)
+  colnames(ASE.type) <- c("skipping", "insertions", "deletions")
+  row.names(ASE.type) <- junctions
 
   ## Calculate Splicing Burden
   splice_burden <- calcBurden(junc.Outliers, FisherAnalyses, p_value)
 
   ## save output file
-  save(junc.RPM, gene_expr, junc.RPM.norm, pvalues, pheno, FisherAnalyses, geneAnnotations, ASE.type, NORM.gene_expr.norm, junc.Outliers, splice_burden, file=paste0(dir, output_file_prefix,"_", date, ".RDa"))
+  save(junc.RPM, gene_expr, junc.RPM.norm, pvalues, pheno, FisherAnalyses, geneAnnotations, ASE.type, NORM.gene_expr.norm, junc.Outliers, splice_burden, file = paste0(dir, output_file_prefix, "_", date, ".RDa"))
 
-  #Write Files
-  write.table(ASE.type, file=paste0(dir, output_file_prefix, "_", date, "_", 'event_types.txt'), sep = '\t', quote=FALSE, col.names=NA)
-  write.table(FisherAnalyses, file=paste0(dir, output_file_prefix, "_", date, "_", 'FisherAnalyses.txt'), sep = '\t', quote=FALSE, col.names=NA)
-  write.table(as.data.frame(junc.Outliers$TumorOverExpression), file = paste0(dir, output_file_prefix, "_", date, "_", 'TumorOverExpression.txt'), sep = '\t', quote=FALSE, col.names=NA)
-  write.table(as.data.frame(junc.Outliers$TumorUnderExpression), file = paste0(dir, output_file_prefix, "_", date, "_", 'TumorUnderExpression.txt'), sep = '\t', quote=FALSE, col.names=NA)
-  write.table(splice_burden, file=paste0(dir, output_file_prefix, "_", date, "_", 'splice_burden.txt'), sep = '\t', quote=FALSE, col.names=NA)
+  # Write Files
+  write.table(ASE.type, file = paste0(dir, output_file_prefix, "_", date, "_", "event_types.txt"), sep = "\t", quote = FALSE, col.names = NA)
+  write.table(FisherAnalyses, file = paste0(dir, output_file_prefix, "_", date, "_", "FisherAnalyses.txt"), sep = "\t", quote = FALSE, col.names = NA)
+  write.table(as.data.frame(junc.Outliers$TumorOverExpression), file = paste0(dir, output_file_prefix, "_", date, "_", "TumorOverExpression.txt"), sep = "\t", quote = FALSE, col.names = NA)
+  write.table(as.data.frame(junc.Outliers$TumorUnderExpression), file = paste0(dir, output_file_prefix, "_", date, "_", "TumorUnderExpression.txt"), sep = "\t", quote = FALSE, col.names = NA)
+  write.table(splice_burden, file = paste0(dir, output_file_prefix, "_", date, "_", "splice_burden.txt"), sep = "\t", quote = FALSE, col.names = NA)
 
   annotations_df <- annoGR2DF(geneAnnotations)
-  write.table(annotations_df, file = paste0(dir, output_file_prefix, "_", date, "_", 'gene_annotations.txt'), sep = '\t', quote = FALSE, col.names=NA)
+  write.table(annotations_df, file = paste0(dir, output_file_prefix, "_", date, "_", "gene_annotations.txt"), sep = "\t", quote = FALSE, col.names = NA)
 
   return(FisherAnalyses)
 }

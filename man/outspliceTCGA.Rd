@@ -37,7 +37,7 @@ outspliceTCGA(
 
 \item{offsets_value}{The minimum expression value needed to call an event an outlier after normalizing event expression with gene expression.}
 
-\item{correction_setting}{Option to designate how to correct significance.}
+\item{correction_setting}{Option to designate how to correct significance. The available options are: "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", and "none".}
 
 \item{p_value}{Set the alpha value for the significance threshold.}
 }
@@ -48,12 +48,12 @@ Matrix of junction events containing the number of under/over-expressed outliers
 Analyze differential splicing events between tumor and normal samples for TCGA formatted datasets. Examples of TCGA file formats can be viewed here (https://gdac.broadinstitute.org/)
 }
 \examples{
-junction <- system.file("extdata", "TCGA_HNSC_junctions.txt.gz", package="OutSplice")
-gene_expr <- system.file("extdata", "TCGA_HNSC_genes_normalized.txt.gz", package="OutSplice")
-rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package="OutSplice")
+junction <- system.file("extdata", "TCGA_HNSC_junctions.txt.gz", package = "OutSplice")
+gene_expr <- system.file("extdata", "TCGA_HNSC_genes_normalized.txt.gz", package = "OutSplice")
+rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package = "OutSplice")
 output_file_prefix <- "TCGA_OutSplice_Example"
-dir <- paste0(tempdir(), '/')
-outspliceTCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex=TRUE, annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg19.knownGene', offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
+dir <- paste0(tempdir(), "/")
+outspliceTCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex = TRUE, annotation = "org.Hs.eg.db", TxDb = "TxDb.Hsapiens.UCSC.hg19.knownGene", offsets_value = 0.00001, correction_setting = "fdr", p_value = 0.05)
 print(paste0("Output is located at: ", dir))
 }
 \references{

@@ -40,7 +40,7 @@ outspliceAnalysis(
 
 \item{offsets_value}{The minimum expression value needed to call an event an outlier after normalizing event expression with gene expression.}
 
-\item{correction_setting}{Option to designate how to correct significance.}
+\item{correction_setting}{Option to designate how to correct significance. The available options are: "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", and "none".}
 
 \item{p_value}{Set the alpha value for the significance threshold.}
 }
@@ -51,14 +51,14 @@ Matrix of junction events containing the number of under/over-expressed outliers
 Analyzes differential splicing events between tumor and normal samples.
 }
 \examples{
-junction <- system.file("extdata", "HNSC_junctions.txt.gz", package="OutSplice")
-gene_expr <- system.file("extdata", "HNSC_genes_normalized.txt.gz", package="OutSplice")
-rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package="OutSplice")
-sample_labels <- system.file("extdata", "HNSC_pheno_table.txt", package="OutSplice")
+junction <- system.file("extdata", "HNSC_junctions.txt.gz", package = "OutSplice")
+gene_expr <- system.file("extdata", "HNSC_genes_normalized.txt.gz", package = "OutSplice")
+rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package = "OutSplice")
+sample_labels <- system.file("extdata", "HNSC_pheno_table.txt", package = "OutSplice")
 output_file_prefix <- "OutSplice_Example"
 TxDb_hg19 <- "TxDb.Hsapiens.UCSC.hg19.knownGene"
-dir <- paste0(tempdir(), '/')
-outspliceAnalysis(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=TRUE, annotation='org.Hs.eg.db', TxDb=TxDb_hg19, offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
+dir <- paste0(tempdir(), "/")
+outspliceAnalysis(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex = TRUE, annotation = "org.Hs.eg.db", TxDb = TxDb_hg19, offsets_value = 0.00001, correction_setting = "fdr", p_value = 0.05)
 print(paste0("Output is located at: ", dir))
 }
 \references{

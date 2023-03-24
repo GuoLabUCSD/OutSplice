@@ -50,9 +50,9 @@ Create Bar and Waterfall plots of raw junction expression, overall gene expressi
 \examples{
 data_file <- system.file("extdata", "OutSplice_Example_2023-01-06.RDa", package = "OutSplice")
 ecm1_junc <- "chr1:150483674-150483933"
-pdf <- 'ecm1_expression.pdf'
-pdf_output <- paste0(tempdir(), '/', pdf)
-plotJunctionData(data_file, NUMBER=1, junctions=ecm1_junc, tail=NULL, p_value = 0.05, GENE=FALSE, SYMBOL=NULL, makepdf=TRUE, pdffile = pdf_output, tumcol='red', normcol='blue')
+pdf <- "ecm1_expression.pdf"
+pdf_output <- paste0(tempdir(), "/", pdf)
+plotJunctionData(data_file, NUMBER = 1, junctions = ecm1_junc, tail = NULL, p_value = 0.05, GENE = FALSE, SYMBOL = NULL, makepdf = TRUE, pdffile = pdf_output, tumcol = "red", normcol = "blue")
 print(paste0("Output is located at: ", pdf_output))
 }
 \references{
