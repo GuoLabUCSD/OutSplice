@@ -233,7 +233,9 @@ from Bioconductor are provided and loaded.
 Using this genomic assignment, the dotheogsa function determines insertion, skipping, or deletion events based on the following criteria:
 
 insertion: junction that starts outside a known exon
+
 skipping: junction that skips over a known exon
+
 deletion: junction that is inside a known exon but not as its start or end
 
 ### Junction expression normalization
@@ -277,7 +279,7 @@ Outputs an RData file with the following data:
   
   -geneAnnotations: object containing gene names corresponding to each junction region
   
-  -junc.Outliers: list containing the logical matrices TumorOverExpression and TumorUnderExpression. "True" indicates an over-expressed event in TumorOverExpression, or an under-expressed event in TumorUnderExpression.
+  junc.Outliers: list containing the logical matrices TumorOverExpression and TumorUnderExpression. “True” indicates an over-expressed event in TumorOverExpression, or an under-expressed event in TumorUnderExpression.
   
   -junc.RPM: junction counts in reads per million following a division of the junction counts input by the total rawcounts for each sample
   

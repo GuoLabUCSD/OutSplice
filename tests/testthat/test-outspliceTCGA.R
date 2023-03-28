@@ -5,5 +5,5 @@ test_that("outspliceTCGA function works", {
     dir <- paste0(tempdir(), "/")
     results_matrixTCGA <- outspliceTCGA(junction, gene_expr, rawcounts, "outspliceTCGA_unit_test", dir, filterSex = TRUE, annotation = "org.Hs.eg.db", TxDb = "TxDb.Hsapiens.UCSC.hg19.knownGene", offsets_value = 0.00001, correction_setting = "fdr", p_value = 0.05)
     expect_no_error(results_matrixTCGA)
-    expect_equal(unname(unlist(results_matrixTCGA['chr1:150483674-150483933', "Num_OE_Outliers"])), 28)
+    expect_equal(unname(unlist(results_matrixTCGA["chr1:150483674-150483933", "Num_OE_Outliers"])), 28)
 })
