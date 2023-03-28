@@ -54,7 +54,7 @@ rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package = "OutSplice"
 output_file_prefix <- "TCGA_OutSplice_Example"
 dir <- paste0(tempdir(), "/")
 outspliceTCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex = TRUE, annotation = "org.Hs.eg.db", TxDb = "TxDb.Hsapiens.UCSC.hg19.knownGene", offsets_value = 0.00001, correction_setting = "fdr", p_value = 0.05)
-print(paste0("Output is located at: ", dir))
+message("Output is located at: ", dir)
 }
 \references{
 Cancer Genome Atlas Network. Comprehensive genomic characterization of head and neck squamous cell carcinomas. Nature. 2015 Jan 29;517(7536):576-82. doi: 10.1038/nature14129. PMID: 25631445; PMCID: PMC4311405.

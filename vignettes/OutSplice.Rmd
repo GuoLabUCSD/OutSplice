@@ -27,20 +27,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Introduction
 
-`r Biocpkg("OutSplice")` is a package that compares splicing events between tumor and 
-normal samples and classifies them as skipping, insertion, or deletion events. 
-This package is specifically designed to analyze RNA sequencing data provided by the user, or from the TCGA. 
-Packages in Bioconductor such as the `r Biocpkg("psichomics")` package, perform similar 
-analyses on TCGA or user-generated data, however they are not as effective at identifying individual events in specific samples. Because of the heterogeneity of tumors in the context of cancer biology, there needs to exist a method to classify alternative splicing events on a per sample basis in addition to finding 
-significant differences between conditions. Therefore, this package generates a 
-matrix of splicing outliers, which are junctions that are either significantly 
-over or under-expressed compared to the distribution of expression in normal 
-tissue. The `r Biocpkg("FRASER")` package also offers functionality to determine splicing 
-outliers, however, `r Biocpkg("OutSplice")` utilizes a rank sum outlier approach instead of a 
-beta binomial model. This allows for users to eliminate less biologically relevant events by setting a minimum level of change in event expression. Additionally, `r Biocpkg("OutSplice")` has an easy to use work-flow that makes it accessible for researchers of varying experience with bioinformatics tools. With `r Biocpkg("OutSplice")`, the junction normalization, filtering, outlier calling, and statistical analysis are done in one function call, simplifying this process for the user. `r Biocpkg("OutSplice")` is also capable of automatically calculating 
-the splicing burden in each of the users samples and will provide waterfall plots of expression to help visualize individual splicing events. Overall, this package is novel in that it determines differential splicing burdens 
-between tumors and normal samples and characterizes the nature of splicing 
-outliers in a quick and easy fashion.
+`r Biocpkg("OutSplice")` is a package that identifies aberrant splicing events in tumor samples when compared to normal samples using outlier statistics to better characterize sporadic events occurring in heterogenous cancer samples. Events are classified as skipping, insertion, or deletion events. Additionally, outlier expression of each splicing event is called per sample allowing for evaluation of splicing burden of individual samples. This package is specifically designed to analyze RNA sequencing data provided by the user; additional functions have also been added for direct analysis from the Cancer Genome Atlas (TCGA). Packages in Bioconductor, such as the `r Biocpkg("psichomics")` package, perform similar analyses on TCGA or user-generated data, however they are not specifically designed to identify cancer specific events. Because of the heterogeneity of tumors in the context of cancer biology, outlier statistics rather than mean comparisons are used to identify aberrant events, where outliers are classified on a per sample basis; this allows the algorithm to discern splicing events with outlier expression within that may occur within a subset of tumor samples when compared to normal conditions. Therefore, this package generates a matrix of splicing outliers, which are associated with splice junctions that are either significantly over or under-expressed compared to the distribution of expression in normal tissue. The `r Biocpkg("FRASER")` package also offers functionality to determine splicing outliers, however, `r Biocpkg("OutSplice")` utilizes a rank sum outlier approach instead of a beta binomial model. This allows for users to eliminate less biologically relevant events by setting a minimum level of event expression. Additionally, `r Biocpkg("OutSplice")` has an easy to use work-flow that makes it accessible for researchers of varying experience with bioinformatics tools. With `r Biocpkg("OutSplice")`, the junction normalization, filtering, outlier calling, and statistical analysis are done in one function call, simplifying this process for the user. `r Biocpkg("OutSplice")` is also capable of automatically calculating the splicing burden in each of the user’s samples and will provide waterfall plots of expression to help visualize individual splicing events. Overall, this package is novel in that it determines differential splicing burdens between tumors and normal samples and characterizes the nature of splicing outliers in a quick and user friendly fashion.
 
 ### Functionality
 
@@ -73,8 +60,9 @@ The `r Biocpkg("OutSplice")` package is available at https://bioconductor.org an
 installed via BiocManager::install:
 
 ```{r, echo = FALSE, eval=FALSE}
-if (!require("BiocManager"))
-  install.packages("BiocManager")
+if (!require("BiocManager")) {
+    install.packages("BiocManager")
+}
 BiocManager::install("OutSplice")
 ```
 
@@ -99,27 +87,27 @@ and Neck squamous cell carcinoma data obtained from The Broad Institute TCGA
 GDAC Firehose database.
 
 ```{r, results="hide", warning=FALSE, messages = FALSE}
-junction <- system.file("extdata", "HNSC_junctions.txt.gz", package="OutSplice")
-gene_expr <- system.file("extdata", "HNSC_genes_normalized.txt.gz", package="OutSplice")
-rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package="OutSplice")
-sample_labels <- system.file("extdata", "HNSC_pheno_table.txt", package="OutSplice")
+junction <- system.file("extdata", "HNSC_junctions.txt.gz", package = "OutSplice")
+gene_expr <- system.file("extdata", "HNSC_genes_normalized.txt.gz", package = "OutSplice")
+rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package = "OutSplice")
+sample_labels <- system.file("extdata", "HNSC_pheno_table.txt", package = "OutSplice")
 output_file_prefix <- "OutSplice_Example"
 TxDb_hg19 <- "TxDb.Hsapiens.UCSC.hg19.knownGene"
-dir <- paste0(tempdir(), '/')
-print(paste0("Output is located at: ", dir))
-  
-outspliceAnalysis(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex=TRUE, annotation='org.Hs.eg.db', TxDb=TxDb_hg19, offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
+dir <- paste0(tempdir(), "/")
+message("Output is located at: ", dir)
+
+outspliceAnalysis(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex = TRUE, annotation = "org.Hs.eg.db", TxDb = TxDb_hg19, offsets_value = 0.00001, correction_setting = "fdr", p_value = 0.05)
 ```
 
 ```{r, results="hide", warning=FALSE, messages = FALSE}
-junction <- system.file("extdata", "TCGA_HNSC_junctions.txt.gz", package="OutSplice")
-gene_expr <- system.file("extdata", "TCGA_HNSC_genes_normalized.txt.gz", package="OutSplice")
-rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package="OutSplice")
+junction <- system.file("extdata", "TCGA_HNSC_junctions.txt.gz", package = "OutSplice")
+gene_expr <- system.file("extdata", "TCGA_HNSC_genes_normalized.txt.gz", package = "OutSplice")
+rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package = "OutSplice")
 output_file_prefix <- "TCGA_OutSplice_Example"
-dir <- paste0(tempdir(), '/')
-print(paste0("Output is located at: ", dir))
-    
-outspliceTCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex=TRUE, annotation = 'org.Hs.eg.db', TxDb = 'TxDb.Hsapiens.UCSC.hg19.knownGene', offsets_value=0.00001, correction_setting='fdr', p_value=0.05)
+dir <- paste0(tempdir(), "/")
+message("Output is located at: ", dir)
+
+outspliceTCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex = TRUE, annotation = "org.Hs.eg.db", TxDb = "TxDb.Hsapiens.UCSC.hg19.knownGene", offsets_value = 0.00001, correction_setting = "fdr", p_value = 0.05)
 ```
   
   -junction: filepath to a matrix of junction raw read counts
@@ -173,11 +161,11 @@ event on the ECM1 gene based on our example data from the TCGA.
 ```{r, results="hide", warning=FALSE, messages=FALSE}
 data_file <- system.file("extdata", "OutSplice_Example_2023-01-06.RDa", package = "OutSplice")
 ecm1_junc <- "chr1:150483674-150483933"
-pdf <- 'ecm1_expression.pdf'
-pdf_output <- paste0(tempdir(), '/', pdf)
-print(paste0("Output is located at: ", pdf_output))
-  
-plotJunctionData(data_file, NUMBER=1, junctions=ecm1_junc, tail=NULL, p_value = 0.05, GENE=FALSE, SYMBOL=NULL, makepdf=TRUE, pdffile = pdf_output, tumcol='red', normcol='blue')
+pdf <- "ecm1_expression.pdf"
+pdf_output <- paste0(tempdir(), "/", pdf)
+message("Output is located at: ", pdf_output)
+
+plotJunctionData(data_file, NUMBER = 1, junctions = ecm1_junc, tail = NULL, p_value = 0.05, GENE = FALSE, SYMBOL = NULL, makepdf = TRUE, pdffile = pdf_output, tumcol = "red", normcol = "blue")
 ```
 
   -data_file: filepath to an R Data file containing output from the outspliceAnalysis or outspliceTCGA functions.
@@ -285,30 +273,21 @@ Outputs an RData file with the following data:
 
   -ASE.type: significant junction events labeled by type (skipping, insertion, or deletion)
   
-  -FisherAnalyses: matrix of junction events containing the number of under/over-expressed 
-  outliers in the tumor group (outRank1/outRank2), the Fisher p-value for under/over-expressed 
-  events (FisherP1/FisherP2), and vectors that can be used to order and rank the 
-  under/over expressed events (var1/var2):
-  Ex) FisherAnalyses[FisherAnalyses[,'var2'],]
+  -FisherAnalyses: Matrix of junction events containing the number of under/over-expressed outliers in the tumor group (Num_UE_Outliers/Num_OE_Outliers), the Fisher p-value for under/over-expressed events (FisherP1/FisherP2), and a ranking of the under/over expressed events (UE_Rank/OE_Rank)
   
   -geneAnnotations: object containing gene names corresponding to each junction region
   
-  -junc.Outliers: list containing the logical matrices TumorOverExpression and 
-  TumorUnderExpression. "True" indicates an over-expressed event in 
-  TumorOverExpression, or an under-expressed event in TumorUnderExpression.
+  -junc.Outliers: list containing the logical matrices TumorOverExpression and TumorUnderExpression. "True" indicates an over-expressed event in TumorOverExpression, or an under-expressed event in TumorUnderExpression.
   
-  -junc.RPM: junction counts in reads per million following a division of the 
-  junction counts input by the total rawcounts for each sample
+  -junc.RPM: junction counts in reads per million following a division of the junction counts input by the total rawcounts for each sample
   
   -junc.RPM.norm: junction counts normalized by each event's total gene expression value
   
   -gene_expr: gene expression values for each junction event
   
-  -splice_burden: matrix containing the number of Fisher-P significant 
-  over-expressed, under-expressed, and total number of outliers per sample
+  -splice_burden: matrix containing the number of Fisher-P significant over-expressed, under-expressed, and total number of outliers per sample
   
-  -NORM.gene_expr.norm: Median of Junction Data Normalized by gene expression for Normal Samples
-  Only (Used for Junction Plotting Only)
+  -NORM.gene_expr.norm: Median of junction data normalized by gene expression for normal samples only (Used for Junction Plotting Only)
   
   -pheno: Phenotypes of Samples (Tumor or Normal)
   

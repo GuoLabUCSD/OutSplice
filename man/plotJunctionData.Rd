@@ -53,7 +53,7 @@ ecm1_junc <- "chr1:150483674-150483933"
 pdf <- "ecm1_expression.pdf"
 pdf_output <- paste0(tempdir(), "/", pdf)
 plotJunctionData(data_file, NUMBER = 1, junctions = ecm1_junc, tail = NULL, p_value = 0.05, GENE = FALSE, SYMBOL = NULL, makepdf = TRUE, pdffile = pdf_output, tumcol = "red", normcol = "blue")
-print(paste0("Output is located at: ", pdf_output))
+message("Output is located at: ", pdf_output)
 }
 \references{
 Cancer Genome Atlas Network. Comprehensive genomic characterization of head and neck squamous cell carcinomas. Nature. 2015 Jan 29;517(7536):576-82. doi: 10.1038/nature14129. PMID: 25631445; PMCID: PMC4311405.

@@ -59,7 +59,7 @@ output_file_prefix <- "OutSplice_Example"
 TxDb_hg19 <- "TxDb.Hsapiens.UCSC.hg19.knownGene"
 dir <- paste0(tempdir(), "/")
 outspliceAnalysis(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex = TRUE, annotation = "org.Hs.eg.db", TxDb = TxDb_hg19, offsets_value = 0.00001, correction_setting = "fdr", p_value = 0.05)
-print(paste0("Output is located at: ", dir))
+message("Output is located at: ", dir)
 }
 \references{
 Cancer Genome Atlas Network. Comprehensive genomic characterization of head and neck squamous cell carcinomas. Nature. 2015 Jan 29;517(7536):576-82. doi: 10.1038/nature14129. PMID: 25631445; PMCID: PMC4311405.

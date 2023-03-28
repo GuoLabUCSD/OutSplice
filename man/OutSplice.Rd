@@ -15,7 +15,7 @@ plots of event expression.
 \details{
 Below are the available functions provided by OutSplice:
 \itemize{
-    \item \code{\link{outsplice}}
+    \item \code{\link{outspliceAnalysis}}
     \item \code{\link{outspliceTCGA}}
     \item \code{\link{plotJunctionData}}
 }
