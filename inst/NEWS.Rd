@@ -24,3 +24,9 @@
     \item Added BiocGenerics to Description and import statements
   }
 }
+
+\section{Changes in version 0.99.4 (2023-03-29)}{
+  \itemize{
+    \item Correct error with BiocGenerics exported functions
+  }
+}
