@@ -14,7 +14,7 @@ calcBurden <- function(junc.Outliers, FisherAnalyses, p_value) {
     Over_Expressed_Junctions_Outlier_Calls <- subset(Over_Expressed_Junctions_Outlier_Calls, Over_Expressed_Junctions_Outlier_Calls$FisherP2 < p_value)
     Over_Expressed_Junctions_Outlier_Calls <- subset(Over_Expressed_Junctions_Outlier_Calls, select = -FisherP2)
 
-    OutlierNumberOver <- colSums(Over_Expressed_Junctions_Outlier_Calls)
+    OutlierNumberOver <- base::colSums(Over_Expressed_Junctions_Outlier_Calls)
     all_oe_results_df <- data.frame(OutlierNumberOver)
 
     # Calculate Splicing Burden for Significant Events Under-Expressed in Tumors
@@ -30,7 +30,7 @@ calcBurden <- function(junc.Outliers, FisherAnalyses, p_value) {
     Under_Expressed_Junctions_Outlier_Calls <- subset(Under_Expressed_Junctions_Outlier_Calls, Under_Expressed_Junctions_Outlier_Calls$FisherP1 < p_value)
     Under_Expressed_Junctions_Outlier_Calls <- subset(Under_Expressed_Junctions_Outlier_Calls, select = -FisherP1)
 
-    OutlierNumberUnder <- colSums(Under_Expressed_Junctions_Outlier_Calls)
+    OutlierNumberUnder <- base::colSums(Under_Expressed_Junctions_Outlier_Calls)
     all_ue_results_df <- data.frame(OutlierNumberUnder)
 
     # Total Splicing Burden as the sum of Over + Under Expressed Events

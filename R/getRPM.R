@@ -3,7 +3,7 @@
 getRPM <- function(rawcounts, all.junc, all.samples) {
     ## get data in RPM
     message("convert to RPM")
-    totalrawcount <- colSums(rawcounts)
+    totalrawcount <- base::colSums(rawcounts)
     names(totalrawcount) <- colnames(rawcounts)
     junc.RPM <- apply(all.junc[, all.samples], 1, function(x) {
         x / totalrawcount[all.samples] * 1000000
