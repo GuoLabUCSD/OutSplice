@@ -98,8 +98,8 @@ dotheogsa <- function(Sample.data, PHENO, offsets = 0.001, Fisher = FALSE, corre
             RankingData_OE <- as.data.frame(RankingData_OE)
             RankingData_UE <- RankingData_UE[RankingData_UE$UE_Rank, ]
             RankingData_OE <- RankingData_OE[RankingData_OE$OE_Rank, ]
-            RankingData_UE$UE_Rank <- c(1:nrow(RankingData_UE))
-            RankingData_OE$OE_Rank <- c(1:nrow(RankingData_OE))
+            RankingData_UE$UE_Rank <- c(seq_len(nrow(RankingData_UE)))
+            RankingData_OE$OE_Rank <- c(seq_len(nrow(RankingData_OE)))
             RankingData <- merge(RankingData_UE, RankingData_OE, by = "row.names", all = TRUE)
             rownames(RankingData) <- RankingData$Row.names
             RankingData <- subset(RankingData, select = -Row.names)

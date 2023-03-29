@@ -18,7 +18,6 @@
 #' @name OutSplice
 #'
 #' @import GenomicRanges
-#' @importFrom MatrixGenerics rowSums colSums rowMeans colMeans
 #' @importFrom GenomicFeatures genes exons
 #' @importFrom IRanges IRanges overlapsAny
 #' @importFrom org.Hs.eg.db org.Hs.eg.db

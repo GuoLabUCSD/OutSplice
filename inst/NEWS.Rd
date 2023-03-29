@@ -30,3 +30,9 @@
     \item Correct error with BiocGenerics exported functions
   }
 }
+
+\section{Changes in version 0.99.5 (2023-03-29)}{
+  \itemize{
+    \item Correct package for build report
+  }
+}
