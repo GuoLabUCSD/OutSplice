@@ -21,7 +21,7 @@ Description: An easy to use tool that can compare splicing events in
 Encoding: UTF-8
 License: GPL-2
 Depends: R(>= 4.2)
-Imports: AnnotationDbi (>= 1.60.0), GenomicRanges (>= 1.49.0), 
+Imports: AnnotationDbi (>= 1.60.0), MatrixGenerics (>= 1.11.1), GenomicRanges (>= 1.49.0), 
     GenomicFeatures (>= 1.50.2), IRanges (>= 2.32.0), org.Hs.eg.db (>= 3.16.0), 
     Repitools (>= 1.44.0), TxDb.Hsapiens.UCSC.hg19.knownGene (>= 3.2.2),
     TxDb.Hsapiens.UCSC.hg38.knownGene (>= 3.16.0), 
