@@ -18,3 +18,9 @@
     \item Numerous changes to address comments made during the review process
   }
 }
+
+\section{Changes in version 0.99.3 (2023-03-28)}{
+  \itemize{
+    \item Added BiocGenerics to Description and import statements
+  }
+}

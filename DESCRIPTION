@@ -1,7 +1,7 @@
 Package: OutSplice
 Type: Package
 Title: Comparison of Splicing Events between Tumor and Normal Samples
-Version: 0.99.2
+Version: 0.99.3
 Authors@R: c(person("Joseph", "Bendik", role = "aut", comment = c(ORCID = "0000-0003-0877-5639")),
     person("Sandhya", "Kalavacherla", role = "aut", comment = c(ORCID = "0000-0003-0485-9042")),
     person("Michael", "Considine", role = "aut", comment = c(ORCID = "0000-0002-8666-4857")), 
@@ -21,7 +21,7 @@ Description: An easy to use tool that can compare splicing events in
 Encoding: UTF-8
 License: GPL-2
 Depends: R(>= 4.2)
-Imports: AnnotationDbi (>= 1.60.0), GenomicRanges (>= 1.49.0), 
+Imports: AnnotationDbi (>= 1.60.0), BiocGenerics (>= 0.44.0), GenomicRanges (>= 1.49.0), 
     GenomicFeatures (>= 1.50.2), IRanges (>= 2.32.0), org.Hs.eg.db (>= 3.16.0), 
     Repitools (>= 1.44.0), TxDb.Hsapiens.UCSC.hg19.knownGene (>= 3.2.2),
     TxDb.Hsapiens.UCSC.hg38.knownGene (>= 3.16.0), 
