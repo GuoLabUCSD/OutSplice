@@ -92,7 +92,6 @@ dotheogsa <- function(Sample.data, PHENO, offsets = 0.001, Fisher = FALSE, corre
                 FisherP1 <- p.adjust(FisherP1, method = correction)
                 FisherP2 <- p.adjust(FisherP2, method = correction)
             }
-            RankingData <- cbind(Num_UE_Outliers, UE_Rank, FisherP1, Num_OE_Outliers, OE_Rank, FisherP2)
             RankingData_UE <- cbind(Num_UE_Outliers, UE_Rank, FisherP1)
             RankingData_OE <- cbind(Num_OE_Outliers, OE_Rank, FisherP2)
             RankingData_UE <- as.data.frame(RankingData_UE)
