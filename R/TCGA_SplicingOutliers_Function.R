@@ -289,7 +289,7 @@ OutSplice_TCGA<-function(junction, gene_expr, rawcounts, output_file_prefix, dir
 
   print("run the ogsa function")
 
-  FisherAnalyses=dotheogsa(Sample.data=junc.RPM.norm, PHENO=PHENO, offsets=offsets_value, Fisher=T, correction='fdr', dir = dir)
+  FisherAnalyses=dotheogsa(Sample.data=junc.RPM.norm, PHENO=PHENO, offsets=offsets_value, Fisher=T, correction=correction_setting, dir = dir)
   ## use default offset=0.001 for normalized data
   # create lists of top genes
   topgenelist10.ogsa=FisherAnalyses[,'var1']
