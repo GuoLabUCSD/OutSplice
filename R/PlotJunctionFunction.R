@@ -33,7 +33,9 @@
 #'
 #' M. F. Ochs, J. E. Farrar, M. Considine, Y. Wei, S. Meshinchi, and R. J. Arceci. Outlier analysis and top scoring pair for integrated data analysis and biomarker discovery. IEEE/ACM Trans Comput Biol Bioinform, 11: 520-32, 2014. PMCID: PMC4156935
 #' @export
-plotJunctionData <- function(data_file, NUMBER = 1, junctions = NULL, tail = NULL, p_value = 0.05, GENE = FALSE, SYMBOL = NULL, makepdf = FALSE, pdffile = NULL, tumcol = "red", normcol = "blue") {
+plotJunctionData <- function(data_file, NUMBER = 1, junctions = NULL, tail = NULL,
+                             p_value = 0.05, GENE = FALSE, SYMBOL = NULL, makepdf = FALSE,
+                             pdffile = NULL, tumcol = "red", normcol = "blue") {
     stopifnot("R Data File does not exist. Check path to file." = file.exists(data_file))
     if (!NUMBER > 0) {
         stop("NUMBER must be an integer greater than 0.")
@@ -90,7 +92,10 @@ plotJunctionData <- function(data_file, NUMBER = 1, junctions = NULL, tail = NUL
         message(j)
         phenotypes <- as.data.frame(pheno)
         samples <- order(phenotypes$pheno, junc.RPM.norm[j, ], junc.RPM.norm[j, ])
-        barplot(log2(junc.RPM[j, samples] + 1), cex.names = 0.3, las = 2, col = ifelse(phenotypes[samples, "pheno"] == "Tumor", tumcol, normcol))
+        barplot(log2(junc.RPM[j, samples] + 1),
+            cex.names = 0.3, las = 2,
+            col = ifelse(phenotypes[samples, "pheno"] == "Tumor", tumcol, normcol)
+        )
         title(sprintf(
             "Junction Expression (log)\nskip? %s del? %s? ins? %s",
             geneAnnotations[j, ]$skipping, geneAnnotations[j, ]$deletions,

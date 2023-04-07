@@ -9,45 +9,60 @@ outspliceAnalysis(
   gene_expr,
   rawcounts,
   sample_labels,
-  output_file_prefix,
-  dir,
+  saveOutput = FALSE,
+  output_file_prefix = NULL,
+  dir = NULL,
   filterSex = TRUE,
   annotation = "org.Hs.eg.db",
   TxDb = "TxDb.Hsapiens.UCSC.hg38.knownGene",
   offsets_value = 1e-05,
   correction_setting = "fdr",
-  p_value = 0.05
+  p_value = 0.05,
+  use_junc_col = 1,
+  use_gene_col = 1,
+  use_rc_col = 1,
+  use_labels_col = 1
 )
 }
 \arguments{
-\item{junction}{A character string giving the path to a tab separated text file with raw junction counts. The first column includes all junctions to be looked at by OutSplice (Ex: chr1: 1-100). Each proceeding column is a sample with the raw count information for each corresponding junction. The header row contains the name of the junction column, and the names of the samples.}
+\item{junction}{A character string giving the path to a tab separated text file with raw junction counts. One column should include all of the junctions to be looked at by OutSplice (Ex: chr1: 1-100). Each proceeding column is a sample with the raw count information for each corresponding junction. The header row contains the name of the junction column, and the names of the samples.}
 
-\item{gene_expr}{A character string giving the path to a tab separated file with normalized gene expression data. The first column are the entrez ids for each gene, and each proceeding column should be a sample with the normalized expression values for each gene. The file header row contains the name of the entrez id column, and the names of the samples.}
+\item{gene_expr}{A character string giving the path to a tab separated file with normalized gene expression data. One column should include all of the entrez ids for each gene, and each proceeding column should be a sample with the normalized expression values for each gene. The file header row contains the name of the entrez id column, and the names of the samples.}
 
-\item{rawcounts}{A character string giving the path to a tab separated text file with the reads per million counts for each sample. This file can either include a row with the total counts per sample, or multiple rows with raw counts per gene per sample that will be summed automatically by OutSplice. The first column includes user defined row names and the subsequent columns are the sample's rawcount information. The header row contains the name of the row names column and the names of the samples.}
+\item{rawcounts}{A character string giving the path to a tab separated text file with the reads per million counts for each sample. This file can either include a row with the total counts per sample, or multiple rows with raw counts per gene per sample that will be summed automatically by OutSplice. One of the columns should include the user defined row names and the subsequent columns are the sample's rawcount information. The header row contains the name of the row names column and the names of the samples.}
 
-\item{sample_labels}{A character string giving the path to a tab separated text file with a matrix of tumor and normal labels (T/F) for each sample. The first column should include the names of the samples, and the second column should include "T" for tumors and "F" for normals. The header row contains user defined column names.}
+\item{sample_labels}{A character string giving the path to a tab separated text file with a matrix of tumor and normal labels (T/F) for each sample. One of the columns should include the names of the samples, and the other column should include "T" for tumors and "F" for normals. The header row contains user defined column names.}
 
-\item{output_file_prefix}{A character string giving the name of the prefix the user would like to use for the output data file.}
+\item{saveOutput}{A boolean representing whether or not to save the results to an R data file and tab separated files. Default is FALSE. Optional.}
 
-\item{dir}{A character string giving the path to the directory the user would like to save output to.}
+\item{output_file_prefix}{A character string giving the name of the prefix the user would like to use for the output data file. Default is NULL. Optional.}
 
-\item{filterSex}{A boolean representing whether or not to include junctions found on the sex chromosomes.}
+\item{dir}{A character string giving the path to the directory the user would like to save output to. Default is NULL. Optional.}
 
-\item{annotation}{A connection or a character string giving the name of the Bioconductor library the user would like to use containing the genome wide annotation.}
+\item{filterSex}{A boolean representing whether or not to include junctions found on the sex chromosomes. Default is TRUE. Optional.}
 
-\item{TxDb}{A character string giving the name of the Bioconductor library the user would like to use that will expose the annotation database as a TxDb object.}
+\item{annotation}{A connection or a character string giving the name of the Bioconductor library the user would like to use containing the genome wide annotation. Default is "org.Hs.eg.db". Optional.}
 
-\item{offsets_value}{The minimum expression value needed to call an event an outlier after normalizing event expression with gene expression.}
+\item{TxDb}{A character string giving the name of the Bioconductor library the user would like to use that will expose the annotation database as a TxDb object. Default is "TxDb.Hsapiens.UCSC.hg38.knownGene". Optional.}
 
-\item{correction_setting}{Option to designate how to correct significance. The available options are: "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", and "none".}
+\item{offsets_value}{The minimum expression value needed to call an event an outlier after normalizing event expression with gene expression. Default is 0.00001. Optional.}
 
-\item{p_value}{Set the alpha value for the significance threshold.}
+\item{correction_setting}{Option to designate how to correct significance. The available options are: "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", and "none". Default is "fdr". Optional.}
+
+\item{p_value}{Set the alpha value for the significance threshold. Default is 0.05. Optional.}
+
+\item{use_junc_col}{An integer indicating which column in the junction matrix contains the junction regions in your matrices. Default is 1. Optional}
+
+\item{use_gene_col}{An integer indicating which column in the gene_expr matrix contains the entrez ids of your genes. Default is 1. Optional}
+
+\item{use_rc_col}{An integer indicating which column in the rawcounts matrix contains the row names. Default is 1. Optional}
+
+\item{use_labels_col}{An integer indicating which column in the sample_labels matrix contains the sample names. Default is 1. Optional}
 }
 \value{
-Data Frame of junction events containing the number of under/over-expressed outliers in the tumor group (Num_UE_Outliers/Num_OE_Outliers), the Fisher p-value for under/over-expressed events (FisherP1/FisherP2), and a ranking of the under/over expressed events (UE_Rank/OE_Rank)
+A list containing the below data.
 \itemize{
-    \item FisherAnalyses: Data Frame of the above return value
+    \item FisherAnalyses: Data Frame of junction events containing the number of under/over-expressed outliers in the tumor group (Num_UE_Outliers/Num_OE_Outliers), the Fisher p-value for under/over-expressed events (FisherP1/FisherP2), and a ranking of the under/over expressed events (UE_Rank/OE_Rank)
     \item ASE.type: significant junction events labeled by type (skipping, insertion, or deletion)
     \item geneAnnotations: object containing gene names corresponding to each junction region
     \item junc.Outliers: list containing the logical matrices TumorOverExpression and TumorUnderExpression. "True" indicates an over-expressed event in TumorOverExpression, or an under-expressed event in TumorUnderExpression.
@@ -71,7 +86,7 @@ sample_labels <- system.file("extdata", "HNSC_pheno_table.txt", package = "OutSp
 output_file_prefix <- "OutSplice_Example"
 TxDb_hg19 <- "TxDb.Hsapiens.UCSC.hg19.knownGene"
 dir <- paste0(tempdir(), "/")
-outspliceAnalysis(junction, gene_expr, rawcounts, sample_labels, output_file_prefix, dir, filterSex = TRUE, annotation = "org.Hs.eg.db", TxDb = TxDb_hg19, offsets_value = 0.00001, correction_setting = "fdr", p_value = 0.05)
+results <- outspliceAnalysis(junction, gene_expr, rawcounts, sample_labels, saveOutput = TRUE, output_file_prefix, dir, filterSex = TRUE, annotation = "org.Hs.eg.db", TxDb = TxDb_hg19, offsets_value = 0.00001, correction_setting = "fdr", p_value = 0.05)
 message("Output is located at: ", dir)
 }
 \references{

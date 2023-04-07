@@ -6,7 +6,7 @@
 # Otherwise corection==name of correction method, i.e. "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"
 # if getting outlier calls for output, outliers=T
 
-dotheogsa <- function(Sample.data, PHENO, offsets = 0.001, Fisher = FALSE, correction = NA, outliers = FALSE, dir = NA)
+dotheogsa <- function(Sample.data, PHENO, offsets = 0.001, Fisher = FALSE, correction = NA, outliers = FALSE)
 ## PHENO should have 'Normal' or 'Tumor' calls where Tumor ==1, Normal ==0, and names of each sample associated
 {
     ## Define tumors and normals
@@ -48,37 +48,64 @@ dotheogsa <- function(Sample.data, PHENO, offsets = 0.001, Fisher = FALSE, corre
 
     if (Fisher == TRUE) {
         ## Calculate outliers in normal tissue
-        outRankExprs1.normals <- outCallRank(dataExprs2, names = c("Expr"), tail = "left", corr = TRUE, offsets = offsets)$Expr
+        outRankExprs1.normals <- outCallRank(dataExprs2,
+            names = c("Expr"), tail = "left",
+            corr = TRUE, offsets = offsets
+        )$Expr
         outRankNormal1 <- apply(outRankExprs1.normals, 1, sum)
 
         ## Perform Fisher's exact test
-        FisherP1 <- matrix(NA, nrow = nrow(Sample.data), ncol = 1, dimnames = list(c(row.names(Sample.data)), "FisherP1"))
+        FisherP1 <- matrix(NA,
+            nrow = nrow(Sample.data), ncol = 1,
+            dimnames = list(c(row.names(Sample.data)), "FisherP1")
+        )
 
         for (i in seq_len(nrow(Sample.data))) {
             ## Make contingency tables
-            test <- matrix(c(outRankNormal1[i], no.of.normals - outRankNormal1[i], Num_UE_Outliers[i], no.of.tumors - Num_UE_Outliers[i]), nrow = 2, ncol = 2, dimnames = list(c("outliers", "rest"), c("Normal", "Tumor")))
+            test <- matrix(
+                c(
+                    outRankNormal1[i], no.of.normals - outRankNormal1[i],
+                    Num_UE_Outliers[i], no.of.tumors - Num_UE_Outliers[i]
+                ),
+                nrow = 2, ncol = 2, dimnames = list(c("outliers", "rest"), c("Normal", "Tumor"))
+            )
             ## Get p-value from fisher test.  Will do two sided test
             FisherP1[i] <- fisher.test(test, alternative = "two.sided")$p.value
         }
     }
 
     ###### largest to smallest, copa90 (overexpression in tumors)#####################
-    outRankExprs2 <- outCallRank(dataExprs, names = c("Expr"), tail = "right", corr = TRUE, offsets = offsets)$Expr
+    outRankExprs2 <- outCallRank(dataExprs,
+        names = c("Expr"), tail = "right",
+        corr = TRUE, offsets = offsets
+    )$Expr
     Num_OE_Outliers <- apply(outRankExprs2, 1, sum)
     OE_Rank <- order(Num_OE_Outliers, SampleTotals, decreasing = TRUE)
 
 
     if (Fisher == TRUE) {
         ## Calculate outliers in normal tissue
-        outRankExprs2.normals <- outCallRank(dataExprs2, names = c("Expr"), tail = "right", corr = TRUE, offsets = offsets)$Expr
+        outRankExprs2.normals <- outCallRank(dataExprs2,
+            names = c("Expr"), tail = "right",
+            corr = TRUE, offsets = offsets
+        )$Expr
         outRankNormal2 <- apply(outRankExprs2.normals, 1, sum)
 
         ## Perform Fisher's exact test
-        FisherP2 <- matrix(NA, nrow = nrow(Sample.data), ncol = 1, dimnames = list(c(row.names(Sample.data)), "FisherP2"))
+        FisherP2 <- matrix(NA,
+            nrow = nrow(Sample.data), ncol = 1,
+            dimnames = list(c(row.names(Sample.data)), "FisherP2")
+        )
 
         for (i in seq_len(nrow(Sample.data))) {
             ## Make contingency tables
-            test <- matrix(c(outRankNormal2[i], no.of.normals - outRankNormal2[i], Num_OE_Outliers[i], no.of.tumors - Num_OE_Outliers[i]), nrow = 2, ncol = 2, dimnames = list(c("outliers", "rest"), c("Normal", "Tumor")))
+            test <- matrix(
+                c(
+                    outRankNormal2[i], no.of.normals - outRankNormal2[i],
+                    Num_OE_Outliers[i], no.of.tumors - Num_OE_Outliers[i]
+                ),
+                nrow = 2, ncol = 2, dimnames = list(c("outliers", "rest"), c("Normal", "Tumor"))
+            )
             ## Get p-value from fisher test.  Will do two sided test
             FisherP2[i] <- fisher.test(test, alternative = "two.sided")$p.value
         }

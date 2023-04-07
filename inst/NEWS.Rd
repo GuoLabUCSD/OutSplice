@@ -36,3 +36,10 @@
     \item Correct package for build report
   }
 }
+
+\section{Changes in version 0.99.6 (2023-04-06)}{
+  \itemize{
+    \item Add options to specificy row name columns
+    \item Return function output in addition to saving output files
+  }
+}

@@ -8,8 +8,9 @@ outspliceTCGA(
   junction,
   gene_expr,
   rawcounts,
-  output_file_prefix,
-  dir,
+  saveOutput = FALSE,
+  output_file_prefix = NULL,
+  dir = NULL,
   filterSex = TRUE,
   annotation = "org.Hs.eg.db",
   TxDb = "TxDb.Hsapiens.UCSC.hg19.knownGene",
@@ -25,26 +26,28 @@ outspliceTCGA(
 
 \item{rawcounts}{A character string giving the path to a tab separated text file with the reads per million counts for each sample.}
 
-\item{output_file_prefix}{A character string giving the name of the prefix the user would like to use for the output data file.}
+\item{saveOutput}{A boolean representing whether or not to save the results to an R data file and tab separated files. Default is FALSE. Optional.}
 
-\item{dir}{A character string giving the path to the directory the user would like to save output to.}
+\item{output_file_prefix}{A character string giving the name of the prefix the user would like to use for the output data file. Default is NULL. Optional.}
 
-\item{filterSex}{A boolean representing whether or not to include junctions found on the sex chromosomes.}
+\item{dir}{A character string giving the path to the directory the user would like to save output to. Default is NULL. Optional.}
 
-\item{annotation}{A connection or a character string giving the name of the Bioconductor library the user would like to use containing the genome wide annotation.}
+\item{filterSex}{A boolean representing whether or not to include junctions found on the sex chromosomes. Default is TRUE. Optional.}
 
-\item{TxDb}{A character string giving the name of the Bioconductor library the user would like to use that will expose the annotation database as a TxDb object.}
+\item{annotation}{A connection or a character string giving the name of the Bioconductor library the user would like to use containing the genome wide annotation. Default is "org.Hs.eg.db". Optional.}
 
-\item{offsets_value}{The minimum expression value needed to call an event an outlier after normalizing event expression with gene expression.}
+\item{TxDb}{A character string giving the name of the Bioconductor library the user would like to use that will expose the annotation database as a TxDb object. Default is "TxDb.Hsapiens.UCSC.hg19.knownGene". Optional.}
 
-\item{correction_setting}{Option to designate how to correct significance. The available options are: "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", and "none".}
+\item{offsets_value}{The minimum expression value needed to call an event an outlier after normalizing event expression with gene expression. Default is 0.00001 Optional.}
 
-\item{p_value}{Set the alpha value for the significance threshold.}
+\item{correction_setting}{Option to designate how to correct significance. The available options are: "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", and "none". Default is "fdr". Optional.}
+
+\item{p_value}{Set the alpha value for the significance threshold. Default is 0.05. Optional.}
 }
 \value{
-Data Frame of junction events containing the number of under/over-expressed outliers in the tumor group (Num_UE_Outliers/Num_OE_Outliers), the Fisher p-value for under/over-expressed events (FisherP1/FisherP2), and a ranking of the under/over expressed events (UE_Rank/OE_Rank). This function will also output tab sepaerated text files and an R data file with the following:
+A list containing the below data.
 \itemize{
-    \item FisherAnalyses: Data Frame of the above return value
+    \item FisherAnalyses: Data Frame of junction events containing the number of under/over-expressed outliers in the tumor group (Num_UE_Outliers/Num_OE_Outliers), the Fisher p-value for under/over-expressed events (FisherP1/FisherP2), and a ranking of the under/over expressed events (UE_Rank/OE_Rank). This function will also output tab sepaerated text files and an R data file with the following:
     \item ASE.type: significant junction events labeled by type (skipping, insertion, or deletion)
     \item geneAnnotations: object containing gene names corresponding to each junction region
     \item junc.Outliers: list containing the logical matrices TumorOverExpression and TumorUnderExpression. "True" indicates an over-expressed event in TumorOverExpression, or an under-expressed event in TumorUnderExpression.
@@ -52,7 +55,7 @@ Data Frame of junction events containing the number of under/over-expressed outl
     \item junc.RPM.norm: junction counts normalized by each event's total gene expression value
     \item gene_expr: gene expression values for each junction event
     \item splice_burden: matrix containing the number of Fisher-P significant over-expressed, under-expressed, and total number of outliers per sample
-    \item NORM.gene_expr.norm: Median of junction data normalized by gene expression for normal samples only (Used for Junction Plotting Only)
+    \item NORM.gene_expr.norm: Median of junction data normalized by gene expression for normal samples only (Used for Junction Plotting)
     \item pheno: Phenotypes of Samples (Tumor or Normal)
     \item pvalues: Junction Fisher P-values
 }
@@ -66,7 +69,7 @@ gene_expr <- system.file("extdata", "TCGA_HNSC_genes_normalized.txt.gz", package
 rawcounts <- system.file("extdata", "Total_Rawcounts.txt", package = "OutSplice")
 output_file_prefix <- "TCGA_OutSplice_Example"
 dir <- paste0(tempdir(), "/")
-outspliceTCGA(junction, gene_expr, rawcounts, output_file_prefix, dir, filterSex = TRUE, annotation = "org.Hs.eg.db", TxDb = "TxDb.Hsapiens.UCSC.hg19.knownGene", offsets_value = 0.00001, correction_setting = "fdr", p_value = 0.05)
+results_TCGA <- outspliceTCGA(junction, gene_expr, rawcounts, saveOutput = TRUE, output_file_prefix, dir, filterSex = TRUE, annotation = "org.Hs.eg.db", TxDb = "TxDb.Hsapiens.UCSC.hg19.knownGene", offsets_value = 0.00001, correction_setting = "fdr", p_value = 0.05)
 message("Output is located at: ", dir)
 }
 \references{

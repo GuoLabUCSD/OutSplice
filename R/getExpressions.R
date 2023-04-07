@@ -3,7 +3,10 @@
 getExpressions <- function(geneAnnot, all.gene_expr, gene_exprEntrezID) {
     ## collect gene_expr values
     # initialize matrix of values for each junction
-    junctionGenegene_expr <- matrix(0, nrow = length(geneAnnot), ncol = ncol(all.gene_expr), dimnames = list(names(geneAnnot), colnames(all.gene_expr)))
+    junctionGenegene_expr <- matrix(0,
+        nrow = length(geneAnnot), ncol = ncol(all.gene_expr),
+        dimnames = list(names(geneAnnot), colnames(all.gene_expr))
+    )
 
     geneAnnot$ENTREZID -> genes2Junc_ENTREZ
     names(genes2Junc_ENTREZ) <- names(geneAnnot)
@@ -22,7 +25,8 @@ getExpressions <- function(geneAnnot, all.gene_expr, gene_exprEntrezID) {
             no.gene_expr[g] <- TRUE
             next
         }
-        junctionGenegene_expr[names(genes2Junc_ENTREZ)[g], ] <- all.gene_expr[which(gene_exprEntrezID == genes2Junc_ENTREZ[g]), ]
+        junctionGenegene_expr[names(genes2Junc_ENTREZ)[g], ] <-
+            all.gene_expr[which(gene_exprEntrezID == genes2Junc_ENTREZ[g]), ]
     }
 
     ################################################################

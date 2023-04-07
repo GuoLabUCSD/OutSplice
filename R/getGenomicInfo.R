@@ -81,6 +81,7 @@ getGenomicInfo <- function(junc.RPM, annotation, TxDb) {
     exoCount <- table(factor(queryHits(exo))) > 0
     geneAnnot$skipping <- FALSE
     geneAnnot$skipping[as.numeric(names(exoCount))] <- exoCount
+    message("skipping")
 
     # insertion events start or end outside of known exons
     geneAnnot.start <- GRanges(seqnames(geneAnnot),
@@ -101,6 +102,8 @@ getGenomicInfo <- function(junc.RPM, annotation, TxDb) {
     geneAnnot$insertions <- !overlapsAny(geneAnnot.start, en) |
         !overlapsAny(geneAnnot.end, en)
 
+    message("insertions")
+
     # deletion events occur w/in an exon but not at its start or end
     en.start <- GRanges(seqnames(en),
         ranges = IRanges(
@@ -119,6 +122,8 @@ getGenomicInfo <- function(junc.RPM, annotation, TxDb) {
     geneAnnot$deletions <-
         (!overlapsAny(geneAnnot.end, en.start) & overlapsAny(geneAnnot.end, en)) |
             (!overlapsAny(geneAnnot.start, en.end) & overlapsAny(geneAnnot.start, en))
+
+    message("deletions")
 
     return(geneAnnot)
 }
