@@ -3,6 +3,9 @@
 \name{OutSplice}
 \alias{OutSplice}
 \title{OutSplice package overview}
+\value{
+Please see the man pages for each function.
+}
 \description{
 An easy to use tool that can compare splicing events in tumor and normal tissue
 samples using either a user generated matrix, or data from The Cancer Genome Atlas (TCGA).

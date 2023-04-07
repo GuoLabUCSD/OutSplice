@@ -14,6 +14,7 @@
 #'     \item \code{\link{outspliceTCGA}}
 #'     \item \code{\link{plotJunctionData}}
 #' }
+#' @return Please see the man pages for each function.
 #'
 #' @name OutSplice
 #'

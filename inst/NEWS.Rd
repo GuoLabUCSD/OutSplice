@@ -43,3 +43,9 @@
     \item Return function output in addition to saving output files
   }
 }
+
+\section{Changes in version 0.99.7 (2023-04-07)}{
+  \itemize{
+    \item Add value section to overview man page
+  }
+}
