@@ -37,7 +37,6 @@ processMatrices1 <- function(pheno, all.junc, all.samples, all.gene_expr, rawcou
     if (filterSex) {
         junc.RPM <- junc.RPM[grep("chr[XY]", row.names(junc.RPM), value = TRUE, invert = TRUE), ]
     }
-
     ##############################################################
     message("get the genomic information for all the junctions")
 

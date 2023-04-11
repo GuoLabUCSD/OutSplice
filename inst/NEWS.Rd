@@ -49,3 +49,9 @@
     \item Add value section to overview man page
   }
 }
+
+\section{Changes in version 0.99.8 (2023-04-11)}{
+  \itemize{
+    \item Fixed error that occured when no significant outliers were present
+  }
+}
