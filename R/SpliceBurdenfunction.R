@@ -7,7 +7,10 @@ calcBurden <- function(junc.Outliers, FisherAnalyses, p_value) {
     row.names(Over_Expressed_Junctions_Outlier_Calls) <- sub("\\.", "-", rownames(Over_Expressed_Junctions_Outlier_Calls))
 
     OE_pvalue <- subset(FisherAnalyses, select = FisherP2)
-    Over_Expressed_Junctions_Outlier_Calls <- merge(OE_pvalue, Over_Expressed_Junctions_Outlier_Calls, by = "row.names", all.x = TRUE)
+    Over_Expressed_Junctions_Outlier_Calls <- merge(OE_pvalue,
+        Over_Expressed_Junctions_Outlier_Calls,
+        by = "row.names", all.x = TRUE
+    )
     rownames(Over_Expressed_Junctions_Outlier_Calls) <- Over_Expressed_Junctions_Outlier_Calls$Row.names
     Over_Expressed_Junctions_Outlier_Calls <- subset(Over_Expressed_Junctions_Outlier_Calls, select = -Row.names)
     Over_Expressed_Junctions_Outlier_Calls <- na.omit(Over_Expressed_Junctions_Outlier_Calls)

@@ -253,7 +253,7 @@ deletion: junction that is inside a known exon but not as its start or end
 Junction expression is normalized based on its corresponding gene expression 
 from the gene_expr input. This is achieved by dividing the junction RPM data by the 
 normalized gene expression counts from a junction's corresponding gene. If a junction is aligned
-to more than one gene, then the first gene will be the one selected for the normalization.
+to more than one gene, then the gene with the lower entrez id will be the one selected for the normalization.
 
 ## Filter by expression via offsets
 
@@ -325,6 +325,8 @@ Outputs junction expression plots of user specified junctions as defined in
 Section 3.8. Plots can be saved to a user defined pdf file.
   
 # References
+
+Broad Institute TCGA Genome Data Analysis Center (2016): Firehose stddata__2016_01_28 run. Broad Institute of MIT and Harvard. doi:10.7908/C11G0KM9
 
 Cancer Genome Atlas Network. Comprehensive genomic characterization of head and neck squamous cell carcinomas. Nature. 2015 Jan 29;517(7536):576-82. doi: 10.1038/nature14129. PMID: 25631445; PMCID: PMC4311405.
 

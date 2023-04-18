@@ -55,3 +55,9 @@
     \item Fixed error that occured when no significant outliers were present
   }
 }
+
+\section{Changes in version 0.99.9 (2023-04-17)}{
+  \itemize{
+    \item Fixed issue when assigning gene ids
+  }
+}
