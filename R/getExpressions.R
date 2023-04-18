@@ -10,8 +10,14 @@ getExpressions <- function(geneAnnot, all.gene_expr, gene_exprEntrezID) {
 
     geneAnnot$ENTREZID -> genes2Junc_ENTREZ
     names(genes2Junc_ENTREZ) <- names(geneAnnot)
-    message("shows how many junctions aligned to a single gene")
+
+    ## shows how many junctions aligned to a single gene"
     length(grep(genes2Junc_ENTREZ, pattern = ";", invert = TRUE, value = TRUE))
+
+    ### Make sure the genes are ordered by lower to higher ENTREZID
+    genes2Junc_ENTREZ <- vapply(genes2Junc_ENTREZ, function(x)
+        paste(sort(as.numeric(strsplit(x, ";")[[1]])), collapse = ";"), character(1))
+
     ## this selects just the first gene that each junction aligns to
     genes2Junc_ENTREZ <- vapply(strsplit(genes2Junc_ENTREZ, ";"), function(x) {
         x[1]

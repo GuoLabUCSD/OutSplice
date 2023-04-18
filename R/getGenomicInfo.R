@@ -63,10 +63,6 @@ getGenomicInfo <- function(junc.RPM, annotation, TxDb) {
     geneAnnot$ENTREZID <- NA
     geneAnnot$ENTREZID[as.numeric(names(geneENTREZID))] <- geneENTREZID
 
-    ### Make sure the genes are ordered by lower to higher ENTREZID
-    geneAnnot$ENTREZID <- vapply(geneAnnot$ENTREZID, function(x)
-        paste(sort(as.numeric(strsplit(x, ";")[[1]])), collapse = ";"), character(1))
-
     # get known exons
     en <- exons(get(TxDb))
 
