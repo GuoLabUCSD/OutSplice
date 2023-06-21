@@ -62,7 +62,7 @@
   }
 }
 
-\section{Changes in version 1.00.1 (2023-06-21)}{
+\section{Changes in version 1.1.1 (2023-06-21)}{
   \itemize{
     \item Fixed issue where nonsignificant events would be listed in ASE.types when no under-expressed outliers were found
   }
