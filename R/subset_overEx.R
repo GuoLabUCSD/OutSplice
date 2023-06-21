@@ -6,9 +6,7 @@ subset_overEx <- function(FisherAnalyses, p_value) {
         toplist90 <- toplist90[toplist90[, "FisherP2"] < p_value, ]
         toplist90 <- subset(toplist90, select = FisherP2)
     } else {
-        toplist90 <- toplist90[toplist90[, "FisherP2"] > p_value, ]
-        toplist90 <- subset(toplist90, select = FisherP2)
-        message("no over expression outliers")
+        toplist90 <- NULL
     }
     return(toplist90)
 }
