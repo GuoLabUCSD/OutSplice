@@ -20,7 +20,7 @@ outspliceTCGA(
 )
 }
 \arguments{
-\item{junction}{A character string giving the path to a tab separated text file with raw juntion counts.}
+\item{junction}{A character string giving the path to a tab separated text file with raw junction counts.}
 
 \item{gene_expr}{A character string giving the path to a tab separated file with normalized gene expression data.}
 
