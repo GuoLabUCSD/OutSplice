@@ -4,7 +4,7 @@
 #' Analyze differential splicing events between tumor and normal samples for TCGA formatted datasets. Examples of TCGA file formats can be viewed here (https://gdac.broadinstitute.org/)
 #'
 #' @title Alternative Splicing Analysis for TCGA Data
-#' @param junction A character string giving the path to a tab separated text file with raw juntion counts.
+#' @param junction A character string giving the path to a tab separated text file with raw junction counts.
 #' @param gene_expr A character string giving the path to a tab separated file with normalized gene expression data.
 #' @param rawcounts A character string giving the path to a tab separated text file with the reads per million counts for each sample.
 #' @param saveOutput A boolean representing whether or not to save the results to an R data file and tab separated files. Default is FALSE. Optional.
