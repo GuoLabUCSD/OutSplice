@@ -22,7 +22,6 @@
 #' @importFrom GenomicFeatures genes exons
 #' @importFrom IRanges IRanges overlapsAny
 #' @importFrom org.Hs.eg.db org.Hs.eg.db
-#' @importFrom Repitools annoGR2DF
 #' @importFrom TxDb.Hsapiens.UCSC.hg19.knownGene TxDb.Hsapiens.UCSC.hg19.knownGene
 #' @importFrom TxDb.Hsapiens.UCSC.hg38.knownGene TxDb.Hsapiens.UCSC.hg38.knownGene
 #' @importFrom S4Vectors Rle subjectHits queryHits
