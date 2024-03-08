@@ -29,7 +29,6 @@ processMatrices1 <- function(pheno, all.junc, all.samples, all.gene_expr, rawcou
     message("run the ogsa function for pre filtering")
     ## get function
     test2 <- dotheogsa(Sample.data = junc.RPM, PHENO = PHENO, offsets = 0.1)
-    #View(test2)
     has.outliers <- test2[, "Num_UE_Outliers"] > 1 | test2[, "Num_OE_Outliers"] > 1
     junc.RPM <- junc.RPM[has.outliers, ]
 
@@ -42,7 +41,6 @@ processMatrices1 <- function(pheno, all.junc, all.samples, all.gene_expr, rawcou
     message("get the genomic information for all the junctions")
 
     geneAnnot <- getGenomicInfo(junc.RPM, annotation, TxDb)
-    #View(as.data.frame(geneAnnot))
 
     #Filter events without event type
     geneAnnot <- geneAnnot[apply(cbind(
@@ -50,8 +48,6 @@ processMatrices1 <- function(pheno, all.junc, all.samples, all.gene_expr, rawcou
         geneAnnot$skipping
     ), 1, any), ]
 
-    #test_this <- as.data.frame(geneAnnot)
-    #View(test_this)
     junc.RPM <- junc.RPM[names(geneAnnot), ]
 
     ##################################################################
@@ -85,7 +81,6 @@ processMatrices2 <- function(junc.RPM, junctionGenegene_expr, PHENO, offsets_val
     # ## filters junctions
     junc.RPM.original <- junc.RPM
     junc.RPM <- junc.RPM2
-    #View(junc.RPM)
 
     message("Perform normalization using gene_expr values")
 
