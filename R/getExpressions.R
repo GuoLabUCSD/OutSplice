@@ -37,6 +37,7 @@ getExpressions <- function(geneAnnot, all.gene_expr, gene_exprEntrezID) {
 
     ################################################################
     ## Remove genes without gene_expr data, not in true genes
+    #print(no.gene_expr)
     junctionGenegene_expr[!no.gene_expr, ] -> junctionGenegene_expr
 
     return(junctionGenegene_expr)
