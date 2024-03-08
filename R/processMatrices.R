@@ -29,6 +29,7 @@ processMatrices1 <- function(pheno, all.junc, all.samples, all.gene_expr, rawcou
     message("run the ogsa function for pre filtering")
     ## get function
     test2 <- dotheogsa(Sample.data = junc.RPM, PHENO = PHENO, offsets = 0.1)
+    #View(test2)
     has.outliers <- test2[, "Num_UE_Outliers"] > 1 | test2[, "Num_OE_Outliers"] > 1
     junc.RPM <- junc.RPM[has.outliers, ]
 
@@ -41,16 +42,22 @@ processMatrices1 <- function(pheno, all.junc, all.samples, all.gene_expr, rawcou
     message("get the genomic information for all the junctions")
 
     geneAnnot <- getGenomicInfo(junc.RPM, annotation, TxDb)
+    #View(as.data.frame(geneAnnot))
 
+    #Filter events without event type
     geneAnnot <- geneAnnot[apply(cbind(
         geneAnnot$deletions, geneAnnot$insertions,
         geneAnnot$skipping
     ), 1, any), ]
+
+    #test_this <- as.data.frame(geneAnnot)
+    #View(test_this)
     junc.RPM <- junc.RPM[names(geneAnnot), ]
 
     ##################################################################
     message("remove all that map to 'NA' no gene name, and assign gene expression from gene_expr")
     junc.RPM <- junc.RPM[!is.na(geneAnnot$SYMBOL), ]
+
     geneAnnot <- geneAnnot[row.names(junc.RPM), ]
 
     ## remove row names for unknown genes containing "?" unknown genes
@@ -65,7 +72,7 @@ processMatrices1 <- function(pheno, all.junc, all.samples, all.gene_expr, rawcou
     return(os_data)
 }
 
-# Second Shared Sub FUnction for outSpliceAnalysis and outSpliceTCGA for overall data processing
+# Second Shared Sub Function for outSpliceAnalysis and outSpliceTCGA for overall data processing
 
 processMatrices2 <- function(junc.RPM, junctionGenegene_expr, PHENO, offsets_value,
                              correction_setting, p_value, pheno, geneAnnot, saveOutput, output_file_prefix, dir, date) {
@@ -78,6 +85,7 @@ processMatrices2 <- function(junc.RPM, junctionGenegene_expr, PHENO, offsets_val
     # ## filters junctions
     junc.RPM.original <- junc.RPM
     junc.RPM <- junc.RPM2
+    #View(junc.RPM)
 
     message("Perform normalization using gene_expr values")
 
@@ -117,6 +125,7 @@ processMatrices2 <- function(junc.RPM, junctionGenegene_expr, PHENO, offsets_val
     ## aggregate the data
     gene_expr <- junctionGenegene_expr
     junc.RPM.norm <- junc.RPM.norm
+
     geneAnnotations <- geneAnnot
     geneAnnot <- geneAnnot[junctions]
     ASE.type <- cbind(geneAnnot$skipping, geneAnnot$insertions, geneAnnot$deletions)
