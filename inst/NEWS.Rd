@@ -68,7 +68,7 @@
   }
 }
 
-\section{Changes in version 1.3.0 (2024-03-06)}{
+\section{Changes in version 1.3.1 (2024-03-06)}{
   \itemize{
     \item Removed Repitools annoGR2DF
     \item Repitools removed from NAMESPACE and DESCRIPTION files
