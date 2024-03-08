@@ -31,11 +31,6 @@ saveResults <- function(junc.RPM, gene_expr, junc.RPM.norm, pvalues, pheno, Fish
         date, "_", "splice_burden.txt"
     ), sep = "\t", quote = FALSE, col.names = NA)
 
-    #annotations_df <- annoGR2DF(geneAnnotations)
-    #write.table(annotations_df, file = paste0(
-    #    dir, output_file_prefix, "_",
-    #    date, "_", "gene_annotations.txt"
-    #), sep = "\t", quote = FALSE, col.names = NA)
     write.table(x = data.frame(geneAnnotations), file = paste0(
         dir, output_file_prefix, "_",
         date, "_", 'gene_annotations.txt'
