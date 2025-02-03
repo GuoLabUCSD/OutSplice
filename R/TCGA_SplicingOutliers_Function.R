@@ -115,6 +115,10 @@ outspliceTCGA <- function(junction, gene_expr, rawcounts, saveOutput = FALSE,
     if (sum(pheno == "Normal") < 10) {
         stop("Too few normal samples")
     }
+    if (sum(pheno == "Tumor") < 2) {
+        stop("Too few tumor samples")
+    }
+
     ## Run Data Processing Function
     data <- processMatrices1(
         pheno, all.junc, all.samples, all.gene_expr, rawcounts,
