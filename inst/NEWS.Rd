@@ -74,3 +74,10 @@
     \item Repitools removed from NAMESPACE and DESCRIPTION files
   }
 }
+
+\section{Changes in version 1.7.1 (2025-02-03)}{
+  \itemize{
+    \item Added warning message for only having 1 Tumor Sample
+    \item Updated vignette file
+  }
+}
